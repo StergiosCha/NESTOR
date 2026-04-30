@@ -1,0 +1,304 @@
+{
+  "gpt-4o": {
+    "14": {
+      "gold": "no",
+      "predicted": "no",
+      "correct": true,
+      "section": 1,
+      "section_name": "Quantifiers (generalized quantifiers, scope, monotonicity)",
+      "phenomenon": "Negation and conjunction in generalized quantifiers",
+      "explanation": "The first premise states that \"neither leading tenor comes cheap,\" which means that it is not the case that any leading tenor comes cheap. The second premise identifies Pavarotti as one of the leading tenors. Combining these, it follows that Pavarotti does not come cheap. The hypothesis directly contradicts this, making it necessarily false.",
+      "raw_response": "ANSWER: no  \nPHENOMENON: Negation and conjunction in generalized quantifiers  \nEXPLANATION: The first premise states that \"neither leading tenor comes cheap,\" which means that it is not the case that any leading tenor comes cheap. The second premise identifies Pavarotti as one of the leading tenors. Combining these, it follows that Pavarotti does not come cheap. The hypothesis directly contradicts this, making it necessarily false."
+    },
+    "242": {
+      "gold": "yes",
+      "predicted": "yes",
+      "correct": true,
+      "section": 6,
+      "section_name": "Comparatives (degree semantics, scalar implicature)",
+      "phenomenon": "Transitivity of comparative adjectives",
+      "explanation": "The premises establish a transitive relationship using the comparative adjective \"faster.\" Since the PC-6082 is faster than 500 MIPS and the ITEL-ZX is slower than 500 MIPS, it necessarily follows that the PC-6082 is faster than the ITEL-ZX.",
+      "raw_response": "ANSWER: yes  \nPHENOMENON: Transitivity of comparative adjectives  \nEXPLANATION: The premises establish a transitive relationship using the comparative adjective \"faster.\" Since the PC-6082 is faster than 500 MIPS and the ITEL-ZX is slower than 500 MIPS, it necessarily follows that the PC-6082 is faster than the ITEL-ZX."
+    },
+    "272": {
+      "gold": "unknown",
+      "predicted": "yes",
+      "correct": false,
+      "section": 7,
+      "section_name": "Temporal (tense, aspect, temporal adverbials)",
+      "phenomenon": "Temporal aspect",
+      "explanation": "The hypothesis follows because the premises establish a temporal ordering where Smith's presence occurred before Jones's presence. By the definition of \"before\" in temporal semantics, it necessarily implies that Jones's presence occurred after Smith's presence.",
+      "raw_response": "ANSWER: yes  \nPHENOMENON: Temporal aspect  \nEXPLANATION: The hypothesis follows because the premises establish a temporal ordering where Smith's presence occurred before Jones's presence. By the definition of \"before\" in temporal semantics, it necessarily implies that Jones's presence occurred after Smith's presence."
+    },
+    "329": {
+      "gold": "unknown",
+      "predicted": "yes",
+      "correct": false,
+      "section": 8,
+      "section_name": "Verbs (aktionsart, event structure, argument alternations)",
+      "phenomenon": "Temporal aspect",
+      "explanation": "The premise uses the progressive aspect (\"was winning\"), which indicates that the event of ITEL winning the contract was in progress in 1993. Since the progressive aspect entails that the event described was occurring and thus completed unless explicitly interrupted, it follows that ITEL won the contract in 1993.",
+      "raw_response": "ANSWER: yes  \nPHENOMENON: Temporal aspect  \nEXPLANATION: The premise uses the progressive aspect (\"was winning\"), which indicates that the event of ITEL winning the contract was in progress in 1993. Since the progressive aspect entails that the event described was occurring and thus completed unless explicitly interrupted, it follows that ITEL won the contract in 1993."
+    },
+    "227": {
+      "gold": "no",
+      "predicted": "unknown",
+      "correct": false,
+      "section": 6,
+      "section_name": "Comparatives (degree semantics, scalar implicature)",
+      "phenomenon": "Relative gradable adjectives and context sensitivity",
+      "explanation": "The adjective \"slow\" is a relative gradable adjective, meaning its interpretation depends on a contextual standard of comparison. While the premises establish that the PC-6082 and ITEL-XZ are equally fast, the context does not specify whether the ITEL-XZ meets the threshold for being \"fast\" or \"slow.\" Therefore, the truth of the hypothesis cannot be determined.",
+      "raw_response": "ANSWER: unknown  \nPHENOMENON: Relative gradable adjectives and context sensitivity  \nEXPLANATION: The adjective \"slow\" is a relative gradable adjective, meaning its interpretation depends on a contextual standard of comparison. While the premises establish that the PC-6082 and ITEL-XZ are equally fast, the context does not specify whether the ITEL-XZ meets the threshold for being \"fast\" or \"slow.\" Therefore, the truth of the hypothesis cannot be determined."
+    },
+    "278": {
+      "gold": "no",
+      "predicted": "no",
+      "correct": true,
+      "section": 7,
+      "section_name": "Temporal (tense, aspect, temporal adverbials)",
+      "phenomenon": "Temporal contradiction",
+      "explanation": "The hypothesis directly contradicts the premise because the temporal information in the premise specifies that Smith's first novel was written in 1991, while the hypothesis asserts it was written in 1992. Temporal aspects in formal semantics ensure that these two statements cannot both be true simultaneously.",
+      "raw_response": "ANSWER: no  \nPHENOMENON: Temporal contradiction  \nEXPLANATION: The hypothesis directly contradicts the premise because the temporal information in the premise specifies that Smith's first novel was written in 1991, while the hypothesis asserts it was written in 1992. Temporal aspects in formal semantics ensure that these two statements cannot both be true simultaneously."
+    },
+    "339": {
+      "gold": "no",
+      "predicted": "no",
+      "correct": true,
+      "section": 9,
+      "section_name": "Attitudes (propositional attitudes, de re/de dicto, opacity)",
+      "phenomenon": "Negation",
+      "explanation": "The premise explicitly negates the proposition that ITEL won the contract in 1992. Under the semantics of negation, if a proposition is stated to be false, its affirmative counterpart cannot be true.",
+      "raw_response": "ANSWER: no  \nPHENOMENON: Negation  \nEXPLANATION: The premise explicitly negates the proposition that ITEL won the contract in 1992. Under the semantics of negation, if a proposition is stated to be false, its affirmative counterpart cannot be true."
+    },
+    "40": {
+      "gold": "unknown",
+      "predicted": "unknown",
+      "correct": true,
+      "section": 1,
+      "section_name": "Quantifiers (generalized quantifiers, scope, monotonicity)",
+      "phenomenon": "Subsective adjective modification",
+      "explanation": "The adjective \"interesting\" is subsective, meaning it applies to a subset of the noun's referents (results). The premise does not specify whether the results obtained by the delegates were interesting, so the hypothesis cannot be determined as true or false based on the given information.",
+      "raw_response": "ANSWER: unknown  \nPHENOMENON: Subsective adjective modification  \nEXPLANATION: The adjective \"interesting\" is subsective, meaning it applies to a subset of the noun's referents (results). The premise does not specify whether the results obtained by the delegates were interesting, so the hypothesis cannot be determined as true or false based on the given information."
+    },
+    "142": {
+      "gold": "yes",
+      "predicted": "yes",
+      "correct": true,
+      "section": 4,
+      "section_name": "Ellipsis (VP ellipsis, sluicing, antecedent selection)",
+      "phenomenon": "VP ellipsis resolution",
+      "explanation": "The phrase \"so did Bill\" involves VP ellipsis, where the verb phrase \"spoke to Mary\" is elided but understood to be the same as in the first premise. The ellipsis resolution mechanism ensures that the meaning of the second premise is interpreted as \"Bill spoke to Mary,\" making the hypothesis necessarily true.",
+      "raw_response": "ANSWER: yes  \nPHENOMENON: VP ellipsis resolution  \nEXPLANATION: The phrase \"so did Bill\" involves VP ellipsis, where the verb phrase \"spoke to Mary\" is elided but understood to be the same as in the first premise. The ellipsis resolution mechanism ensures that the meaning of the second premise is interpreted as \"Bill spoke to Mary,\" making the hypothesis necessarily true."
+    },
+    "240": {
+      "gold": "unknown",
+      "predicted": "unknown",
+      "correct": true,
+      "section": 6,
+      "section_name": "Comparatives (degree semantics, scalar implicature)",
+      "phenomenon": "Quantitative comparison and existential presupposition",
+      "explanation": "The premise establishes a comparison between the number of orders ITEL won and the number APCOM lost but does not explicitly state whether APCOM lost any orders at all. It is possible for APCOM to have lost zero orders, in which case the comparison would still hold. Therefore, the hypothesis cannot be determined from the premise.",
+      "raw_response": "ANSWER: unknown  \nPHENOMENON: Quantitative comparison and existential presupposition  \nEXPLANATION: The premise establishes a comparison between the number of orders ITEL won and the number APCOM lost but does not explicitly state whether APCOM lost any orders at all. It is possible for APCOM to have lost zero orders, in which case the comparison would still hold. Therefore, the hypothesis cannot be determined from the premise."
+    },
+    "86": {
+      "gold": "no",
+      "predicted": "no",
+      "correct": true,
+      "section": 2,
+      "section_name": "Plurals (collective/distributive readings, plural quantification)",
+      "phenomenon": "Cardinality mismatch",
+      "explanation": "The premise explicitly states that three accountants signed the contract, which directly contradicts the hypothesis that six accountants signed the contract. The cardinality of the set of accountants is fixed in the premise, making the hypothesis necessarily false.",
+      "raw_response": "ANSWER: no  \nPHENOMENON: Cardinality mismatch  \nEXPLANATION: The premise explicitly states that three accountants signed the contract, which directly contradicts the hypothesis that six accountants signed the contract. The cardinality of the set of accountants is fixed in the premise, making the hypothesis necessarily false."
+    },
+    "107": {
+      "gold": "yes",
+      "predicted": "yes",
+      "correct": true,
+      "section": 2,
+      "section_name": "Plurals (collective/distributive readings, plural quantification)",
+      "phenomenon": "Existential quantification",
+      "explanation": "The premise \"Just one accountant attended the meeting\" entails that there exists at least one accountant who attended the meeting. The hypothesis \"Some accountants attended the meeting\" is true under existential quantification, as \"some\" simply requires the existence of at least one individual satisfying the predicate.",
+      "raw_response": "ANSWER: yes  \nPHENOMENON: Existential quantification  \nEXPLANATION: The premise \"Just one accountant attended the meeting\" entails that there exists at least one accountant who attended the meeting. The hypothesis \"Some accountants attended the meeting\" is true under existential quantification, as \"some\" simply requires the existence of at least one individual satisfying the predicate."
+    },
+    "163": {
+      "gold": "no",
+      "predicted": "no",
+      "correct": true,
+      "section": 4,
+      "section_name": "Ellipsis (VP ellipsis, sluicing, antecedent selection)",
+      "phenomenon": "Negation and epistemic knowledge",
+      "explanation": "The second premise explicitly states that Bill does not know why John had his paper accepted. This directly contradicts the hypothesis, which asserts that Bill does know the reason. The negation in the premise ensures that the hypothesis is necessarily false.",
+      "raw_response": "ANSWER: no  \nPHENOMENON: Negation and epistemic knowledge  \nEXPLANATION: The second premise explicitly states that Bill does not know why John had his paper accepted. This directly contradicts the hypothesis, which asserts that Bill does know the reason. The negation in the premise ensures that the hypothesis is necessarily false."
+    },
+    "105": {
+      "gold": "no",
+      "predicted": "no",
+      "correct": true,
+      "section": 2,
+      "section_name": "Plurals (collective/distributive readings, plural quantification)",
+      "phenomenon": "Quantifier entailment",
+      "explanation": "The premise states that \"just one accountant\" attended the meeting, which entails that at least one accountant was present. The hypothesis, \"no accountants attended the meeting,\" directly contradicts this, as it asserts that zero accountants were present. Quantifier entailment rules out the hypothesis.",
+      "raw_response": "ANSWER: no  \nPHENOMENON: Quantifier entailment  \nEXPLANATION: The premise states that \"just one accountant\" attended the meeting, which entails that at least one accountant was present. The hypothesis, \"no accountants attended the meeting,\" directly contradicts this, as it asserts that zero accountants were present. Quantifier entailment rules out the hypothesis."
+    },
+    "158": {
+      "gold": "unknown",
+      "predicted": "no",
+      "correct": false,
+      "section": 4,
+      "section_name": "Ellipsis (VP ellipsis, sluicing, antecedent selection)",
+      "phenomenon": "Contradiction via color exclusivity",
+      "explanation": "The hypothesis is necessarily false because the premises specify that Bill owns a blue car (\"a blue one\"), and the use of \"blue\" and \"red\" as mutually exclusive color properties in this context precludes Bill from owning a red car. This relies on the assumption that the car's color is uniquely determined and cannot simultaneously be both red and blue.",
+      "raw_response": "ANSWER: no  \nPHENOMENON: Contradiction via color exclusivity  \nEXPLANATION: The hypothesis is necessarily false because the premises specify that Bill owns a blue car (\"a blue one\"), and the use of \"blue\" and \"red\" as mutually exclusive color properties in this context precludes Bill from owning a red car. This relies on the assumption that the car's color is uniquely determined and cannot simultaneously be both red and blue."
+    },
+    "7": {
+      "gold": "yes",
+      "predicted": "yes",
+      "correct": true,
+      "section": 1,
+      "section_name": "Quantifiers (generalized quantifiers, scope, monotonicity)",
+      "phenomenon": "Existential quantification",
+      "explanation": "The premise \"Some great tenors are Swedish\" asserts the existence of at least one individual who is both a great tenor and Swedish. The hypothesis \"There are great tenors who are Swedish\" is a paraphrase of this existential claim, and thus it necessarily follows.",
+      "raw_response": "ANSWER: yes  \nPHENOMENON: Existential quantification  \nEXPLANATION: The premise \"Some great tenors are Swedish\" asserts the existence of at least one individual who is both a great tenor and Swedish. The hypothesis \"There are great tenors who are Swedish\" is a paraphrase of this existential claim, and thus it necessarily follows."
+    },
+    "140": {
+      "gold": "yes",
+      "predicted": "unknown",
+      "correct": false,
+      "section": 3,
+      "section_name": "Anaphora (pronoun resolution, donkey sentences, accessibility)",
+      "phenomenon": "Reflexive Pronoun Interpretation and Reported Speech",
+      "explanation": "The premise involves a reflexive pronoun (\"himself\") that indicates Bill is the one who was hurt, but it also specifies that Bill hurt himself, implying an agent-patient relationship within the same individual. The hypothesis, however, only states that Bill had been hurt, which could include scenarios where someone else hurt Bill. The truth of the hypothesis depends on whether the reflexive action in the premise is interpreted as relevant to the hypothesis, which is not guaranteed.",
+      "raw_response": "ANSWER: unknown  \nPHENOMENON: Reflexive Pronoun Interpretation and Reported Speech  \nEXPLANATION: The premise involves a reflexive pronoun (\"himself\") that indicates Bill is the one who was hurt, but it also specifies that Bill hurt himself, implying an agent-patient relationship within the same individual. The hypothesis, however, only states that Bill had been hurt, which could include scenarios where someone else hurt Bill. The truth of the hypothesis depends on whether the reflexive action in the premise is interpreted as relevant to the hypothesis, which is not guaranteed."
+    },
+    "200": {
+      "gold": "unknown",
+      "predicted": "no",
+      "correct": false,
+      "section": 5,
+      "section_name": "Adjectives (intersective, subsective, privative, intensional)",
+      "phenomenon": "Temporal aspect and privative adjective",
+      "explanation": "The adjective \"former\" is a privative adjective that negates the current applicability of the noun it modifies. In this case, \"former successful university student\" implies that John was successful in the past but is no longer necessarily successful. Therefore, the hypothesis does not follow.",
+      "raw_response": "ANSWER: no  \nPHENOMENON: Temporal aspect and privative adjective  \nEXPLANATION: The adjective \"former\" is a privative adjective that negates the current applicability of the noun it modifies. In this case, \"former successful university student\" implies that John was successful in the past but is no longer necessarily successful. Therefore, the hypothesis does not follow."
+    },
+    "209": {
+      "gold": "no",
+      "predicted": "parse_error",
+      "correct": false,
+      "section": 5,
+      "section_name": "Adjectives (intersective, subsective, privative, intensional)",
+      "phenomenon": "",
+      "explanation": "",
+      "raw_response": "[ERROR: HTTP Error 400: Bad Request]"
+    },
+    "26": {
+      "gold": "yes",
+      "predicted": "yes",
+      "correct": true,
+      "section": 1,
+      "section_name": "Quantifiers (generalized quantifiers, scope, monotonicity)",
+      "phenomenon": "Quantifier interaction and monotonicity",
+      "explanation": "The hypothesis follows because \"most Europeans\" (a proportional quantifier) refers to a majority subset of Europeans, and the premises establish that all Europeans are people and that all people resident in Europe can travel freely within Europe. Since \"most Europeans\" are resident in Europe (Premise 1), and residency in Europe entails the ability to travel freely within Europe (Premise 3), it follows that most Europeans can travel freely within Europe.",
+      "raw_response": "ANSWER: yes  \nPHENOMENON: Quantifier interaction and monotonicity  \nEXPLANATION: The hypothesis follows because \"most Europeans\" (a proportional quantifier) refers to a majority subset of Europeans, and the premises establish that all Europeans are people and that all people resident in Europe can travel freely within Europe. Since \"most Europeans\" are resident in Europe (Premise 1), and residency in Europe entails the ability to travel freely within Europe (Premise 3), it follows that most Europeans can travel freely within Europe."
+    },
+    "216": {
+      "gold": "yes",
+      "predicted": "yes",
+      "correct": true,
+      "section": 5,
+      "section_name": "Adjectives (intersective, subsective, privative, intensional)",
+      "phenomenon": "Subsective Adjective",
+      "explanation": "The adjective \"fatter\" is subsective, meaning it applies to a subset of the noun's denotation (in this case, \"politician\"). If John is a fatter politician than Bill, it necessarily follows that John is fatter than Bill, as the comparison of fatness is preserved across the broader domain.",
+      "raw_response": "ANSWER: yes  \nPHENOMENON: Subsective Adjective  \nEXPLANATION: The adjective \"fatter\" is subsective, meaning it applies to a subset of the noun's denotation (in this case, \"politician\"). If John is a fatter politician than Bill, it necessarily follows that John is fatter than Bill, as the comparison of fatness is preserved across the broader domain."
+    },
+    "119": {
+      "gold": "no",
+      "predicted": "no",
+      "correct": true,
+      "section": 3,
+      "section_name": "Anaphora (pronoun resolution, donkey sentences, accessibility)",
+      "phenomenon": "Downward Monotonicity",
+      "explanation": "The quantifier \"no\" in the premise creates a downward monotonic context, meaning that if the statement \"no student used her workstation\" is true, it entails that no specific individual within the set of students (including Mary) used a workstation. Since Mary is a student, the hypothesis that she used a workstation contradicts the premise.",
+      "raw_response": "ANSWER: no  \nPHENOMENON: Downward Monotonicity  \nEXPLANATION: The quantifier \"no\" in the premise creates a downward monotonic context, meaning that if the statement \"no student used her workstation\" is true, it entails that no specific individual within the set of students (including Mary) used a workstation. Since Mary is a student, the hypothesis that she used a workstation contradicts the premise."
+    },
+    "335": {
+      "gold": "unknown",
+      "predicted": "unknown",
+      "correct": true,
+      "section": 9,
+      "section_name": "Attitudes (propositional attitudes, de re/de dicto, opacity)",
+      "phenomenon": "de dicto vs. de re reading",
+      "explanation": "The premise involves a belief report, which introduces a de dicto context where the truth of the embedded proposition (\"ITEL had won the contract in 1992\") is not guaranteed by Smith's belief. Smith's belief could be mistaken, so the hypothesis does not necessarily follow from the premise.",
+      "raw_response": "ANSWER: unknown  \nPHENOMENON: de dicto vs. de re reading  \nEXPLANATION: The premise involves a belief report, which introduces a de dicto context where the truth of the embedded proposition (\"ITEL had won the contract in 1992\") is not guaranteed by Smith's belief. Smith's belief could be mistaken, so the hypothesis does not necessarily follow from the premise."
+    },
+    "330": {
+      "gold": "yes",
+      "predicted": "yes",
+      "correct": true,
+      "section": 8,
+      "section_name": "Verbs (aktionsart, event structure, argument alternations)",
+      "phenomenon": "Temporal aspect",
+      "explanation": "The premise specifies a temporal interval (1988 to 1992) during which ITEL owned APCOM. Since 1990 falls within this interval, the hypothesis necessarily follows based on the semantics of temporal inclusion.",
+      "raw_response": "ANSWER: yes  \nPHENOMENON: Temporal aspect  \nEXPLANATION: The premise specifies a temporal interval (1988 to 1992) during which ITEL owned APCOM. Since 1990 falls within this interval, the hypothesis necessarily follows based on the semantics of temporal inclusion."
+    },
+    "6": {
+      "gold": "no",
+      "predicted": "no",
+      "correct": true,
+      "section": 1,
+      "section_name": "Quantifiers (generalized quantifiers, scope, monotonicity)",
+      "phenomenon": "Downward Monotonicity in Negative Quantifiers",
+      "explanation": "The premise \"No really great tenors are modest\" establishes a universal negative statement, meaning there does not exist any individual who is both a really great tenor and modest. The hypothesis directly contradicts this by asserting the existence of such individuals, making it necessarily false.",
+      "raw_response": "ANSWER: no  \nPHENOMENON: Downward Monotonicity in Negative Quantifiers  \nEXPLANATION: The premise \"No really great tenors are modest\" establishes a universal negative statement, meaning there does not exist any individual who is both a really great tenor and modest. The hypothesis directly contradicts this by asserting the existence of such individuals, making it necessarily false."
+    },
+    "130": {
+      "gold": "unknown",
+      "predicted": "unknown",
+      "correct": true,
+      "section": 3,
+      "section_name": "Anaphora (pronoun resolution, donkey sentences, accessibility)",
+      "phenomenon": "Distributive vs. Collective Interpretation",
+      "explanation": "The premises do not specify whether the hatred expressed in Premise 2 is distributed across all individuals (each person, including John, hated the meeting) or is a collective sentiment (the group as a whole disliked the meeting, but not necessarily every individual). Without explicit distributive information, the hypothesis cannot be determined.",
+      "raw_response": "ANSWER: unknown  \nPHENOMENON: Distributive vs. Collective Interpretation  \nEXPLANATION: The premises do not specify whether the hatred expressed in Premise 2 is distributed across all individuals (each person, including John, hated the meeting) or is a collective sentiment (the group as a whole disliked the meeting, but not necessarily every individual). Without explicit distributive information, the hypothesis cannot be determined."
+    },
+    "104": {
+      "gold": "unknown",
+      "predicted": "no",
+      "correct": false,
+      "section": 2,
+      "section_name": "Plurals (collective/distributive readings, plural quantification)",
+      "phenomenon": "Quantifier scope and entailment",
+      "explanation": "The premise \"All APCOM managers have company cars\" entails that each APCOM manager has at least one company car, but it does not specify the number of cars each manager has. The hypothesis \"Jones has more than one company car\" introduces additional information not entailed by the premises, making it necessarily false given the premises.",
+      "raw_response": "ANSWER: no  \nPHENOMENON: Quantifier scope and entailment  \nEXPLANATION: The premise \"All APCOM managers have company cars\" entails that each APCOM manager has at least one company car, but it does not specify the number of cars each manager has. The hypothesis \"Jones has more than one company car\" introduces additional information not entailed by the premises, making it necessarily false given the premises."
+    },
+    "255": {
+      "gold": "yes",
+      "predicted": "yes",
+      "correct": true,
+      "section": 7,
+      "section_name": "Temporal (tense, aspect, temporal adverbials)",
+      "phenomenon": "Temporal aspect",
+      "explanation": "The premises establish a continuous temporal interval from 1992 to 1996 during which ITEL has made a loss. Given this interval, the hypothesis that ITEL made a loss in 1993 necessarily follows because 1993 is within the specified timeframe.",
+      "raw_response": "ANSWER: yes  \nPHENOMENON: Temporal aspect  \nEXPLANATION: The premises establish a continuous temporal interval from 1992 to 1996 during which ITEL has made a loss. Given this interval, the hypothesis that ITEL made a loss in 1993 necessarily follows because 1993 is within the specified timeframe."
+    },
+    "336": {
+      "gold": "yes",
+      "predicted": "yes",
+      "correct": true,
+      "section": 9,
+      "section_name": "Attitudes (propositional attitudes, de re/de dicto, opacity)",
+      "phenomenon": "Presupposition satisfaction",
+      "explanation": "The verb \"managed to\" presupposes the truth of the event it describes—in this case, that ITEL won the contract in 1992. Since the premise explicitly states that ITEL \"managed to win,\" the presupposition is satisfied, and the hypothesis necessarily follows.",
+      "raw_response": "ANSWER: yes  \nPHENOMENON: Presupposition satisfaction  \nEXPLANATION: The verb \"managed to\" presupposes the truth of the event it describes—in this case, that ITEL won the contract in 1992. Since the premise explicitly states that ITEL \"managed to win,\" the presupposition is satisfied, and the hypothesis necessarily follows."
+    },
+    "12": {
+      "gold": "unknown",
+      "predicted": "yes",
+      "correct": false,
+      "section": 1,
+      "section_name": "Quantifiers (generalized quantifiers, scope, monotonicity)",
+      "phenomenon": "Quantifier semantics (existential import of \"few\")",
+      "explanation": "The quantifier \"few\" in formal semantics implies that there exists a small number of individuals satisfying the predicate. Therefore, \"Few great tenors are poor\" entails that there are at least some great tenors who are poor, making the hypothesis true.",
+      "raw_response": "ANSWER: yes  \nPHENOMENON: Quantifier semantics (existential import of \"few\")  \nEXPLANATION: The quantifier \"few\" in formal semantics implies that there exists a small number of individuals satisfying the predicate. Therefore, \"Few great tenors are poor\" entails that there are at least some great tenors who are poor, making the hypothesis true."
+    }
+  }
+}

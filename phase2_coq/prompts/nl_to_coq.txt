@@ -1,0 +1,18 @@
+You are an expert in Coq and formal semantics. Formalise the following NLI pair in Coq and prove the entailment relation.
+
+Premise: {premise}
+Hypothesis: {hypothesis}
+Gold label: {label}
+
+Use the following setup:
+  Parameter Entity : Type.
+  (* Add your parameters, definitions, and axioms *)
+
+  Theorem nli_result : (* your formalisation *).
+  Proof. (* your proof *) Qed.
+
+For entailment: prove that the premise implies the hypothesis.
+For contradiction: prove that the premise implies the negation of the hypothesis.
+For unknown: use Abort (the goal should not be provable).
+
+Output only the complete Coq file. No natural language commentary.

@@ -1,0 +1,18 @@
+You are an expert in Coq and formal semantics.
+
+An LLM produced the following explanation for an NLI pair:
+
+Premise: {premise}
+Hypothesis: {hypothesis}
+LLM's explanation: {explanation}
+
+Formalise the explanation as Coq axioms, then prove that the premise together with these axioms entails the hypothesis.
+
+Use the following setup:
+  Parameter Entity : Type.
+  (* Formalise the content of the explanation as axioms *)
+
+  Theorem nli_via_explanation : (* premise + explanation axioms -> hypothesis *).
+  Proof. (* your proof *) Qed.
+
+Output only the complete Coq file.

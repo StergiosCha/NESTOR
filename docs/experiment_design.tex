@@ -1,0 +1,92 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=2cm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[LGR,T1]{fontenc}
+\usepackage[greek,english]{babel}
+\usepackage{alphabeta}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{hyperref}
+\usepackage{tabularx}
+\usepackage{array}
+
+\definecolor{uocgreen}{RGB}{46,100,46}
+
+\titleformat{\section}{\normalsize\bfseries\color{uocgreen}}{\thesection.}{0.5em}{}
+\titlespacing{\section}{0pt}{6pt}{2pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+
+\pagestyle{empty}
+
+\begin{document}
+
+\begin{center}
+{\large\bfseries Gradient Acceptability Judgements: Native Speakers vs LLMs on Greek}\\[4pt]
+{\small\color{gray} Stergios Chatzikyriakidis --- University of Crete, 2026}\\[2pt]
+\textcolor{uocgreen}{\rule{\textwidth}{0.5pt}}
+\end{center}
+
+\section{Objective}
+
+Test whether LLMs capture the \textbf{gradient} acceptability patterns of native Greek speakers across four syntactic phenomena. We compare \textbf{distributions}, not binary accuracy: the question is not whether an LLM classifies a sentence as grammatical/ungrammatical, but whether its rating distribution over sentences correlates with the native distribution.
+
+\section{Phenomena and Stimuli}
+
+\begin{table}[h!]
+\centering
+\small
+\begin{tabularx}{\textwidth}{l c c c X}
+\toprule
+\textbf{Phenomenon} & \textbf{Status} & \textbf{Scale} & \textbf{Items} & \textbf{Conditions / Gradient dimension} \\
+\midrule
+Polydefinites & Existing & 1--10 & Exp\,1: $\sim$40 Ns\newline Exp\,2: $\sim$18 Ns & Determiner spreading; already collected with two native groups \\[6pt]
+CLLD & New & 1--10 & $\sim$20 target\newline + 10 filler & Information-structure felicity: topic-marked vs focus-marked vs neutral; embedded vs root; d-linked vs non-d-linked \\[6pt]
+Clitic doubling & New & 1--10 & $\sim$20 target\newline + 10 filler & Animacy gradient: [+human] $>$ [+animate, $-$human] $>$ [$-$animate, +concrete] $>$ [$-$animate, $-$concrete]; doubled vs non-doubled per level \\[6pt]
+Crossover & New & 1--10 & $\sim$20 target\newline + 10 filler & Strong crossover (hard) vs weak crossover (gradient) vs baseline; wh-movement vs topicalization; referential vs quantificational \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Total new items per participant: $\sim$60 targets + $\sim$30 fillers = $\sim$90 sentences ($\sim$15\,min session). All new phenomena use the \textbf{1--10 scale} to match the polydefinite data.
+
+\section{Participants}
+
+\textbf{Natives:} One new group ($N$=30--40) completes all three new phenomena (CLLD, clitics, crossover) in a single within-subjects session. Polydefinite data already collected from two separate groups ($N$=40, $N$=18). Cross-phenomenon comparison for polydefinites vs the others is between-groups. Within the new session, order of phenomena blocks is counterbalanced (Latin square across 6 orderings).
+
+\textbf{LLMs (5 models):} GPT-4o, Claude 3.7 Sonnet, Gemini 2.5 Flash, Llama-3 70B, Llama-3 8B. Each model rates all items from all four phenomena (within-subjects). Run at temperature 0.7, 10 repetitions per item to generate a rating distribution per sentence. Prompt mirrors the human task exactly: rate 1--10, no grammaticality label, no metalinguistic explanation.
+
+\section{LLM Prompt Design}
+
+System: \textit{``You are a native speaker of Greek. Rate the following sentence on a scale of 1 (completely unacceptable / would never be said) to 10 (perfectly natural). Respond with only a number.''} No chain-of-thought, no explanation, no label. One sentence per call. This avoids anchoring effects from batch presentation and matches the isolated-item design of the human task.
+
+\section{Analysis}
+
+\begin{table}[h!]
+\centering
+\small
+\begin{tabularx}{\textwidth}{l X l}
+\toprule
+\textbf{Metric} & \textbf{What it captures} & \textbf{Applied to} \\
+\midrule
+Spearman $\rho$ & Rank correlation between mean native rating and mean LLM rating per sentence & Per phenomenon $\times$ model \\
+Pearson $r$ & Linear correlation (if distributions are roughly normal) & Per phenomenon $\times$ model \\
+Wasserstein dist. & Distance between full rating distributions (native vs LLM) per sentence & Per sentence $\times$ model \\
+SD comparison & Do LLMs flatten gradience? Compare SD across gradient zone (4--7) vs extremes (1--3, 8--10) & Per phenomenon $\times$ model \\
+Mixed ANOVA & Rater type (native vs each LLM) $\times$ condition; interaction = where LLMs diverge & Per phenomenon \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Hypotheses}
+
+\textbf{H1 (Gradience flattening):} LLMs will show compressed variance in the mid-range (4--7), over-rating marginal sentences and under-rating mildly degraded ones, analogous to the FraCaS unknown-bias (over-commitment to definite answers). \textbf{H2 (Phenomenon asymmetry):} LLMs will perform better on phenomena with surface-level cues (clitic doubling: animacy features are lexically transparent) than on information-structure-dependent phenomena (CLLD) or binding-theoretic ones (crossover). \textbf{H3 (Scale effect):} Larger models will show higher Spearman $\rho$ with natives, but the gap will be smaller for the gradient zone than for the extremes (echoing the Equaliser Effect from NeSy results).
+
+\section{Timeline}
+
+\textbf{Weeks 1--2:} Stimulus construction and piloting (5 native speakers). \textbf{Week 3:} Main native data collection (online, Qualtrics/Google Forms). \textbf{Week 4:} LLM runs via OpenRouter (script from FraCaS pipeline, adapted). \textbf{Week 5:} Analysis and write-up.
+
+\end{document}

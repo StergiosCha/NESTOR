@@ -1,0 +1,307 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[LGR,T1]{fontenc}
+\usepackage[greek,english]{babel}
+\usepackage{alphabeta}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{hyperref}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{fancyvrb}
+\usepackage{tcolorbox}
+\tcbuselibrary{listings,skins}
+
+\definecolor{uocblue}{RGB}{0,70,140}
+\definecolor{codebg}{RGB}{245,245,245}
+\definecolor{codeframe}{RGB}{200,200,200}
+
+\titleformat{\section}{\large\bfseries\color{uocblue}}{\thesection.}{0.5em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection.}{0.5em}{}
+\titleformat{\subsubsection}{\small\bfseries\itshape}{\thesubsubsection.}{0.5em}{}
+\titlespacing{\section}{0pt}{12pt}{4pt}
+\titlespacing{\subsection}{0pt}{8pt}{3pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+
+\newtcblisting{codeblock}[1][]{
+  colback=codebg, colframe=codeframe, listing only,
+  fontupper=\small\ttfamily, left=6pt, right=6pt, top=4pt, bottom=4pt,
+  sharp corners, boxrule=0.5pt, #1
+}
+
+\begin{document}
+
+\begin{center}
+{\LARGE\bfseries\color{uocblue} Οδηγός Azure AI}\\[6pt]
+{\large Σεμινάριο Υπολογιστικής Γλωσσολογίας --- Πανεπιστήμιο Κρήτης, 2025--26}\\[4pt]
+\textcolor{uocblue}{\rule{\textwidth}{0.5pt}}
+\end{center}
+
+\vspace{4pt}
+
+\begin{tcolorbox}[colback=uocblue!5, colframe=uocblue, sharp corners, boxrule=0.5pt]
+\textbf{Σημαντικό:} Έχουμε συνδρομή Azure με πιστωτικές μονάδες μέσω του τμήματος. Όλα τα πειράματα τρέχουν \textbf{δωρεάν} για εσάς. Μη δημιουργείτε δικούς σας λογαριασμούς --- χρησιμοποιήστε τον λογαριασμό του σεμιναρίου.
+\end{tcolorbox}
+
+\section{Τι είναι το Azure AI Foundry}
+
+Το Azure AI Foundry είναι η πλατφόρμα της Microsoft για πρόσβαση σε μοντέλα AI. Αντί να πληρώνετε κάθε πάροχο ξεχωριστά (OpenAI, Anthropic, Meta κλπ), τα έχετε όλα σε ένα μέρος, με ένα κλειδί API, πληρωμένα από τη συνδρομή μας.
+
+Τα μοντέλα τρέχουν ως serverless endpoints --- δεν χρειάζεται να στήσετε σέρβερ. Πληρώνουμε μόνο ανά token (λέξη) που χρησιμοποιούμε.
+
+\section{Πρώτα βήματα}
+
+\subsection{Βήμα 1: Σύνδεση}
+
+\begin{enumerate}[nosep]
+\item Πηγαίνετε στο \url{https://ai.azure.com}
+\item Συνδεθείτε με τον λογαριασμό που σας δόθηκε (θα λάβετε πρόσκληση μέσω email)
+\item Θα δείτε το project \texttt{crete\_xamoulis}
+\item Κάντε κλικ πάνω του για να μπείτε στο workspace
+\end{enumerate}
+
+\subsection{Βήμα 2: Εξερεύνηση μοντέλων}
+
+Στο αριστερό μενού, κάντε κλικ στο \textbf{Model catalog}. Εδώ βλέπετε όλα τα διαθέσιμα μοντέλα. Μπορείτε να φιλτράρετε ανά πάροχο, δυνατότητα (Chat completion, Embeddings, κλπ) και μέγεθος.
+
+\subsection{Βήμα 3: Deploy μοντέλου}
+
+\begin{enumerate}[nosep]
+\item Στο Model catalog, βρείτε το μοντέλο που θέλετε (π.χ.\ GPT-4o)
+\item Κάντε κλικ πάνω του
+\item Πατήστε \textbf{Deploy} $\to$ \textbf{Serverless API}
+\item Δώστε ένα όνομα (π.χ.\ \texttt{gpt-4o}) και πατήστε Deploy
+\item Περιμένετε 30 δευτερόλεπτα
+\item Αντιγράψτε το \textbf{Endpoint URL} και το \textbf{API Key}
+\end{enumerate}
+
+\begin{tcolorbox}[colback=red!5, colframe=red!50!black, sharp corners, boxrule=0.5pt]
+\textbf{Προσοχή:} Μην κοινοποιείτε το API key σε κανέναν εκτός ομάδας. Μην το ανεβάζετε σε GitHub. Χρησιμοποιήστε μεταβλητές περιβάλλοντος.
+\end{tcolorbox}
+
+\section{Διαθέσιμα μοντέλα}
+
+Τα παρακάτω μοντέλα είναι διαθέσιμα μέσω serverless API:
+
+\begin{table}[h!]
+\centering\small
+\begin{tabularx}{\textwidth}{l l l X}
+\toprule
+\textbf{Πάροχος} & \textbf{Μοντέλο} & \textbf{Τύπος} & \textbf{Σημειώσεις} \\
+\midrule
+OpenAI & GPT-4o & Chat & Κορυφαίο εμπορικό, δυνατό στα αγγλικά \\
+OpenAI & GPT-4o-mini & Chat & Φθηνότερο, γρηγορότερο \\
+Anthropic & Claude Opus 4.6 & Chat & Το ισχυρότερο, ακριβό \\
+Anthropic & Claude Sonnet 4.6 & Chat & Καλή ισορροπία κόστους/ποιότητας \\
+Anthropic & Claude Haiku 4.5 & Chat & Γρήγορο, φθηνό \\
+Meta & Llama 3.3 70B & Chat & Ανοιχτών βαρών, μεγάλο \\
+Meta & Llama 3.1 8B & Chat & Ανοιχτών βαρών, μικρό \\
+Meta & Llama 3.1 405B & Chat & Ανοιχτών βαρών, τεράστιο \\
+DeepSeek & DeepSeek-R1 & Chat/Reasoning & Αλυσίδα σκέψης, πολύ σχετικό για NLI \\
+DeepSeek & DeepSeek-V3 & Chat & Γενικής χρήσης \\
+Mistral & Mistral Medium 3 & Chat & Ευρωπαϊκός πάροχος \\
+Mistral & Mistral Small & Chat & Φθηνό, γρήγορο \\
+Microsoft & Phi-4 & Chat & Μικρό αλλά ικανό \\
+Microsoft & Phi-4-reasoning & Chat/Reasoning & Εξειδικευμένο σε συλλογιστική \\
+Cohere & Command R+ & Chat/RAG & Δυνατό σε ανάκτηση \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Πώς καλώ ένα μοντέλο μέσω κώδικα}
+
+\subsection{Μοντέλα OpenAI (GPT-4o, GPT-4o-mini)}
+
+Τα μοντέλα OpenAI χρησιμοποιούν το Azure OpenAI SDK:
+
+\begin{codeblock}[title={\smallPython --- Azure OpenAI}]
+import json
+from urllib.request import Request, urlopen
+
+API_KEY = "your-api-key-here"  # ή os.environ["AZURE_API_KEY"]
+ENDPOINT = "https://crete-xamoulis-resource.cognitiveservices.azure.com/"
+DEPLOYMENT = "gpt-4o"  # το όνομα που δώσατε στο deploy
+API_VERSION = "2024-12-01-preview"
+
+url = f"{ENDPOINT}openai/deployments/{DEPLOYMENT}/chat/completions"
+url += f"?api-version={API_VERSION}"
+
+payload = json.dumps({
+    "messages": [
+        {"role": "system", "content": "You are a helpful assistant."},
+        {"role": "user", "content": "Hello!"}
+    ],
+    "max_tokens": 100,
+    "temperature": 0.0,
+}).encode("utf-8")
+
+headers = {
+    "api-key": API_KEY,
+    "Content-Type": "application/json",
+}
+
+req = Request(url, data=payload, headers=headers, method="POST")
+with urlopen(req, timeout=60) as resp:
+    data = json.loads(resp.read().decode("utf-8"))
+    print(data["choices"][0]["message"]["content"])
+\end{codeblock}
+
+\subsection{Μοντέλα εκτός OpenAI (Llama, DeepSeek, Claude, Mistral)}
+
+Τα υπόλοιπα μοντέλα χρησιμοποιούν το Azure AI inference endpoint:
+
+\begin{codeblock}[title={\smallPython --- Azure AI Inference}]
+import json
+from urllib.request import Request, urlopen
+
+API_KEY = "your-api-key-here"
+ENDPOINT = "https://crete-xamoulis-resource.services.ai.azure.com/"
+MODEL = "DeepSeek-R1"  # ακριβώς το deployment name
+
+url = f"{ENDPOINT}models/chat/completions"
+
+payload = json.dumps({
+    "model": MODEL,
+    "messages": [
+        {"role": "system", "content": "You are a helpful assistant."},
+        {"role": "user", "content": "Hello!"}
+    ],
+    "max_tokens": 100,
+    "temperature": 0.0,
+}).encode("utf-8")
+
+headers = {
+    "Authorization": f"Bearer {API_KEY}",
+    "Content-Type": "application/json",
+}
+
+req = Request(url, data=payload, headers=headers, method="POST")
+with urlopen(req, timeout=60) as resp:
+    data = json.loads(resp.read().decode("utf-8"))
+    print(data["choices"][0]["message"]["content"])
+\end{codeblock}
+
+\begin{tcolorbox}[colback=codebg, colframe=codeframe, sharp corners, boxrule=0.5pt]
+\textbf{Κλειδί:} Η μόνη διαφορά μεταξύ των δύο τρόπων είναι:
+\begin{itemize}[nosep,leftmargin=1.5em]
+\item \textbf{URL:} \texttt{cognitiveservices.azure.com} (OpenAI) vs \texttt{services.ai.azure.com} (τα υπόλοιπα)
+\item \textbf{Αυθεντικοποίηση:} \texttt{api-key} header (OpenAI) vs \texttt{Authorization: Bearer} (τα υπόλοιπα)
+\item \textbf{Μοντέλο:} στο URL ως deployment (OpenAI) vs στο JSON body (τα υπόλοιπα)
+\end{itemize}
+Η μορφή messages είναι ίδια παντού.
+\end{tcolorbox}
+
+\section{Πρακτικές συμβουλές}
+
+\subsection{Μεταβλητές περιβάλλοντος}
+
+Μην βάζετε ποτέ κλειδιά API μέσα στον κώδικα. Χρησιμοποιήστε μεταβλητές περιβάλλοντος:
+
+\begin{codeblock}[title={\smallTerminal}]
+export AZURE_API_KEY="your-key-here"
+\end{codeblock}
+
+Και στον κώδικα:
+
+\begin{codeblock}[title={\smallPython}]
+import os
+API_KEY = os.environ["AZURE_API_KEY"]
+\end{codeblock}
+
+\subsection{Temperature}
+
+\begin{itemize}[nosep,leftmargin=1.5em]
+\item \texttt{temperature=0.0}: Ντετερμινιστική απάντηση (ίδια κάθε φορά). Χρησιμοποιήστε για αξιολόγηση.
+\item \texttt{temperature=0.7}: Τυχαιότητα. Χρησιμοποιήστε για πειράματα με πολλαπλές εκτελέσεις.
+\item \texttt{temperature=1.0}: Μέγιστη τυχαιότητα. Σπάνια χρήσιμο.
+\end{itemize}
+
+\subsection{Χειρισμός σφαλμάτων}
+
+Τα API μπορεί να αποτύχουν (δίκτυο, rate limit, content filter). Πάντα χρησιμοποιήστε retry logic:
+
+\begin{codeblock}[title={\smallPython --- Retry}]
+import time
+
+def call_with_retry(req, max_retries=3):
+    for attempt in range(max_retries):
+        try:
+            with urlopen(req, timeout=120) as resp:
+                return json.loads(resp.read().decode("utf-8"))
+        except Exception as e:
+            if attempt < max_retries - 1:
+                wait = 2 ** (attempt + 1)
+                print(f"  Retry {attempt+1} in {wait}s: {e}")
+                time.sleep(wait)
+            else:
+                raise
+\end{codeblock}
+
+\subsection{Κόστος}
+
+Πληρώνουμε ανά token. Ένα token $\approx$ 0.75 αγγλικές λέξεις ή $\approx$ 0.5 ελληνικές λέξεις (τα ελληνικά κοστίζουν περισσότερα tokens). Ενδεικτικές τιμές:
+
+\begin{table}[h!]
+\centering\small
+\begin{tabular}{l r r}
+\toprule
+\textbf{Μοντέλο} & \textbf{Input (\$/1M tokens)} & \textbf{Output (\$/1M tokens)} \\
+\midrule
+GPT-4o & \$2.50 & \$10.00 \\
+GPT-4o-mini & \$0.15 & \$0.60 \\
+Llama 3.3 70B & \$0.50 & \$0.80 \\
+Llama 3.1 8B & \$0.05 & \$0.08 \\
+DeepSeek-R1 & \$0.55 & \$2.19 \\
+Claude Sonnet 4.6 & \$3.00 & \$15.00 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{tcolorbox}[colback=uocblue!5, colframe=uocblue, sharp corners, boxrule=0.5pt]
+\textbf{Τα credits φτάνουν:} Ακόμα κι αν τρέξετε χιλιάδες ζεύγη σε πολλά μοντέλα, το κόστος είναι μερικά δολάρια. Μη στρεσάρεστε --- πειραματιστείτε ελεύθερα.
+\end{tcolorbox}
+
+\section{Εργασία: Πρώτη επαφή}
+
+\begin{enumerate}[leftmargin=1.5em]
+\item Συνδεθείτε στο \url{https://ai.azure.com} και μπείτε στο project \texttt{crete\_xamoulis}
+\item Εξερευνήστε τον Model catalog
+\item Κάντε deploy ένα μοντέλο (π.χ.\ GPT-4o ή Llama 3.3 70B)
+\item Γράψτε ένα μικρό script σε Python που στέλνει ένα prompt και εκτυπώνει την απάντηση
+\item Δοκιμάστε με ένα ελληνικό prompt --- ελέγξτε αν το μοντέλο απαντά σωστά στα ελληνικά
+\item Πειραματιστείτε με \texttt{temperature}: στείλτε το ίδιο prompt 5 φορές με \texttt{temperature=0.0} και 5 φορές με \texttt{temperature=0.7}. Τι παρατηρείτε;
+\end{enumerate}
+
+\section{Αντιμετώπιση προβλημάτων}
+
+\begin{table}[h!]
+\centering\small
+\begin{tabularx}{\textwidth}{l X}
+\toprule
+\textbf{Πρόβλημα} & \textbf{Λύση} \\
+\midrule
+401 Unauthorized & Λάθος κλειδί API. Ελέγξτε ότι αντιγράψατε σωστά \\
+404 Not Found & Λάθος deployment name ή endpoint URL. Ελέγξτε στο Models + endpoints \\
+429 Too Many Requests & Υπερβήκατε το rate limit. Προσθέστε \texttt{time.sleep(1)} μεταξύ κλήσεων \\
+400 Bad Request & Συνήθως content filter. Το μοντέλο αρνείται την είσοδο. Αλλάξτε διατύπωση \\
+Timeout & Αυξήστε το timeout ή δοκιμάστε ξανά \\
+Μοντέλο μη διαθέσιμο & Ελέγξτε ότι η περιοχή (region) υποστηρίζει το μοντέλο. Προτιμήστε Sweden Central \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Χρήσιμοι σύνδεσμοι}
+
+\begin{itemize}[nosep,leftmargin=1.5em]
+\item Azure AI Foundry: \url{https://ai.azure.com}
+\item Model catalog: \url{https://ai.azure.com/catalog}
+\item Τεκμηρίωση Azure OpenAI: \url{https://learn.microsoft.com/en-us/azure/ai-services/openai/}
+\item Τεκμηρίωση Azure AI inference: \url{https://learn.microsoft.com/en-us/azure/ai-studio/}
+\end{itemize}
+
+\end{document}

@@ -1,0 +1,12 @@
+Your previous Coq formalisation produced the following error when compiled with coqc:
+
+{error_message}
+
+Original premise: {premise}
+Original hypothesis: {hypothesis}
+Gold label: {label}
+
+Your previous Coq code:
+{previous_coq}
+
+Fix the Coq code so it compiles successfully. Output only the complete corrected Coq file.

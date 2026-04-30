@@ -1,0 +1,292 @@
+\documentclass[aspectratio=169,10pt]{beamer}
+\usepackage[LGR,T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{alphabeta}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usetheme{Madrid}
+\usecolortheme{whale}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}[frame number]
+\definecolor{uocgreen}{RGB}{46,100,46}
+\setbeamercolor{structure}{fg=uocgreen}
+\setbeamercolor{title}{fg=white,bg=uocgreen}
+\setbeamercolor{frametitle}{fg=white,bg=uocgreen}
+\setbeamercolor{block title}{bg=uocgreen,fg=white}
+\setbeamercolor{block body}{bg=green!10!white}
+
+\title{NESTOR: Neural-Symbolic Testing \& Ontological Reasoning}
+\subtitle{NLI Evaluation \& Formal Verification (Athens Project)}
+\author{Στέργιος Χατζηκυριακίδης}
+\institute{Πανεπιστήμιο Κρήτης}
+\date{}
+
+\begin{document}
+
+\begin{frame}
+	\titlepage
+\end{frame}
+
+% ====================================================
+\begin{frame}{Κεντρικό Ερώτημα}
+	\textbf{Όταν ένα LLM απαντά σωστά σε NLI, το κάνει για τον σωστό λόγο;}
+
+	\vspace{0.3cm}
+	Δεν αρκεί το accuracy. Θέλουμε:
+	\begin{enumerate}
+		\item Σωστή ετικέτα (Entailment / Contradiction / Neutral)
+		\item Σωστή εξήγηση --- ποιο γλωσσικό φαινόμενο οδηγεί στη συνεπαγωγή;
+		\item Τυπική επαλήθευση --- μπορούμε να αποδείξουμε ότι η εξήγηση είναι σωστή;
+	\end{enumerate}
+
+	\vspace{0.3cm}
+	\begin{block}{Τρεις φάσεις}
+		\begin{itemize}
+			\item \textbf{Φάση 1:} NLI evaluation --- ετικέτες + εξηγήσεις, zero-shot/few-shot/RAG
+			\item \textbf{Φάση 2:} Formal verification --- τυποποίηση σε Coq, αυτόματη απόδειξη
+			\item \textbf{Φάση 3:} Verification loop --- Coq error feedback $\to$ LLM retry
+		\end{itemize}
+	\end{block}
+
+	\vspace{0.2cm}
+	\textbf{Σχέση με Κρήτη:} Εκεί σύνταξη (acceptability judgments, LLMs vs ομιλητές). Εδώ \textbf{σημασιολογία} (NLI, explanations, τυπική επαλήθευση). Κοινή υποδομή Azure, κοινά μοντέλα.
+\end{frame}
+
+% ====================================================
+\begin{frame}{Δεδομένα}
+	Τρία datasets, δύο γλώσσες, αυξανόμενη πολυπλοκότητα:
+
+	\vspace{0.3cm}
+	\begin{center}
+		\small
+		\begin{tabular}{l c c l l}
+			\toprule
+			\textbf{Dataset} & \textbf{Γλώσσα} & \textbf{Ζεύγη} & \textbf{Ταξινομία φαινομένων} & \textbf{Ιδιαιτερότητα} \\
+			\midrule
+			FraCaS & EN & 346 & 9 sections (quantifiers, & Κλασικό, \\
+			& & & plurals, anaphora, \ldots) & well-studied \\[4pt]
+			Greek FraCaS & EL & 774 & Ίδιες 9 sections, & Cross-lingual \\
+			& & & extended items & σύγκριση \\[4pt]
+			OYXOY-NLI & EL & 1.762 & 4-level hierarchy: Logic, & Multi-label \\
+			& & & Lex.\ Ent., PAS, Common S. & (110 ζεύγη) \\
+			\bottomrule
+		\end{tabular}
+	\end{center}
+
+	\vspace{0.3cm}
+	\textbf{Cross-lingual:} Ίδια FraCaS items σε EN και EL --- χειροτερεύει η απόδοση στα ελληνικά; Σε ποια φαινόμενα;
+
+	\vspace{0.2cm}
+	\textbf{Multi-label:} Όλα τα 1.762 OYXOY ζεύγη παίρνουν multi-label prompt. Test ambiguity detection (110 multi-label) \textbf{και} false ambiguity (1.652 single-label).
+\end{frame}
+
+% ====================================================
+\begin{frame}{Φάση 1: NLI Evaluation \& Explanation Quality}
+	Κάθε μοντέλο δίνει ετικέτα \textbf{και} εξήγηση (open-ended, χωρίς taxonomy guidance):
+
+	\vspace{0.3cm}
+	\begin{center}
+		\footnotesize
+		\begin{tabular}{l l l}
+			\toprule
+			\textbf{Condition} & \textbf{Prompt} & \textbf{Ερώτημα} \\
+			\midrule
+			Zero-shot & Label + explain & Baseline: τι κάνει μόνο του; \\
+			Few-shot (fixed) & 3 παραδείγματα & Βοηθούν τα examples; \\
+			Few-shot (RAG) & RAG-selected examples & Βοηθούν τα \textit{σωστά} examples; \\
+			Multi-label & Δώσε 1+ labels + explain each & Βλέπει ambiguity; \\
+			\bottomrule
+		\end{tabular}
+	\end{center}
+
+	\vspace{0.3cm}
+	\textbf{Αξιολόγηση εξηγήσεων} (3 κριτήρια, max 5/item):
+	\begin{itemize}
+		\item \textbf{Phenomenon ID} (0--2): Αναγνώρισε το σωστό φαινόμενο;
+		\item \textbf{Soundness} (0--2): Είναι η εξήγηση λογικά ορθή;
+		\item \textbf{Label-Explanation consistency} (0--1): Συμφωνεί η εξήγηση με την ετικέτα;
+	\end{itemize}
+
+	\vspace{0.2cm}
+	\textbf{Annotation:} LLM-as-judge (ισχυρό μοντέλο), validated σε 10\% subset vs human annotators ($\kappa \geq 0.7$).
+\end{frame}
+
+% ====================================================
+\begin{frame}{Φάση 1: Ερωτήματα}
+	\begin{block}{5 Υποθέσεις}
+		\begin{enumerate}
+			\item \textbf{Accuracy $\neq$ understanding:} Μοντέλα με $>$80\% accuracy θα έχουν $<$60\% explanation quality (Phenomenon ID $\geq$ 1)
+			\item \textbf{Phenomenon asymmetry:} Quantifiers, monotonicity εύκολα. Implicature, common sense δύσκολα
+			\item \textbf{Greek degradation:} Χαμηλότερη απόδοση στα ελληνικά, ιδιαίτερα σε morphology-dependent phenomena
+			\item \textbf{Reasoning advantage:} DeepSeek-R1, Phi-4-reasoning: καλύτερες εξηγήσεις, όχι απαραίτητα καλύτερο accuracy
+			\item \textbf{False ambiguity:} Στα 1.652 single-label OYXOY ζεύγη, $>$15\% false multi-label rate
+		\end{enumerate}
+	\end{block}
+
+	\vspace{0.3cm}
+	\textbf{Ερώτημα RAG:} Πώς επιλέγουμε few-shot examples; Σημασιολογική ομοιότητα (embedding), ίδια κατηγορία φαινομένου, ή τυχαία; Αυτό είναι \textbf{ερευνητική εργασία φοιτητών}.
+\end{frame}
+
+% ====================================================
+\begin{frame}{Φάση 2: Τυπική Επαλήθευση --- FOL πρώτα, μετά Coq}
+	Δύο επίπεδα τυποποίησης, αυξανόμενη εκφραστικότητα:
+
+	\vspace{0.2cm}
+	\begin{center}
+		\footnotesize
+		\begin{tabular}{l l l l}
+			\toprule
+			\textbf{Στάδιο} & \textbf{Pipeline} & \textbf{Prover} & \textbf{Ερώτημα} \\
+			\midrule
+			2a & NL $\to$ LLM $\to$ FOL & Prover9 / MACE4 & Αρκεί η FOL; \\
+			2a+ & $+$ lexical axioms & Prover9 / MACE4 & Φταίει η γνώση ή η φόρμουλα; \\
+			2b & NL $\to$ LLM $\to$ Coq & Coq type-check & Χρειαζόμαστε richer types; \\
+			\bottomrule
+		\end{tabular}
+	\end{center}
+
+	\vspace{0.2cm}
+	\textbf{FOL + Prover9 (2a):} Fully automatic --- ο LLM μεταφράζει σε FOL, ο Prover9 αποδεικνύει. Ref: LINC (2023), LogicPO (2025).
+
+	\vspace{0.2cm}
+	\textbf{Coq (2b) --- παράλληλα, στα ίδια items:}
+	\begin{itemize}
+		\item Dependent types, higher-order logic, Curry-Howard
+		\item Η απόδειξη \textit{είναι} η εξήγηση
+		\item Πλεονέκτημα σε: adjectives, intensionality, presupposition
+	\end{itemize}
+
+	\vspace{0.2cm}
+	\textbf{Σύγκριση:} Τρέχουμε \textbf{και τα δύο} στα ίδια items $\to$ $2 \times 2$ matrix (FOL ok/fail $\times$ Coq ok/fail) ανά φαινόμενο. Πού συμφωνούν; Πού υπερτερεί το Coq; Πού υπερτερεί η FOL;
+
+	\vspace{0.2cm}
+	\textbf{Valentino path:} Τυποποίηση της εξήγησης $E$ (όχι του P,H). Check $P \cup E \vdash H$.
+\end{frame}
+
+% ====================================================
+\begin{frame}{Φάση 3: Verification Loop}
+	Όταν η τυποποίηση αποτυγχάνει (FOL ή Coq), δίνουμε το error πίσω στο LLM:
+
+	\vspace{0.3cm}
+	\begin{center}
+		\footnotesize
+		\begin{tabular}{l l l}
+			\toprule
+			\textbf{Attempt} & \textbf{FOL path} & \textbf{Coq path} \\
+			\midrule
+			1 & LLM $\to$ FOL $\to$ Prover9 & LLM $\to$ Coq $\to$ coqc \\
+			2 & Parse error / wrong result $\to$ LLM & Coq error $\to$ LLM \\
+			3 & Τελευταία προσπάθεια & Τελευταία προσπάθεια \\
+			Fail & Non-provable in FOL & Non-provable in Coq \\
+			\bottomrule
+		\end{tabular}
+	\end{center}
+
+	\vspace{0.3cm}
+	\begin{block}{Τι μετράμε}
+		\begin{itemize}
+			\item \textbf{First-pass success:} πόσα αποδεικνύονται στην πρώτη προσπάθεια;
+			\item \textbf{Loop gain:} πόσα σώζονται μετά το feedback ($k=3$);
+			\item \textbf{FOL loop vs Coq loop:} πιο αποτελεσματικό σε ποιο formalism;
+			\item \textbf{Ανά φαινόμενο:} ποια converge εύκολα, ποια αδύνατα;
+			\item \textbf{Ανά μοντέλο:} ποιο κάνει καλύτερη FOL; Καλύτερο Coq;
+		\end{itemize}
+	\end{block}
+
+	\vspace{0.2cm}
+	\textbf{Control:} 3 ανεξάρτητες προσπάθειες \textit{χωρίς} feedback (retry baseline). Valentino et al.: loop $\to$ +29--51\%.
+\end{frame}
+
+% ====================================================
+\begin{frame}{Μοντέλα \& Υποδομή}
+	Τα πειράματα τρέχουν στο \textbf{Azure AI Foundry} (κοινό με Κρήτη):
+
+	\vspace{0.3cm}
+	\begin{center}
+		\small
+		\begin{tabular}{l l l}
+			\toprule
+			\textbf{Μοντέλο} & \textbf{Τύπος} & \textbf{Ρόλος} \\
+			\midrule
+			GPT-4o & Εμπορικό & Baseline, ισχυρό \\
+			Claude Sonnet 4.6 & Εμπορικό & Coq generation (ξέρει Coq) \\
+			DeepSeek-R1 & Reasoning & Chain-of-thought explanations \\
+			Llama 3.3 70B & Open-weights & Μεγάλο open model \\
+			Llama 3.1 8B & Open-weights & Μικρό, πόσο χειρότερο; \\
+			Phi-4-reasoning & Reasoning (μικρό) & Reasoning σε μικρό μέγεθος \\
+			\bottomrule
+		\end{tabular}
+	\end{center}
+
+	\vspace{0.3cm}
+	\textbf{Resource:} Azure project \texttt{kafouroutsos-8905}, Sweden Central region.
+
+	\vspace{0.2cm}
+	\textbf{Κώδικας:} \texttt{fracas\_eval\_azure.py} (ήδη τρέχει, preliminary: GPT-4o 70\% στο FraCaS)
+\end{frame}
+
+% ====================================================
+\begin{frame}{Χρονοδιάγραμμα \& Ομάδες}
+	\begin{center}
+		\small
+		\begin{tabular}{lll}
+			\toprule
+			\textbf{Εβδομάδες} & \textbf{Φάση} & \textbf{Τι κάνουμε} \\
+			\midrule
+			1--3 & Phase 1a & Zero-shot NLI, όλα τα μοντέλα, 3 datasets \\
+			4--5 & Phase 1b & Few-shot + RAG, explanation evaluation \\
+			6--8 & Phase 2 & Coq formalisation (FraCaS S1 $\to$ S5) \\
+			9--11 & Phase 3 & Verification loop, full OYXOY subset \\
+			12--13 & Analysis + Presentations & Paper drafting \\
+			\bottomrule
+		\end{tabular}
+	\end{center}
+	\vspace{0.2cm}
+	\begin{block}{Κατανομή ($\sim$20 άτομα)}
+		\begin{itemize}
+			\item \textbf{Infrastructure (2--3):} Azure pipeline, API calls, result parsing
+			\item \textbf{Phase 1 --- NLI eval (6--8):} Baseline runs, few-shot/RAG design, explanation scoring
+			\item \textbf{Phase 2 --- Coq (4--5):} Coq formalisation, proof engineering, loop design
+			\item \textbf{Phase 1+2 --- Cross-lingual (3--4):} EN vs EL comparison, taxonomy mapping
+		\end{itemize}
+	\end{block}
+\end{frame}
+
+% ====================================================
+\begin{frame}{Γιατί Αξίζει}
+	\textbf{Novelty:}
+	\begin{itemize}
+		\item Πρώτη αξιολόγηση \textbf{explanation quality} σε NLI με τυπική ταξινόμηση (OYXOY hierarchy)
+		\item Πρώτη cross-lingual NLI evaluation EN$\leftrightarrow$EL στο ίδιο dataset (FraCaS)
+		\item Πρώτη LLM $\to$ Coq pipeline για NLI verification
+		\item Δύο verification paths: C3/C4 (proof = explanation) vs Valentino (verify explanation)
+		\item Multi-label NLI evaluation: ambiguity detection + false ambiguity testing
+	\end{itemize}
+
+	\vspace{0.3cm}
+	\begin{block}{Σχέση Αθήνα--Κρήτη}
+		\begin{center}
+		\small
+		\begin{tabular}{lll}
+			\toprule
+			& \textbf{Αθήνα (εδώ)} & \textbf{Κρήτη} \\
+			\midrule
+			Επίπεδο & Σημασιολογία & Σύνταξη \\
+			Ερώτημα & Explanation quality + verification & LLM vs native speaker judgments \\
+			Μέθοδος & NLI + taxonomy + Coq & Gradient Likert, Spearman \\
+			Δεδομένα & FraCaS, OYXOY-NLI & Minimal pairs, GRDD+ \\
+			Formal & FOL, Coq verification & --- \\
+			\bottomrule
+		\end{tabular}
+		\end{center}
+	\end{block}
+
+	\vspace{0.2cm}
+	\textbf{Target:} ACL / EMNLP 2027
+\end{frame}
+
+\end{document}

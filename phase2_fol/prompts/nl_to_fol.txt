@@ -1,0 +1,19 @@
+Translate the following premise and hypothesis into first-order logic formulas.
+
+Premise: {premise}
+Hypothesis: {hypothesis}
+
+Use Prover9 syntax:
+- Quantifiers: all x, exists x
+- Connectives: & (and), | (or), - (not), -> (implies), <-> (iff)
+- Predicates: lowercase, e.g. student(x), runs(x)
+- Constants: lowercase, e.g. john, mary
+- Variables: x, y, z
+
+Output format (exactly):
+Premises:
+<one formula per line>
+Hypothesis:
+<single formula>
+
+No commentary, no explanation, no natural language.

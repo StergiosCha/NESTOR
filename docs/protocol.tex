@@ -1,0 +1,539 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=2cm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[LGR,T1]{fontenc}
+\usepackage[greek,english]{babel}
+\usepackage{alphabeta}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{hyperref}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{makecell}
+
+\definecolor{uocgreen}{RGB}{46,100,46}
+
+\titleformat{\section}{\normalsize\bfseries\color{uocgreen}}{\thesection.}{0.5em}{}
+\titleformat{\subsection}{\small\bfseries}{\thesubsection.}{0.5em}{}
+\titlespacing{\section}{0pt}{8pt}{3pt}
+\titlespacing{\subsection}{0pt}{4pt}{2pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+
+\pagestyle{empty}
+
+\begin{document}
+
+\begin{center}
+{\large\bfseries NESTOR: Neural-Symbolic Testing \& Ontological Reasoning\\Full Experimental Protocol --- NLI Evaluation, Explanation Quality, and Formal Verification}\\[4pt]
+{\small\color{gray} Stergios Chatzikyriakidis --- University of Crete / Athens Project, 2026}\\[2pt]
+\textcolor{uocgreen}{\rule{\textwidth}{0.5pt}}
+\end{center}
+
+\section{Overview}
+
+This document is the complete experimental protocol for the NESTOR project (Athens). Three phases:
+
+\begin{enumerate}[nosep,leftmargin=1.5em]
+\item \textbf{NLI Evaluation} (Sections 2--9): Run LLMs on NLI datasets, evaluate label accuracy and explanation quality.
+\item \textbf{Formal Verification} (Section 10): Two parallel paths --- FOL+Prover9/MACE4 and Coq. Formalise NLI pairs and explanations, attempt automated/machine-checked proofs.
+\item \textbf{Verification Loop} (Section 11): Feed prover/compiler errors back to the LLM ($k{=}3$) and measure iterative improvement.
+\end{enumerate}
+
+\section{Objective (Phase 1)}
+
+Test whether LLMs can (a) correctly label NLI pairs and (b) produce explanations that identify the relevant linguistic phenomenon, across two languages (English, Greek) and three datasets. The central question: \emph{when a model gets the right label, does it get it for the right reason?}
+
+\section{Datasets}
+
+\begin{table}[h!]
+\centering\small
+\begin{tabularx}{\textwidth}{l c c c X}
+\toprule
+\textbf{Dataset} & \textbf{Language} & \textbf{Pairs} & \textbf{Labels} & \textbf{Phenomenon taxonomy} \\
+\midrule
+FraCaS & English & 346 & 3 (Y/N/U) & 9 sections: Quantifiers, Plurals, Anaphora, Ellipsis, Adjectives, Comparatives, Temporal, Verbs, Attitudes \\[4pt]
+Greek FraCaS & Greek & 774 & 3 (Y/N/U) & Same 9 sections, extended with additional items \\[4pt]
+OYXOY-NLI & Greek & 1,762 & 3 (E/N/C), multi-label & 4-level hierarchy: Logic, Lexical Entailment, Predicate-Argument Structure, Common Sense \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{OYXOY multi-label pairs}
+
+110 OYXOY pairs carry more than one valid label (e.g., both Entailment and Neutral). These pairs are ambiguous by design---the multiple labels reflect genuine interpretive variability, not annotator error. Crucially, \textbf{all} 1,762 OYXOY pairs receive the same multi-label prompt (Section~\ref{sec:multilabel}), so we can test both directions: whether models detect ambiguity when it exists (the 110 multi-label pairs) and whether they hallucinate ambiguity when it does not (the 1,652 single-label pairs).
+
+\section{Taxonomy Mapping}
+
+To report results uniformly we map FraCaS sections and OYXOY tags to a shared set of \textbf{macro-categories}. Each NLI pair retains its original fine-grained tag; the macro-category is used only for cross-dataset comparison.
+
+\begin{table}[h!]
+\centering\small
+\begin{tabularx}{\textwidth}{l l l}
+\toprule
+\textbf{Macro-category} & \textbf{FraCaS section(s)} & \textbf{OYXOY tags} \\
+\midrule
+Quantification & S1 Quantifiers & Logic $\to$ Quantification (Exist./Univ./Non-Std.) \\
+Logical operators & --- & Logic $\to$ Disjunction, Conjunction \\
+Negation & (within S1) & Logic $\to$ Negation (Single/Multiple/Neg.\ Concord) \\
+Comparatives & S6 Comparatives & Logic $\to$ Comparatives \\
+Temporal & S7 Temporal & Logic $\to$ Temporal \\
+Conditionals & --- & Logic $\to$ Conditionals \\
+Plurals & S2 Plurals & --- \\
+Anaphora & S3 Anaphora & PAS $\to$ Anaphora/Coreference \\
+Ellipsis & S4 Ellipsis & PAS $\to$ Ellipsis \\
+Arg.\ structure & S8 Verbs & PAS $\to$ Alternations, Core Arguments \\
+Ambiguity & --- & PAS $\to$ Ambiguity \\
+Adjectives & S5 Adjectives & Lex.\ Ent.\ $\to$ Intersectivity, Restrictivity \\
+Lexical relations & --- & Lex.\ Ent.\ $\to$ Synonymy, Hyponymy, Hypernymy, Antonymy, Meronymy \\
+Factivity & --- & Lex.\ Ent.\ $\to$ Factivity (Factive/Non-Factive) \\
+Redundancy & --- & Lex.\ Ent.\ $\to$ Redundancy \\
+Attitudes & S9 Attitudes & (partly Factivity, partly Common Sense) \\
+Common sense & --- & Common Sense / Knowledge \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Categories with ``---'' have no counterpart in the other dataset. This is expected and reported transparently: FraCaS lacks lexical relation tests; OYXOY lacks a dedicated plurals section.
+
+\section{Models}
+
+5 models via OpenRouter, identical to the acceptability experiment: GPT-4o, Claude 3.7 Sonnet, Gemini 2.5 Flash, Llama-3 70B, Llama-3 8B. All at temperature 0 for label accuracy, temperature 0 for explanations (deterministic reasoning).
+
+\section{Prompting}
+
+\subsection{Phase 1: Label-only (baseline)}
+
+Already completed for English FraCaS (C1). Same prompt for Greek FraCaS and OYXOY-NLI. Three-way label: Yes/No/Unknown (FraCaS) or Entailment/Contradiction/Neutral (OYXOY). No explanation requested.
+
+\subsection{Phase 2: Label + open-ended explanation}
+
+Single prompt, no guidance on taxonomy. The model must explain in its own terms.
+
+\medskip
+\textbf{English prompt (FraCaS):}
+
+\begin{quote}\small\ttfamily
+Given the premise(s) and hypothesis below, determine whether the hypothesis follows from the premise(s).\\[2pt]
+Premise: \{premise\}\\
+Hypothesis: \{hypothesis\}\\[2pt]
+Answer: Yes, No, or Unknown.\\
+Explanation: In 1--3 sentences, explain \textit{why} this answer holds. Identify the specific linguistic or logical mechanism involved.
+\end{quote}
+
+\textbf{Greek prompt (Greek FraCaS only):}
+
+\begin{quote}\small\ttfamily
+Δεδομένης/ων της/των προκείμενης/ων και της υπόθεσης παρακάτω, καθόρισε αν η υπόθεση ακολουθεί από την/τις προκείμενη/ες.\\[2pt]
+Προκείμενη: \{premise\}\\
+Υπόθεση: \{hypothesis\}\\[2pt]
+Απάντηση: Ναι, Όχι, ή Δεν γνωρίζουμε.\\
+Εξήγηση: Σε 1--3 προτάσεις, εξήγησε \textit{γιατί} ισχύει αυτή η απάντηση. Προσδιόρισε τον συγκεκριμένο γλωσσικό ή λογικό μηχανισμό που εμπλέκεται.
+\end{quote}
+
+\textbf{Greek prompt (OYXOY-NLI --- multi-label):}
+
+\textbf{ΣΗΜΑΝΤΙΚΟ:} Το OYXOY-NLI έχει ζεύγη με πάνω από μία σωστή ετικέτα (110 από τα 1.762). Όλα τα ζεύγη OYXOY παίρνουν τον παρακάτω multi-label prompt --- ποτέ τον single-label prompt. Αυτό μας επιτρέπει να τεστάρουμε και αναγνώριση αμφισημίας (στα 110) και ψευδή αμφισημία (στα 1.652 single-label).
+
+\begin{quote}\small\ttfamily
+Δεδομένης/ων της/των προκείμενης/ων και της υπόθεσης παρακάτω, είναι δυνατόν να υπάρχουν περισσότερες από μία σωστές απαντήσεις.\\[2pt]
+Προκείμενη: \{premise\}\\
+Υπόθεση: \{hypothesis\}\\[2pt]
+Δώσε \textbf{όλες} τις πιθανές απαντήσεις (Συνεπαγωγή, Αντίφαση, Ουδέτερο) και για κάθε μία εξήγησε σε 1--3 προτάσεις γιατί ισχύει ή δεν ισχύει. Προσδιόρισε τον γλωσσικό ή λογικό μηχανισμό.
+\end{quote}
+
+\subsection{Phase 2b: Cross-lingual condition (Greek FraCaS only)}
+
+Each model is tested in two modes on Greek FraCaS: (a) prompt in Greek (as above), (b) prompt in English about Greek sentences. This tests whether reasoning quality is language-dependent or only content-dependent.
+
+\subsection{Phase 3: Few-shot prompting}
+
+Instead of zero-shot, the model receives $k$ worked examples (premise--hypothesis--label--explanation) before the test item. This raises open research questions that students should investigate:
+
+\begin{enumerate}[nosep,leftmargin=1.5em]
+\item \textbf{Example selection:} Which $k$ examples? Random selection risks phenomenon mismatch (e.g., showing quantifier examples for a factivity item). Fixed examples risk overfitting the model's explanations to one style. How does selection strategy affect both label accuracy and explanation quality?
+\item \textbf{$k$ sensitivity:} How does performance change as $k$ varies (e.g., 1, 3, 5, 10)? Is there a saturation point? Does explanation quality degrade at high $k$ due to context length pressure?
+\item \textbf{Phenomenon-matched vs random:} If examples are matched to the test item's phenomenon tag, does the model produce better explanations---or does it simply copy the example's explanation pattern without understanding?
+\end{enumerate}
+
+\subsection{Phase 4: RAG-augmented few-shot}
+
+Retrieval-Augmented Generation can be used to \emph{dynamically select} the few-shot examples fed to the model. Instead of fixed or random examples, the system retrieves the $k$ most similar NLI pairs from a vector store of already-annotated items and includes them as in-context examples. Research questions:
+
+\begin{enumerate}[nosep,leftmargin=1.5em]
+\item \textbf{Retrieval criterion:} What should ``similar'' mean? Surface similarity (embedding distance between premise--hypothesis strings) may retrieve lexically related but linguistically unrelated items. Retrieval by phenomenon tag guarantees relevance but requires the tag to be known in advance. Which works better, and when?
+\item \textbf{Gold vs predicted explanations in retrieved examples:} If the retrieved examples carry gold (human-written) explanations, the model may produce higher-quality explanations by imitation. If they carry model-generated explanations, errors propagate. What is the effect on the evaluation rubric?
+\item \textbf{Cross-dataset retrieval:} Can examples retrieved from FraCaS (English) improve performance on OYXOY (Greek), or vice versa? This tests whether NLI reasoning transfers cross-lingually through few-shot context.
+\item \textbf{RAG vs fixed few-shot:} Under what conditions does dynamic retrieval outperform a carefully curated fixed example set? Is the overhead of building and querying a vector store justified?
+\end{enumerate}
+
+Phases 3 and 4 are designed as student research projects. Each question above can be operationalised as a controlled experiment using the evaluation rubric defined below.
+
+\section{Evaluation}
+
+\subsection{Label accuracy}
+
+Standard per-label precision, recall, F1. For OYXOY multi-label pairs, a predicted label counts as correct if it belongs to the set of valid labels.
+
+\subsection{Explanation evaluation}
+
+Three-level rubric, applied to every explanation:
+
+\begin{table}[h!]
+\centering\small
+\begin{tabularx}{\textwidth}{l c X}
+\toprule
+\textbf{Criterion} & \textbf{Score} & \textbf{Definition} \\
+\midrule
+\multirow{3}{*}{\textbf{Phenomenon ID}} & 2 & Explanation correctly identifies the phenomenon matching the gold tag (e.g., mentions scope ambiguity for a quantifier item) \\
+& 1 & Explanation addresses a related but wrong phenomenon (e.g., mentions negation for a quantifier item) \\
+& 0 & Explanation is generic, circular, or identifies an irrelevant phenomenon \\
+\midrule
+\multirow{3}{*}{\textbf{Soundness}} & 2 & Reasoning is logically valid and linguistically accurate \\
+& 1 & Reasoning contains minor errors but overall direction is correct \\
+& 0 & Reasoning is wrong, contradictory, or incoherent \\
+\midrule
+\multirow{2}{*}{\textbf{Label--Expl.\ consistency}} & 1 & The explanation supports the predicted label (regardless of whether the label is correct) \\
+& 0 & The explanation contradicts or is unrelated to the predicted label \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Maximum score per explanation: 5 (2+2+1). Total possible per model per dataset: $5 \times N_{\text{pairs}}$.
+
+\subsection{Annotation procedure}
+
+\textbf{Primary:} LLM-as-judge. A strong model (GPT-4o or Claude) receives: (i) the NLI pair, (ii) the gold phenomenon tag, (iii) the model's predicted label, (iv) the model's explanation, and scores each criterion. We prompt the judge with the rubric above and the taxonomy mapping table.
+
+\textbf{Validation:} Two human annotators (project team) independently score a random 10\% subset ($\sim$100 per dataset). We compute Cohen's $\kappa$ between humans and between each human and the LLM judge. If $\kappa < 0.7$ between LLM judge and humans, we fall back to full human annotation.
+
+\subsection{OYXOY multi-label prompting and evaluation}
+\label{sec:multilabel}
+
+All 1,762 OYXOY pairs receive the same multi-label prompt --- the model is always asked to consider all three labels. This is the default OYXOY prompt (replacing the single-label prompt from Phase 2 for this dataset):
+
+\begin{quote}\small\ttfamily
+Δεδομένης/ων της/των προκείμενης/ων και της υπόθεσης παρακάτω, είναι δυνατόν να υπάρχουν περισσότερες από μία σωστές απαντήσεις.\\[2pt]
+Προκείμενη: \{premise\}\\
+Υπόθεση: \{hypothesis\}\\[2pt]
+Δώσε \textbf{όλες} τις πιθανές απαντήσεις (Συνεπαγωγή, Αντίφαση, Ουδέτερο) και για κάθε μία εξήγησε γιατί ισχύει ή δεν ισχύει.
+\end{quote}
+
+This design tests both directions of error:
+
+\begin{itemize}[nosep,leftmargin=1.5em]
+\item \textbf{On multi-label pairs (110):} Does the model detect the ambiguity? Metrics: ambiguity detection rate (proportion where model predicts $>$1 label), Jaccard similarity between predicted and gold label sets, explanation completeness (0/1/2: no mention of ambiguity / mentions it / correctly identifies the linguistic cause)
+\item \textbf{On single-label pairs (1,652):} Does the model hallucinate ambiguity? Metric: false ambiguity rate (proportion where model predicts $>$1 label when gold has exactly one). High false ambiguity suggests the model cannot distinguish genuine interpretive variability from clear-cut cases
+\end{itemize}
+
+\section{Reporting}
+
+Results reported at three levels:
+
+\textbf{Level 1 --- Overall:} Label accuracy and mean explanation score per model per dataset. $5 \times 3$ table (models $\times$ datasets).
+
+\textbf{Level 2 --- By macro-category:} Heatmap of explanation scores (Phenomenon ID criterion) broken down by macro-category $\times$ model. This shows which phenomena each model reasons about well or poorly, and whether patterns differ between English and Greek.
+
+\textbf{Level 3 --- Right-for-wrong-reasons:} Percentage of cases where label is correct but Phenomenon ID $= 0$ (model got the answer right without identifying the mechanism). Broken down by dataset and phenomenon. This is the central finding.
+
+\textbf{Level 4 --- Cross-lingual:} For Greek FraCaS, paired comparison of explanation scores when prompted in Greek vs English. Wilcoxon signed-rank test per model.
+
+\textbf{Level 5 --- Ambiguity:} For OYXOY, report ambiguity detection rate on the 110 multi-label pairs \emph{and} false ambiguity rate on the 1,652 single-label pairs, per model. This gives a precision/recall picture of ambiguity detection.
+
+\section{Hypotheses}
+
+\textbf{H1 (Right for wrong reasons):} Models will achieve reasonable label accuracy ($>$60\%) but low phenomenon identification scores ($<$50\% scoring 2), particularly on OYXOY where phenomena are more diverse than FraCaS.
+
+\textbf{H2 (Phenomenon asymmetry):} Explanations will score highest on lexical phenomena (synonymy, antonymy) where the mechanism is surface-visible, and lowest on scope, factivity, and ellipsis where structural reasoning is needed.
+
+\textbf{H3 (Language effect):} For Greek FraCaS, English prompts will yield slightly better explanations than Greek prompts for all models, reflecting training data imbalance.
+
+\textbf{H4 (Ambiguity blindness):} On the 110 multi-label OYXOY pairs, models will predict a single label in $>$80\% of cases, failing to detect genuine interpretive ambiguity. This connects to Pavlick \& Kwiatkowski's (2019) argument that disagreement is signal, not noise.
+
+\textbf{H5 (Scale effect):} Larger models (GPT-4o, Claude) will show higher explanation quality than smaller models (Llama 8B), but the gap will be larger for explanation quality than for label accuracy---suggesting that explanation tracks deeper understanding.
+
+\section{Note: Relation to Valentino et al.\ (ACL 2025)}
+
+Quan, Valentino, Dennis \& Freitas (2025), ``Faithful and Robust LLM-Driven Theorem Proving for NLI Explanations'' (ACL 2025), present the closest related work. Their pipeline: LLM generates a free-text explanation $E$ for an NLI pair $(P, H)$, then $E$ is formalised and a theorem prover checks whether $P \cup E \models H$. The prover verifies the \emph{explanation}, not the inference directly.
+
+Our approach (Athens C3/C4) is complementary: we formalise $P$ and $H$ themselves into FOL/Coq and prove the entailment directly. The proof trace \emph{is} the explanation. This is stronger when the semantics are fully formalisable (FraCaS), but limited when world knowledge is needed (parts of OYXOY).
+
+Key findings from Valentino et al.\ relevant to us: (a) semantic loss during autoformalisation is the main bottleneck (+18--40\% improvement with their interventions); (b) iterative refinement with prover feedback (our $k$=3 loop) improves explanation quality by 29--51\%; (c) syntactic errors in generated formal expressions are pervasive and need explicit error detection.
+
+A natural extension: run \emph{both} approaches on FraCaS and OYXOY --- direct formalisation (our C3/C4) and explanation verification (Valentino's approach) --- and compare. On FraCaS, direct formalisation should win. On OYXOY common-sense items, explanation verification may be necessary.
+
+\section{Infrastructure: Azure AI Access}
+
+We have an Azure subscription with credits that covers all model deployments for this project. This means you can run experiments \textbf{at no personal cost}. Here is what you need to know:
+
+\textbf{Portal:} Go to \url{https://ai.azure.com}, sign in with your university account (you will be added to the subscription), and open the Model Catalog.
+
+\textbf{Available model families} (serverless, pay-per-token from our credits):
+
+\begin{table}[h!]
+\centering\small
+\begin{tabularx}{\textwidth}{l l X}
+\toprule
+\textbf{Provider} & \textbf{Models} & \textbf{Notes} \\
+\midrule
+OpenAI & GPT-4o, GPT-4o-mini & Top commercial; strong English \\
+Anthropic & Claude Opus 4.6, Sonnet 4.6, Haiku 4.5 & Strong reasoning; good multilingual \\
+Meta & Llama 3.3 70B, Llama 3.1 8B, Llama 3.1 405B & Open-weight; various sizes for scale comparison \\
+DeepSeek & DeepSeek-R1, DeepSeek-V3 & R1 is a chain-of-thought reasoning model---very relevant for explanation quality \\
+Mistral & Mistral Medium 3, Mistral Small & European provider; interesting for multilingual \\
+Microsoft & Phi-4, Phi-4-reasoning & Small but capable; good efficiency baseline \\
+Cohere & Command R+, Command R & Strong retrieval-augmented generation \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\textbf{Your first task:} Before running any experiment, each student should survey the model catalog and propose which 5--7 models give the best \textbf{coverage} for our research questions. Think about:
+
+\begin{itemize}[nosep,leftmargin=1.5em]
+\item Size variation (do we need a small, medium, and large model to test H5?)
+\item Architecture variation (decoder-only vs encoder-decoder, reasoning-specialised vs general)
+\item Multilingual strength (which models handle Greek best? Run a quick test: give 5 OYXOY items to each candidate and check if the Greek output is coherent)
+\item Reasoning style (DeepSeek-R1 produces explicit chain-of-thought---how does this compare to models that reason implicitly?)
+\end{itemize}
+
+Report your proposed model set with a short justification (one paragraph per model) before we commit to full runs. This avoids wasting credits on models that are clearly unsuitable.
+
+\textbf{Deployment:} Create serverless endpoints in \textbf{Sweden Central} (closest region to us in Europe; supports all model families including Claude and Llama). If a specific model is unavailable in Sweden Central, fall back to East US 2. Each endpoint gives you an API URL and key that you can call from anywhere. The code in \texttt{fracas\_eval\_azure.py} can be adapted to call Azure endpoints with minimal changes (different base URL, same JSON format).
+
+\section{Phase 2: Formal Verification}
+
+Phase 2 has two stages: first FOL with automated provers (simpler, fully automatic), then Coq (richer type theory, but requires proof engineering). The question is whether each level of formalism improves on the previous one.
+
+\subsection{Stage 1: FOL + Automated Provers}
+
+\subsubsection{Objective}
+
+Ask the LLM to translate P and H into first-order logic, then run an automated theorem prover. This is fully automatic --- no human proof engineering needed. Reference: LINC (Olausson et al., 2023), LogicPO (Vishwanadha et al., 2025).
+
+\subsubsection{Pipeline}
+
+\begin{enumerate}[nosep,leftmargin=1.5em]
+\item \textbf{NL $\to$ FOL:} LLM translates P and H into FOL formulas. Standard syntax: \texttt{all x (student(x) -> runs(x))}, etc.
+\item \textbf{Prover:} Feed the FOL to Prover9 (or MACE4 for countermodel search). Prover9 checks $P \vdash H$ (entailment), MACE4 searches for a model where $P \wedge \neg H$ holds (non-entailment).
+\item \textbf{Result:} Proved (Entailment), Countermodel found (Non-Entailment), Timeout (Unknown).
+\end{enumerate}
+
+\subsubsection{Prompting}
+
+\begin{quote}\small\ttfamily
+Translate the following premise and hypothesis into first-order logic formulas.\\[2pt]
+Premise: \{premise\}\\
+Hypothesis: \{hypothesis\}\\[2pt]
+Use standard FOL notation: all, exists, \&, |, -, ->, for quantifiers and connectives. Use lowercase predicate names.\\[2pt]
+Output:\\
+Premises: [list of FOL formulas]\\
+Hypothesis: [single FOL formula]\\
+No commentary, no explanation.
+\end{quote}
+
+\subsubsection{Scope}
+
+Run on all three datasets. FOL handles quantifiers, basic predication, and logical connectives well. It struggles with: intensionality (attitudes, S9), gradable adjectives, temporal reasoning, and lexical knowledge (synonymy, hypernymy --- unless we add axioms).
+
+\subsubsection{Comparison conditions}
+
+\begin{itemize}[nosep,leftmargin=1.5em]
+\item \textbf{LLM-only (Phase 1 baseline):} The label the LLM gave without any formal tools.
+\item \textbf{LLM $\to$ FOL $\to$ Prover:} The label from the prover, using the LLM's formalisation.
+\item \textbf{LLM $\to$ FOL $\to$ Prover + lexical axioms:} Same, but with a set of hand-crafted lexical axioms (synonyms, hypernyms from WordNet). Tests whether failures are due to bad FOL or missing knowledge.
+\end{itemize}
+
+The key question: does the FOL+Prover pipeline \textbf{improve} on the LLM-only baseline? On which phenomena? Where does it make things worse (e.g., bad formalisation leading to wrong proofs)?
+
+\subsubsection{Metrics}
+
+\begin{itemize}[nosep,leftmargin=1.5em]
+\item \textbf{FOL parse rate:} Proportion of items where the LLM's FOL output is syntactically valid.
+\item \textbf{Prover success rate:} Proportion where Prover9/MACE4 returns a definitive answer (not timeout).
+\item \textbf{Accuracy delta:} Accuracy(FOL+Prover) $-$ Accuracy(LLM-only), per phenomenon.
+\item \textbf{Semantic fidelity:} Human check on a sample --- does the FOL actually capture what P and H say?
+\item \textbf{Error analysis:} When FOL+Prover gets it wrong but LLM-only gets it right, why? (Bad formalisation? Missing axioms? FOL too weak for the phenomenon?)
+\end{itemize}
+
+\subsection{Stage 2: Coq}
+
+\subsubsection{Objective}
+
+Run the \textbf{same items} through Coq as a second formalism, independently of the FOL results. Coq gives us dependent types, higher-order logic, and the Curry-Howard correspondence --- the proof \emph{is} the explanation. The question is not ``does Coq fix what FOL couldn't'' but ``how do two fundamentally different formal systems compare on the same NLI data, and what does the richer type theory buy us?''
+
+Two verification strategies:
+
+\begin{table}[h!]
+\centering\small
+\begin{tabularx}{\textwidth}{l l X}
+\toprule
+\textbf{Approach} & \textbf{What we formalise} & \textbf{What we prove} \\
+\midrule
+\textbf{Direct (C3/C4)} & P, H as Coq types & $P \vdash H$ (or $P \vdash \neg H$). The proof structure \emph{is} the explanation \\[4pt]
+\textbf{Explanation verification (Valentino)} & The model's explanation E & $P \cup E \vdash H$. Tests whether E is sound \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsubsection{FOL vs Coq: what we compare}
+
+Both formalisms run on the same items. The comparison is:
+
+\begin{itemize}[nosep,leftmargin=1.5em]
+\item \textbf{Items where both succeed:} Do they agree on the label? Does the Coq proof capture more fine-grained reasoning than the FOL proof?
+\item \textbf{Items where FOL succeeds but Coq fails:} LLM can produce FOL but not Coq --- is Coq generation harder for LLMs?
+\item \textbf{Items where Coq succeeds but FOL fails:} The richer type system captures something FOL cannot (e.g., subsective adjectives, intensionality, presupposition).
+\item \textbf{Items where both fail:} Beyond current formalisation --- what phenomena are these?
+\end{itemize}
+
+This gives us a $2 \times 2$ matrix (FOL success/fail $\times$ Coq success/fail) per phenomenon, which is the core empirical result of Phase 2.
+
+\subsubsection{Scope and staging}
+
+We run Coq on the same data as FOL. The staging reflects practical difficulty of Coq proof engineering, not a dependency on FOL results:
+
+\begin{table}[h!]
+\centering\small
+\begin{tabular}{l l l l}
+\toprule
+\textbf{Stage} & \textbf{Data} & \textbf{Phenomena} & \textbf{Coq interest} \\
+\midrule
+Stage A & FraCaS S1 & Quantifiers, monotonicity & Baseline: FOL and Coq should both work \\
+Stage B & FraCaS S2, S5 & Plurals, adjectives & Subsective/intersective types in Coq \\
+Stage C & FraCaS S7, S9 & Temporal, attitudes & Intervals, intensionality --- Coq advantage? \\
+Stage D & OYXOY Logic & Quantification, negation, conditionals & Broader coverage \\
+Stage E & OYXOY Lex.\ Ent. & Factivity, synonymy, hypernymy & Presupposition, fine-grained types \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Stage A is important precisely \emph{because} FOL should handle it: it lets us calibrate whether LLMs can generate valid Coq at all, on easy cases, before moving to harder phenomena.
+
+\subsubsection{Pipeline}
+
+\begin{enumerate}[nosep,leftmargin=1.5em]
+\item \textbf{Formalisation prompt:} Ask the LLM to translate P and H into Coq definitions. Provide a template with type signatures (\texttt{Parameter Entity : Type}, \texttt{Definition VP := Entity -> Prop}, etc.)\ so the LLM fills in the content.
+\item \textbf{Proof prompt (Mode A):} LLM produces formalisation \emph{and} proof tactics. Must output a complete \texttt{.v} file that compiles.
+\item \textbf{Proof prompt (Mode B):} Give the LLM the gold label and ask it to prove the corresponding goal. Separates reasoning from labelling.
+\item \textbf{Coq compilation:} Run \texttt{coqc}. Record: compiles/fails, proof complete/incomplete, error message.
+\end{enumerate}
+
+\subsubsection{Formalisation prompt template}
+
+\begin{quote}\small\ttfamily
+You are an expert in Coq and formal semantics. Formalise the following NLI pair in Coq and prove the entailment relation.\\[2pt]
+Premise: \{premise\}\\
+Hypothesis: \{hypothesis\}\\
+Gold label: \{label\}\\[2pt]
+Use the following setup:\\
+Parameter Entity : Type.\\
+(* Add your parameters, definitions, and axioms *)\\[2pt]
+Theorem nli\_result : (* your formalisation *).\\
+Proof. (* your proof *) Qed.\\[2pt]
+Output only the complete Coq file.
+\end{quote}
+
+For the \textbf{Valentino approach}, the prompt additionally includes the model's free-text explanation from Phase 1 and asks: ``Formalise the explanation below as Coq axioms, then prove that the premise together with these axioms entails the hypothesis.''
+
+\subsection{Combined metrics (FOL + Coq)}
+
+\begin{itemize}[nosep,leftmargin=1.5em]
+\item \textbf{$2 \times 2$ matrix:} Per phenomenon, report FOL success/fail $\times$ Coq success/fail. This is the core result --- it shows where the formalisms agree, where each has an advantage, and where both fail.
+\item \textbf{Three-way comparison:} LLM-only accuracy vs FOL+Prover accuracy vs Coq accuracy, on the same items. Not a pipeline (FOL first, Coq if FOL fails) but a parallel comparison.
+\item \textbf{Semantic fidelity:} Human check on a sample --- does the formalisation (FOL or Coq) capture what P and H actually say? Separately for each formalism.
+\item \textbf{Direct vs Valentino:} On the same items, which verification strategy has higher proof success? Applied to both FOL and Coq.
+\item \textbf{Per model:} Which LLM produces the best FOL? The best Coq? Are they the same model?
+\item \textbf{Generation difficulty:} Is it harder for LLMs to generate valid Coq than valid FOL? Compare formalisation parse rates across formalisms.
+\end{itemize}
+
+\subsection{Relation to Phase 1}
+
+Phase 2 operates on the \textbf{output} of Phase 1:
+
+\begin{itemize}[nosep,leftmargin=1.5em]
+\item Correct label + good explanation (Phenomenon ID $\geq 1$): best candidates for formalisation. If the explanation is right, the proof should succeed.
+\item Correct label + bad explanation (Phenomenon ID $= 0$): ``right for wrong reasons.'' If the LLM can't produce a valid formalisation despite getting the label right, that confirms the explanation was hollow.
+\item Wrong label: can formal verification \emph{correct} the label? If the proof for Entailment fails but the one for Contradiction succeeds, the prover overrides the LLM.
+\end{itemize}
+
+\section{Phase 3: Verification Loop}
+
+\subsection{Objective}
+
+When formalisation or proof fails (FOL parse error, Prover9 timeout, Coq type error, incomplete proof), feed the error back to the LLM and let it retry.
+
+\subsection{Loop design}
+
+The loop applies to \textbf{both} FOL and Coq stages:
+
+\begin{enumerate}[nosep,leftmargin=1.5em]
+\item \textbf{Attempt 1:} LLM produces formalisation (FOL or Coq).
+\item \textbf{If it fails:} Extract the error (FOL parse error, Prover9 output, Coq error message). Send back to LLM: ``Your formalisation produced the following error: \{error\}. Fix it.''
+\item \textbf{Attempt 2:} LLM produces corrected version. Run prover/compiler again.
+\item \textbf{If still fails:} Repeat once more (Attempt 3).
+\item \textbf{After 3 failures:} Record as non-provable within this setup.
+\end{enumerate}
+
+Maximum $k = 3$ attempts per item per model. This matches Valentino et al.'s finding that iterative refinement with prover feedback improves quality by 29--51\%.
+
+\subsection{Metrics}
+
+\begin{itemize}[nosep,leftmargin=1.5em]
+\item \textbf{First-pass success rate:} Items proved on attempt 1.
+\item \textbf{Loop gain:} Additional items proved on attempts 2--3.
+\item \textbf{Convergence rate:} Proportion that eventually succeed within $k = 3$.
+\item \textbf{Error taxonomy:} Classify errors into categories: syntax error in formalisation, missing axiom/premise, wrong proof strategy, semantic mismatch (formalisation doesn't capture the NLI pair). Report frequency per model per formalism (FOL vs Coq).
+\item \textbf{Per-phenomenon breakdown:} Which phenomena converge easily? Which are intractable?
+\item \textbf{FOL loop vs Coq loop:} Is the loop more effective for FOL (simpler errors, easier to fix) or Coq (richer error messages)?
+\end{itemize}
+
+\subsection{Controls}
+
+\begin{itemize}[nosep,leftmargin=1.5em]
+\item \textbf{No-feedback baseline:} Run 3 independent attempts \emph{without} error feedback (re-prompt from scratch). Isolates the contribution of error feedback vs.\ simple retry variance.
+\item \textbf{Human-written formalisation:} For $\sim$20 items, provide hand-written FOL and Coq formalisations. How often does the LLM's approach match the human's?
+\end{itemize}
+
+\section{Timeline (All Phases)}
+
+\begin{table}[h!]
+\centering\small
+\begin{tabular}{l l l}
+\toprule
+\textbf{Weeks} & \textbf{Phase} & \textbf{Deliverable} \\
+\midrule
+1--3 & Phase 1a: Zero-shot & Label accuracy + explanations, all models, 3 datasets \\
+4--5 & Phase 1b: Few-shot + RAG & Prompting experiments, explanation evaluation \\
+5 & Phase 1 report & Results table, phenomenon heatmap, right-for-wrong-reasons analysis \\
+6--7 & Phase 2a: FOL + Prover9/MACE4 & NL$\to$FOL translation, prover runs, all 3 datasets \\
+8--10 & Phase 2b: Coq (Stages A--C) & Formalisation + proof attempts, Direct + Valentino \\
+10--11 & Phase 3: Verification Loop & $k{=}3$ feedback loop for both FOL and Coq, convergence analysis \\
+11 & Phase 2--3 analysis & 2$\times$2 matrix (FOL$\times$Coq), three-way comparison, loop gain \\
+12--13 & Analysis + write-up & Full paper draft, presentations \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Student Task Allocation}
+
+\begin{table}[h!]
+\centering\small
+\begin{tabularx}{\textwidth}{l l X}
+\toprule
+\textbf{Group} & \textbf{Size} & \textbf{Tasks} \\
+\midrule
+Infrastructure & 2--3 & Azure pipeline, API calls, result parsing, Coq compilation scripts \\
+Phase 1: NLI eval & 6--8 & Baseline runs, few-shot/RAG design, explanation scoring, multi-label analysis \\
+Phase 2: Coq & 4--5 & Formalisation prompts, proof engineering, Direct vs Valentino comparison \\
+Cross-lingual & 3--4 & EN vs EL comparison on FraCaS, taxonomy mapping analysis \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Students in the Coq group should familiarise themselves with basic Coq before Week 6. Resources: the \texttt{Coqification\_1.v}--\texttt{Coqification\_5.v} files from the seminar, Software Foundations Vol.\ 1 (online, free), and jsCoq (\url{https://jscoq.github.io/}) for browser-based practice.
+
+\end{document}

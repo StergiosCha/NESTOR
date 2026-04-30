@@ -1,0 +1,7 @@
+Given the premise(s) below, determine the relation to the hypothesis.
+
+Premise: {premise}
+Hypothesis: {hypothesis}
+
+Answer with exactly one word: yes, no, or unknown.
+Then explain your reasoning in 2-3 sentences, identifying the specific linguistic phenomenon involved.
