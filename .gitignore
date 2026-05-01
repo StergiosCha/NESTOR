@@ -1,0 +1,22 @@
+# Secrets
+.env
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Coq build artefacts
+*.vo
+*.vok
+*.vos
+*.glob
+
+# Pipeline results (datasets stay tracked; only outputs are ignored)
+phase*/results/*.json
+phase1_nli_eval/fracas_results*.json
+phase1_nli_eval/fracas_summary*.txt
+
+# OS
+.DS_Store

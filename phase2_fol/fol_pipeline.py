@@ -20,54 +20,27 @@ Requirements:
 
 import json
 import os
-import re
 import subprocess
+import sys
 import tempfile
 import time
 from pathlib import Path
-from openai import AzureOpenAI, OpenAI
+from dotenv import load_dotenv
 
-# ============================================================
-# CONFIGURATION
-# ============================================================
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from clients.azure import get_azure_client, get_ai_client, call_llm
+from utils.fracas import load_flat
 
-API_KEY = os.environ.get("AZURE_KEY", "PUT-YOUR-KEY-HERE")
-OPENAI_ENDPOINT = os.environ.get("AZURE_OPENAI_ENDPOINT",
-    "https://crete-xamoulis-resource.cognitiveservices.azure.com/")
-OPENAI_API_VERSION = "2024-12-01-preview"
-AI_ENDPOINT = os.environ.get("AZURE_AI_ENDPOINT",
-    "https://crete-xamoulis-resource.services.ai.azure.com/openai/v1/")
+load_dotenv()
 
-PROVER9_PATH = os.environ.get("PROVER9_PATH", "prover9")
-MACE4_PATH = os.environ.get("MACE4_PATH", "mace4")
-PROVER_TIMEOUT = 30  # seconds
+PROVER9_PATH = os.environ.get("PROVER9_PATH", "")
+MACE4_PATH = os.environ.get("MACE4_PATH", "")
+PROVER_TIMEOUT = int(os.environ.get("PROVER_TIMEOUT", "0") or 0)
 
+MAX_RETRIES = int(os.environ.get("MAX_RETRIES", "0") or 0)
 PROMPT_DIR = Path(__file__).parent / "prompts"
-MAX_RETRIES = 3  # k=3 verification loop
 
-
-# ============================================================
-# LLM CLIENTS
-# ============================================================
-
-def get_azure_client():
-    return AzureOpenAI(
-        api_version=OPENAI_API_VERSION,
-        azure_endpoint=OPENAI_ENDPOINT,
-        api_key=API_KEY,
-    )
-
-def get_ai_client():
-    return OpenAI(base_url=AI_ENDPOINT, api_key=API_KEY)
-
-
-def call_llm(client, model, messages, temperature=0.0, max_tokens=500):
-    resp = client.chat.completions.create(
-        model=model, messages=messages,
-        temperature=temperature, max_tokens=max_tokens,
-    )
-    return resp.choices[0].message.content
-
+FOL_MAX_TOKENS = 500
 
 # ============================================================
 # FOL TRANSLATION
@@ -85,7 +58,7 @@ def translate_to_fol(client, model, premise, hypothesis):
         {"role": "system", "content": "You are an expert in first-order logic and formal semantics."},
         {"role": "user", "content": prompt},
     ]
-    return call_llm(client, model, messages)
+    return call_llm(client, model, messages, max_tokens=FOL_MAX_TOKENS)
 
 
 def parse_fol_output(raw_text):
@@ -247,7 +220,7 @@ def fix_fol(client, model, premise, hypothesis, previous_fol, error_message):
         {"role": "system", "content": "You are an expert in first-order logic. Fix the errors."},
         {"role": "user", "content": prompt},
     ]
-    return call_llm(client, model, messages)
+    return call_llm(client, model, messages, max_tokens=FOL_MAX_TOKENS)
 
 
 def run_fol_pipeline(client, model, premise, hypothesis, max_retries=None):
@@ -374,40 +347,6 @@ def run_batch(items, client, model, output_file=None):
 
 
 # ============================================================
-# FRACAS LOADER
-# ============================================================
-
-def load_fracas(xml_path):
-    """Load FraCaS items from XML."""
-    import xml.etree.ElementTree as ET
-    tree = ET.parse(xml_path)
-    root = tree.getroot()
-    items = []
-
-    for problem in root.iter("problem"):
-        pid = problem.get("id", "")
-        answer = problem.get("fracas_answer", "").strip().lower()
-
-        premises = []
-        for p in problem.iter("p"):
-            if p.text:
-                premises.append(p.text.strip())
-
-        hyp_elem = problem.find(".//h")
-        hypothesis = hyp_elem.text.strip() if hyp_elem is not None and hyp_elem.text else ""
-
-        if premises and hypothesis:
-            items.append({
-                "id": f"fracas-{pid}",
-                "premise": " ".join(premises),
-                "hypothesis": hypothesis,
-                "gold": answer,
-            })
-
-    return items
-
-
-# ============================================================
 # MAIN
 # ============================================================
 
@@ -430,13 +369,9 @@ if __name__ == "__main__":
                         help="FraCaS section filter (e.g. '1' for quantifiers)")
     args = parser.parse_args()
 
-    if "PUT-YOUR-KEY" in API_KEY:
-        print("Set AZURE_KEY environment variable first.")
-        exit(1)
-
     # Load data
     if args.data.endswith(".xml"):
-        items = load_fracas(args.data)
+        items = load_flat(args.data)
     else:
         with open(args.data) as f:
             items = json.load(f)
