@@ -27,7 +27,7 @@ from dotenv import load_dotenv
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from clients.azure import get_azure_client, get_ai_client, call_llm
-from utils.fracas import load_flat as load_fracas
+from utils.fracas import load_flat
 
 load_dotenv()
 
@@ -290,7 +290,7 @@ if __name__ == "__main__":
         print("  copy .env.example to .env and fill in values")
         sys.exit(1)
 
-    items = load_fracas(args.data) if args.data.endswith(".xml") else json.load(open(args.data))
+    items = load_flat(args.data) if args.data.endswith(".xml") else json.load(open(args.data))
     if args.limit:
         items = items[:args.limit]
 
