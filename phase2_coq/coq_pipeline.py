@@ -24,42 +24,20 @@ import tempfile
 import time
 from pathlib import Path
 from dotenv import load_dotenv
-from openai import AzureOpenAI, OpenAI
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from clients.azure import get_azure_client, get_ai_client, call_llm
+from utils.fracas import load_flat as load_fracas
 
 load_dotenv()
 
-# Load environemnt variables
-API_KEY = os.environ.get("AZURE_API_KEY", "")
-OPENAI_ENDPOINT = os.environ.get("AZURE_OPENAI_ENDPOINT", "")
-OPENAI_API_VERSION = os.environ.get("AZURE_OPENAI_API_VERSION", "")
-AZURE_AI_ENDPOINT = os.environ.get("AZURE_AI_ENDPOINT", "")
 COQC_PATH = os.environ.get("COQC_PATH", "")
 COQ_TIMEOUT = int(os.environ.get("COQ_TIMEOUT", "0") or 0)
 MAX_RETRIES = int(os.environ.get("MAX_RETRIES", "0") or 0)
 
 PROMPT_DIR = Path(__file__).parent / "prompts"
 
-# ============================================================
-# LLM CLIENTS
-# ============================================================
-
-def get_azure_client():
-    return AzureOpenAI(
-        api_version=OPENAI_API_VERSION,
-        azure_endpoint=OPENAI_ENDPOINT,
-        api_key=API_KEY,
-    )
-
-def get_ai_client():
-    return OpenAI(base_url=AZURE_AI_ENDPOINT, api_key=API_KEY)
-
-def call_llm(client, model, messages, temperature=0.0, max_tokens=1000):
-    resp = client.chat.completions.create(
-        model=model, messages=messages,
-        temperature=temperature, max_tokens=max_tokens,
-    )
-    return resp.choices[0].message.content
-
+COQ_MAX_TOKENS = 1000
 
 # ============================================================
 # COQ TRANSLATION
@@ -95,7 +73,7 @@ def translate_to_coq_direct(client, model, premise, hypothesis, label):
         {"role": "system", "content": "You are an expert in Coq and formal semantics. Output only valid Coq code."},
         {"role": "user", "content": prompt},
     ]
-    raw = call_llm(client, model, messages)
+    raw = call_llm(client, model, messages, max_tokens=COQ_MAX_TOKENS)
     return extract_coq_code(raw), raw
 
 
@@ -107,7 +85,7 @@ def translate_to_coq_valentino(client, model, premise, hypothesis, explanation):
         {"role": "system", "content": "You are an expert in Coq and formal semantics. Output only valid Coq code."},
         {"role": "user", "content": prompt},
     ]
-    raw = call_llm(client, model, messages)
+    raw = call_llm(client, model, messages, max_tokens=COQ_MAX_TOKENS)
     return extract_coq_code(raw), raw
 
 
@@ -166,7 +144,7 @@ def fix_coq(client, model, premise, hypothesis, label, previous_coq, error_messa
         {"role": "system", "content": "You are an expert in Coq. Fix the compilation errors."},
         {"role": "user", "content": prompt},
     ]
-    raw = call_llm(client, model, messages)
+    raw = call_llm(client, model, messages, max_tokens=COQ_MAX_TOKENS)
     return extract_coq_code(raw), raw
 
 
@@ -286,9 +264,6 @@ def run_batch(items, client, model, approach="direct", output_file=None):
 
 if __name__ == "__main__":
     import argparse
-    import sys
-    sys.path.insert(0, str(Path(__file__).parent.parent / "phase2_fol"))
-    from fol_pipeline import load_fracas
 
     parser = argparse.ArgumentParser(description="NESTOR Coq Pipeline")
     parser.add_argument("--data", default="../data/fracas/fracas.xml")
@@ -301,10 +276,10 @@ if __name__ == "__main__":
 
     missing = [
         name for name, val in [
-            ("AZURE_API_KEY", API_KEY),
-            ("AZURE_OPENAI_ENDPOINT", OPENAI_ENDPOINT),
-            ("AZURE_OPENAI_API_VERSION", OPENAI_API_VERSION),
-            ("AZURE_AI_ENDPOINT", AZURE_AI_ENDPOINT),
+            ("AZURE_API_KEY", os.environ.get("AZURE_API_KEY", "")),
+            ("AZURE_OPENAI_ENDPOINT", os.environ.get("AZURE_OPENAI_ENDPOINT", "")),
+            ("AZURE_OPENAI_API_VERSION", os.environ.get("AZURE_OPENAI_API_VERSION", "")),
+            ("AZURE_AI_ENDPOINT", os.environ.get("AZURE_AI_ENDPOINT", "")),
             ("COQC_PATH", COQC_PATH),
             ("COQ_TIMEOUT", COQ_TIMEOUT),
             ("MAX_RETRIES", MAX_RETRIES),
