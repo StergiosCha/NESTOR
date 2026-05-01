@@ -12,7 +12,6 @@ import json
 import argparse
 from collections import defaultdict
 
-
 def load_results(path):
     with open(path) as f:
         return {r["id"]: r for r in json.load(f)}

@@ -19,28 +19,25 @@ import json
 import os
 import re
 import subprocess
+import sys
 import tempfile
 import time
 from pathlib import Path
+from dotenv import load_dotenv
 from openai import AzureOpenAI, OpenAI
 
-# ============================================================
-# CONFIGURATION
-# ============================================================
+load_dotenv()
 
-API_KEY = os.environ.get("AZURE_KEY", "PUT-YOUR-KEY-HERE")
-OPENAI_ENDPOINT = os.environ.get("AZURE_OPENAI_ENDPOINT",
-    "https://crete-xamoulis-resource.cognitiveservices.azure.com/")
-OPENAI_API_VERSION = "2024-12-01-preview"
-AI_ENDPOINT = os.environ.get("AZURE_AI_ENDPOINT",
-    "https://crete-xamoulis-resource.services.ai.azure.com/openai/v1/")
-
-COQC_PATH = os.environ.get("COQC_PATH", "coqc")
-COQ_TIMEOUT = 60  # seconds
+# Load environemnt variables
+API_KEY = os.environ.get("AZURE_API_KEY", "")
+OPENAI_ENDPOINT = os.environ.get("AZURE_OPENAI_ENDPOINT", "")
+OPENAI_API_VERSION = os.environ.get("AZURE_OPENAI_API_VERSION", "")
+AZURE_AI_ENDPOINT = os.environ.get("AZURE_AI_ENDPOINT", "")
+COQC_PATH = os.environ.get("COQC_PATH", "")
+COQ_TIMEOUT = int(os.environ.get("COQ_TIMEOUT", "0") or 0)
+MAX_RETRIES = int(os.environ.get("MAX_RETRIES", "0") or 0)
 
 PROMPT_DIR = Path(__file__).parent / "prompts"
-MAX_RETRIES = 3
-
 
 # ============================================================
 # LLM CLIENTS
@@ -54,7 +51,7 @@ def get_azure_client():
     )
 
 def get_ai_client():
-    return OpenAI(base_url=AI_ENDPOINT, api_key=API_KEY)
+    return OpenAI(base_url=AZURE_AI_ENDPOINT, api_key=API_KEY)
 
 def call_llm(client, model, messages, temperature=0.0, max_tokens=1000):
     resp = client.chat.completions.create(
@@ -302,9 +299,21 @@ if __name__ == "__main__":
     parser.add_argument("--limit", type=int, default=None)
     args = parser.parse_args()
 
-    if "PUT-YOUR-KEY" in API_KEY:
-        print("Set AZURE_KEY environment variable first.")
-        exit(1)
+    missing = [
+        name for name, val in [
+            ("AZURE_API_KEY", API_KEY),
+            ("AZURE_OPENAI_ENDPOINT", OPENAI_ENDPOINT),
+            ("AZURE_OPENAI_API_VERSION", OPENAI_API_VERSION),
+            ("AZURE_AI_ENDPOINT", AZURE_AI_ENDPOINT),
+            ("COQC_PATH", COQC_PATH),
+            ("COQ_TIMEOUT", COQ_TIMEOUT),
+            ("MAX_RETRIES", MAX_RETRIES),
+        ] if not val
+    ]
+    if missing:
+        print(f"ERROR: missing required env vars: {', '.join(missing)}")
+        print("  copy .env.example to .env and fill in values")
+        sys.exit(1)
 
     items = load_fracas(args.data) if args.data.endswith(".xml") else json.load(open(args.data))
     if args.limit:

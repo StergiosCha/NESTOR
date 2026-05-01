@@ -32,16 +32,16 @@ from urllib.request import urlretrieve, Request, urlopen
 from urllib.error import URLError
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-# ── Configuration ───────────────────────────────────────────────
+from dotenv import load_dotenv
 
+load_dotenv()
+
+# Load environemnt variables
 AZURE_API_KEY = os.environ.get("AZURE_API_KEY", "")
-
-# Azure OpenAI endpoint (for GPT models)
-AZURE_OPENAI_ENDPOINT = "https://kafouroutsos-8905-resource.cognitiveservices.azure.com/"
-AZURE_OPENAI_API_VERSION = "2024-12-01-preview"
-
-# Azure AI inference endpoint (for non-OpenAI models: Llama, DeepSeek, Mistral, etc.)
-AZURE_AI_ENDPOINT = "https://kafouroutsos-8905-resource.services.ai.azure.com/"
+AZURE_OPENAI_ENDPOINT = os.environ.get("AZURE_OPENAI_ENDPOINT", "")
+AZURE_OPENAI_API_VERSION = os.environ.get("AZURE_OPENAI_API_VERSION", "")
+AZURE_AI_ENDPOINT = os.environ.get("AZURE_AI_ENDPOINT", "")
+LLM_RATE_LIMIT = float(os.environ.get("LLM_RATE_LIMIT", "0") or 0)
 
 # Model registry: each model has a deployment name and a provider type
 # provider: "azure-openai" uses the OpenAI-compatible endpoint
@@ -83,12 +83,10 @@ SECTIONS = {
     9: "Attitudes (propositional attitudes, de re/de dicto, opacity)",
 }
 
-FRACAS_XML_URL = "https://nlp.stanford.edu/~wcmac/downloads/fracas.xml"
+FRACAS_XML_URL = os.environ.get("FRACAS_XML_URL", "")
 FRACAS_XML_PATH = Path("fracas.xml")
 RESULTS_PATH = Path("fracas_results_azure.json")
 SUMMARY_PATH = Path("fracas_summary_azure.txt")
-
-RATE_LIMIT = 0.3  # Azure has generous rate limits
 
 # ── FraCaS Loader ──────────────────────────────────────────────
 
@@ -364,7 +362,7 @@ def evaluate(problems: list[dict], model_key: str, model_config: dict, results: 
             with _results_lock:
                 save_results(results)
 
-        time.sleep(RATE_LIMIT)
+        time.sleep(LLM_RATE_LIMIT)
 
     with _results_lock:
         save_results(results)
@@ -587,10 +585,20 @@ def main():
                         help="Run all models in parallel")
     args = parser.parse_args()
 
-    if not AZURE_API_KEY and not args.summary_only:
-        print("ERROR: Set AZURE_API_KEY environment variable")
-        print("  export AZURE_API_KEY='your-key'")
-        sys.exit(1)
+    if not args.summary_only:
+        missing = [
+            name for name, val in [
+                ("AZURE_API_KEY", AZURE_API_KEY),
+                ("AZURE_OPENAI_ENDPOINT", AZURE_OPENAI_ENDPOINT),
+                ("AZURE_OPENAI_API_VERSION", AZURE_OPENAI_API_VERSION),
+                ("AZURE_AI_ENDPOINT", AZURE_AI_ENDPOINT),
+                ("FRACAS_XML_URL", FRACAS_XML_URL),
+            ] if not val
+        ]
+        if missing:
+            print(f"ERROR: missing required env vars: {', '.join(missing)}")
+            print("  copy .env.example to .env and fill in values")
+            sys.exit(1)
 
     # Load FraCaS
     print("Loading FraCaS test suite...")
