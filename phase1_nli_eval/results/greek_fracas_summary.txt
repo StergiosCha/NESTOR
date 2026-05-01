@@ -1,0 +1,179 @@
+================================================================================
+FraCaS NLI Evaluation — Summary
+================================================================================
+
+OVERALL ACCURACY
+------------------------------------------------------------
+Model                 S1  S2  S3  S4  S5  S6  S7  S8  S9  | Overall
+------------------------------------------------------------
+gpt-4o                 76   76   79   44   57   74   61   75   77  |  66.4%  (227/342)
+gpt-4.1-mini           78   76   61   47   61   74   63   75   85  |  67.0%  (229/342)
+llama-70b              66   79   71   58   61   84   65   88   77  |  68.4%  (234/342)
+deepseek-r1            80   76   75   55   61   68   69   88   85  |  70.8%  (242/342)
+krikri-8b              30   67   68   67   57   58   48   62   69  |  52.9%  (181/342)
+------------------------------------------------------------
+
+SECTION KEY
+  S1: Quantifiers (generalized quantifiers, scope, monotonicity)
+  S2: Plurals (collective/distributive readings, plural quantification)
+  S3: Anaphora (pronoun resolution, donkey sentences, accessibility)
+  S4: Ellipsis (VP ellipsis, sluicing, antecedent selection)
+  S5: Adjectives (intersective, subsective, privative, intensional)
+  S6: Comparatives (degree semantics, scalar implicature)
+  S7: Temporal (tense, aspect, temporal adverbials)
+  S8: Verbs (aktionsart, event structure, argument alternations)
+  S9: Attitudes (propositional attitudes, de re/de dicto, opacity)
+
+DETAILED SECTION BREAKDOWN
+------------------------------------------------------------
+
+  S1: Quantifiers (generalized quantifiers, scope, monotonicity)
+  Model                 Correct  Total  Accuracy
+  gpt-4o                     61     80     76.2%
+  gpt-4.1-mini               62     80     77.5%
+  llama-70b                  53     80     66.2%
+  deepseek-r1                64     80     80.0%
+  krikri-8b                  24     80     30.0%
+
+  S2: Plurals (collective/distributive readings, plural quantification)
+  Model                 Correct  Total  Accuracy
+  gpt-4o                     25     33     75.8%
+  gpt-4.1-mini               25     33     75.8%
+  llama-70b                  26     33     78.8%
+  deepseek-r1                25     33     75.8%
+  krikri-8b                  22     33     66.7%
+
+  S3: Anaphora (pronoun resolution, donkey sentences, accessibility)
+  Model                 Correct  Total  Accuracy
+  gpt-4o                     22     28     78.6%
+  gpt-4.1-mini               17     28     60.7%
+  llama-70b                  20     28     71.4%
+  deepseek-r1                21     28     75.0%
+  krikri-8b                  19     28     67.9%
+
+  S4: Ellipsis (VP ellipsis, sluicing, antecedent selection)
+  Model                 Correct  Total  Accuracy
+  gpt-4o                     24     55     43.6%
+  gpt-4.1-mini               26     55     47.3%
+  llama-70b                  32     55     58.2%
+  deepseek-r1                30     55     54.5%
+  krikri-8b                  37     55     67.3%
+
+  S5: Adjectives (intersective, subsective, privative, intensional)
+  Model                 Correct  Total  Accuracy
+  gpt-4o                     13     23     56.5%
+  gpt-4.1-mini               14     23     60.9%
+  llama-70b                  14     23     60.9%
+  deepseek-r1                14     23     60.9%
+  krikri-8b                  13     23     56.5%
+
+  S6: Comparatives (degree semantics, scalar implicature)
+  Model                 Correct  Total  Accuracy
+  gpt-4o                     23     31     74.2%
+  gpt-4.1-mini               23     31     74.2%
+  llama-70b                  26     31     83.9%
+  deepseek-r1                21     31     67.7%
+  krikri-8b                  18     31     58.1%
+
+  S7: Temporal (tense, aspect, temporal adverbials)
+  Model                 Correct  Total  Accuracy
+  gpt-4o                     43     71     60.6%
+  gpt-4.1-mini               45     71     63.4%
+  llama-70b                  46     71     64.8%
+  deepseek-r1                49     71     69.0%
+  krikri-8b                  34     71     47.9%
+
+  S8: Verbs (aktionsart, event structure, argument alternations)
+  Model                 Correct  Total  Accuracy
+  gpt-4o                      6      8     75.0%
+  gpt-4.1-mini                6      8     75.0%
+  llama-70b                   7      8     87.5%
+  deepseek-r1                 7      8     87.5%
+  krikri-8b                   5      8     62.5%
+
+  S9: Attitudes (propositional attitudes, de re/de dicto, opacity)
+  Model                 Correct  Total  Accuracy
+  gpt-4o                     10     13     76.9%
+  gpt-4.1-mini               11     13     84.6%
+  llama-70b                  10     13     76.9%
+  deepseek-r1                11     13     84.6%
+  krikri-8b                   9     13     69.2%
+
+PARSE ERROR RATES (model didn't produce yes/no/unknown)
+------------------------------------------------------------
+  gpt-4o               15/342 (4.4%)
+  gpt-4.1-mini         0/342 (0.0%)
+  llama-70b            0/342 (0.0%)
+  deepseek-r1          8/342 (2.3%)
+  krikri-8b            20/342 (5.8%)
+
+GOLD LABEL DISTRIBUTION
+------------------------------------------------------------
+  yes         203 (59.4%)
+  no           33 (9.6%)
+  unknown     106 (31.0%)
+
+TOP PHENOMENA IDENTIFIED (per model, top 10)
+------------------------------------------------------------
+
+  gpt-4o:
+     82x  καθολικός ποσοδείκτης
+     13x  χρονική αναφορά
+     12x  χρονική διάρκεια
+      9x  παραφραστική ισοδυναμία
+      9x  άρνηση
+      9x  χρονική ακολουθία
+      5x  χρονικός προσδιορισμός
+      5x  σύγκριση
+      4x  αριθμητική συνεπαγωγή
+      4x  παραλληλισμός
+
+  gpt-4.1-mini:
+     39x  καθολικός ποσοδείκτης
+     19x  χρονική συνεπαγωγή
+     16x  χρονική συνεπαγωγή (temporal entailment)
+      6x  αριθμητική συνεπαγωγή
+      5x  καθολικός ποσοδείκτης (existential quantification)
+      5x  άρνηση
+      5x  χρονική αντίφαση
+      4x  καθολικός ποσοδείκτης με άρνηση
+      4x  καθολικός ποσοδείκτης, συνεπαγωγή
+      4x  καθολικός ποσοδείκτης και ποσοδείκτης ύπαρξης
+
+  llama-70b:
+    187x  καθολικός ποσοδείκτης
+     11x  Χρονολογική σειρά
+     10x  άρνηση
+      9x  Καθολικός ποσοδείκτης
+      8x  έλλειψη πληροφόρησης
+      6x  άρνηση και καθολικός ποσοδείκτης
+      4x  αντίφαση
+      4x  Συγκριτικός ποσοδείκτης
+      3x  Αναλογική συλλογισμός
+      3x  Χρονική αναφορά
+
+  deepseek-r1:
+     18x  καθολικός ποσοδείκτης (universal quantifier)
+      6x  χρονική αναφορά (temporal reference)
+      4x  καθολικός ποσοδείκτης (universal quantification)
+      3x  καθολικός ποσοδείκτης και συλλογισμός
+      3x  Εξαγωγή υπαρξιακού ποσοδείκτη (existential generalization)
+      3x  ρηματική έλλειψη (ellipsis)
+      2x  καθολικός ποσοδείκτης με άρνηση
+      2x  Καθολικός ποσοδείκτης (Universal Quantifier)
+      2x  Εξαγωγή υπαρκτού ποσοδείκτη (existential quantifier entailment)
+      2x  Άρνηση και ποσοδείκτης
+
+  krikri-8b:
+     32x  contradiction
+     28x  universal quantifier (καθολικός ποσοδείκτης)
+     13x  universal quantification (καθολικός ποσοδείκτης)
+     13x  existential quantification (specifically instantiation)
+     11x  existential quantification (existential closure)
+     11x  temporal inconsistency
+      7x  universal instantiation + existential generalization
+      7x  equivalence (logical equivalence)
+      6x  transitive comparison
+      6x  temporal ordering (χρονική ακολουθία)
+
+================================================================================

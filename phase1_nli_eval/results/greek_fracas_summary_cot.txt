@@ -1,0 +1,179 @@
+================================================================================
+FraCaS NLI Evaluation — Summary
+================================================================================
+
+OVERALL ACCURACY
+------------------------------------------------------------
+Model                 S1  S2  S3  S4  S5  S6  S7  S8  S9  | Overall
+------------------------------------------------------------
+gpt-4o                 52   58   50   36   30   68   56   62   62  |  51.5%  (176/342)
+gpt-4.1-mini           40   64   57   44   39   48   55   50   54  |  48.8%  (167/342)
+llama-70b              32   48   61   45   35   55   42   75   69  |  45.0%  (154/342)
+deepseek-r1            39   67   57   55   57   48   51   62   38  |  50.6%  (173/342)
+krikri-8b              42   52   43   47   61   55   44   62   69  |  48.2%  (165/342)
+------------------------------------------------------------
+
+SECTION KEY
+  S1: Quantifiers (generalized quantifiers, scope, monotonicity)
+  S2: Plurals (collective/distributive readings, plural quantification)
+  S3: Anaphora (pronoun resolution, donkey sentences, accessibility)
+  S4: Ellipsis (VP ellipsis, sluicing, antecedent selection)
+  S5: Adjectives (intersective, subsective, privative, intensional)
+  S6: Comparatives (degree semantics, scalar implicature)
+  S7: Temporal (tense, aspect, temporal adverbials)
+  S8: Verbs (aktionsart, event structure, argument alternations)
+  S9: Attitudes (propositional attitudes, de re/de dicto, opacity)
+
+DETAILED SECTION BREAKDOWN
+------------------------------------------------------------
+
+  S1: Quantifiers (generalized quantifiers, scope, monotonicity)
+  Model                 Correct  Total  Accuracy
+  gpt-4o                     42     80     52.5%
+  gpt-4.1-mini               32     80     40.0%
+  llama-70b                  26     80     32.5%
+  deepseek-r1                31     80     38.8%
+  krikri-8b                  34     80     42.5%
+
+  S2: Plurals (collective/distributive readings, plural quantification)
+  Model                 Correct  Total  Accuracy
+  gpt-4o                     19     33     57.6%
+  gpt-4.1-mini               21     33     63.6%
+  llama-70b                  16     33     48.5%
+  deepseek-r1                22     33     66.7%
+  krikri-8b                  17     33     51.5%
+
+  S3: Anaphora (pronoun resolution, donkey sentences, accessibility)
+  Model                 Correct  Total  Accuracy
+  gpt-4o                     14     28     50.0%
+  gpt-4.1-mini               16     28     57.1%
+  llama-70b                  17     28     60.7%
+  deepseek-r1                16     28     57.1%
+  krikri-8b                  12     28     42.9%
+
+  S4: Ellipsis (VP ellipsis, sluicing, antecedent selection)
+  Model                 Correct  Total  Accuracy
+  gpt-4o                     20     55     36.4%
+  gpt-4.1-mini               24     55     43.6%
+  llama-70b                  25     55     45.5%
+  deepseek-r1                30     55     54.5%
+  krikri-8b                  26     55     47.3%
+
+  S5: Adjectives (intersective, subsective, privative, intensional)
+  Model                 Correct  Total  Accuracy
+  gpt-4o                      7     23     30.4%
+  gpt-4.1-mini                9     23     39.1%
+  llama-70b                   8     23     34.8%
+  deepseek-r1                13     23     56.5%
+  krikri-8b                  14     23     60.9%
+
+  S6: Comparatives (degree semantics, scalar implicature)
+  Model                 Correct  Total  Accuracy
+  gpt-4o                     21     31     67.7%
+  gpt-4.1-mini               15     31     48.4%
+  llama-70b                  17     31     54.8%
+  deepseek-r1                15     31     48.4%
+  krikri-8b                  17     31     54.8%
+
+  S7: Temporal (tense, aspect, temporal adverbials)
+  Model                 Correct  Total  Accuracy
+  gpt-4o                     40     71     56.3%
+  gpt-4.1-mini               39     71     54.9%
+  llama-70b                  30     71     42.3%
+  deepseek-r1                36     71     50.7%
+  krikri-8b                  31     71     43.7%
+
+  S8: Verbs (aktionsart, event structure, argument alternations)
+  Model                 Correct  Total  Accuracy
+  gpt-4o                      5      8     62.5%
+  gpt-4.1-mini                4      8     50.0%
+  llama-70b                   6      8     75.0%
+  deepseek-r1                 5      8     62.5%
+  krikri-8b                   5      8     62.5%
+
+  S9: Attitudes (propositional attitudes, de re/de dicto, opacity)
+  Model                 Correct  Total  Accuracy
+  gpt-4o                      8     13     61.5%
+  gpt-4.1-mini                7     13     53.8%
+  llama-70b                   9     13     69.2%
+  deepseek-r1                 5     13     38.5%
+  krikri-8b                   9     13     69.2%
+
+PARSE ERROR RATES (model didn't produce yes/no/unknown)
+------------------------------------------------------------
+  gpt-4o               33/342 (9.6%)
+  gpt-4.1-mini         40/342 (11.7%)
+  llama-70b            64/342 (18.7%)
+  deepseek-r1          44/342 (12.9%)
+  krikri-8b            16/342 (4.7%)
+
+GOLD LABEL DISTRIBUTION
+------------------------------------------------------------
+  yes         203 (59.4%)
+  no           33 (9.6%)
+  unknown     106 (31.0%)
+
+TOP PHENOMENA IDENTIFIED (per model, top 10)
+------------------------------------------------------------
+
+  gpt-4o:
+     82x  Quantifiers
+     20x  Temporal reasoning
+     13x  Ellipsis
+     12x  Contradiction
+     10x  Temporal Relations
+      7x  Entailment
+      7x  Comparatives
+      5x  Paraphrasing
+      5x  Temporal modification
+      5x  Generalization
+
+  gpt-4.1-mini:
+     45x  Quantifiers
+      8x  Temporal entailment
+      8x  Temporal inference
+      6x  Temporal relations (Chronology)
+      4x  Quantifiers, Presupposition
+      4x  Quantifiers, Syllogistic reasoning
+      3x  Quantifiers and Subset Relations
+      3x  Quantifiers, Logical entailment
+      3x  Ellipsis
+      3x  Temporal Reference
+
+  llama-70b:
+     70x  Quantifiers
+     25x  Entailment
+     21x  Implicature
+     19x  Inference
+     15x  Syllogism
+     13x  Anaphora
+     10x  Temporal Relations
+      8x  Negation
+      7x  Universal Quantification
+      7x  Conjunction
+
+  deepseek-r1:
+      5x  Ellipsis
+      3x  Quantifiers (Universal Instantiation)
+      3x  Ellipsis (Ελλειψη)
+      3x  Temporal Conjunctions (Χρονικοί Σύνδεσμοι)
+      2x  Quantifiers (Universal & Existential)
+      2x  Quantifiers (Universal vs. Existential)
+      2x  Quantifiers + Scalar Implicature
+      2x  Quantifiers (Ποσοδείκτες)
+      2x  Quantifiers
+      2x  Negation (Άρνηση)
+
+  krikri-8b:
+      6x  **
+      4x  Contradiction in Quantified Statements
+      2x  Quantifiers (specificity addition)
+      2x  Contradiction in Quantification
+      2x  Ambiguity in Reference Resolution and Collective vs Individual Inference
+      2x  Incomplete Quantification (in the context of comparison)
+      2x  Inconsistency in Temporal Reference (Temporal Logic)
+      1x  Quantifiers (specific to general)
+      1x  Existential Generalization (from universal premises)
+      1x  Existential Generalization (with implicit restriction)
+
+================================================================================
