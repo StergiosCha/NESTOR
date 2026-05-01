@@ -26,22 +26,21 @@ import re
 import random
 import argparse
 import threading
-import xml.etree.ElementTree as ET
 from pathlib import Path
-from urllib.request import urlretrieve, Request, urlopen
+from urllib.request import urlretrieve
 from urllib.error import URLError
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from dotenv import load_dotenv
 
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from clients.azure import get_azure_client, get_ai_client, call_llm
+from utils.fracas import load_rich, SECTIONS as FRACAS_SECTIONS
+
 load_dotenv()
 
-# Load environemnt variables
-AZURE_API_KEY = os.environ.get("AZURE_API_KEY", "")
-AZURE_OPENAI_ENDPOINT = os.environ.get("AZURE_OPENAI_ENDPOINT", "")
-AZURE_OPENAI_API_VERSION = os.environ.get("AZURE_OPENAI_API_VERSION", "")
-AZURE_AI_ENDPOINT = os.environ.get("AZURE_AI_ENDPOINT", "")
 LLM_RATE_LIMIT = float(os.environ.get("LLM_RATE_LIMIT", "0") or 0)
+PHASE1_MAX_TOKENS = 1024
 
 # Model registry: each model has a deployment name and a provider type
 # provider: "azure-openai" uses the OpenAI-compatible endpoint
@@ -70,19 +69,6 @@ MODELS = {
     # },
 }
 
-# FraCaS sections and the formal semantics phenomena they test
-SECTIONS = {
-    1: "Quantifiers (generalized quantifiers, scope, monotonicity)",
-    2: "Plurals (collective/distributive readings, plural quantification)",
-    3: "Anaphora (pronoun resolution, donkey sentences, accessibility)",
-    4: "Ellipsis (VP ellipsis, sluicing, antecedent selection)",
-    5: "Adjectives (intersective, subsective, privative, intensional)",
-    6: "Comparatives (degree semantics, scalar implicature)",
-    7: "Temporal (tense, aspect, temporal adverbials)",
-    8: "Verbs (aktionsart, event structure, argument alternations)",
-    9: "Attitudes (propositional attitudes, de re/de dicto, opacity)",
-}
-
 FRACAS_XML_URL = os.environ.get("FRACAS_XML_URL", "")
 FRACAS_XML_PATH = Path("fracas.xml")
 RESULTS_PATH = Path("fracas_results_azure.json")
@@ -102,135 +88,6 @@ def download_fracas():
     except URLError as e:
         print(f"  ERROR: Could not download FraCaS XML: {e}")
         sys.exit(1)
-
-
-def parse_fracas(xml_path: Path) -> list[dict]:
-    """Parse FraCaS XML into a list of problems."""
-    tree = ET.parse(xml_path)
-    root = tree.getroot()
-    problems = []
-
-    for problem in root.iter("problem"):
-        pid = problem.get("id")
-        fracas_answer = problem.get("fracas_answer", "").strip().lower()
-
-        if fracas_answer in ("yes",):
-            gold = "yes"
-        elif fracas_answer in ("no",):
-            gold = "no"
-        elif fracas_answer in ("unknown", "undef"):
-            gold = "unknown"
-        else:
-            continue
-
-        pid_int = int(pid) if pid.isdigit() else 0
-        section = get_section(pid_int)
-
-        premises = []
-        for p in problem.findall(".//p"):
-            text = "".join(p.itertext()).strip()
-            if text:
-                premises.append(text)
-
-        h_elem = problem.find(".//h")
-        hypothesis = "".join(h_elem.itertext()).strip() if h_elem is not None else ""
-
-        if not premises or not hypothesis:
-            continue
-
-        problems.append({
-            "id": pid_int,
-            "section": section,
-            "section_name": SECTIONS.get(section, f"Section {section}"),
-            "premises": premises,
-            "hypothesis": hypothesis,
-            "gold_answer": gold,
-        })
-
-    return problems
-
-
-def get_section(pid: int) -> int:
-    """Map FraCaS problem ID to section number."""
-    boundaries = [
-        (1, 80, 1), (81, 113, 2), (114, 141, 3), (142, 196, 4),
-        (197, 219, 5), (220, 250, 6), (251, 325, 7), (326, 333, 8),
-        (334, 346, 9),
-    ]
-    for low, high, sec in boundaries:
-        if low <= pid <= high:
-            return sec
-    return 0
-
-
-# ── Azure API Calls ───────────────────────────────────────────
-
-def call_azure_openai(deployment: str, messages: list[dict], max_tokens: int = 1024) -> str:
-    """Call Azure OpenAI endpoint (for GPT models)."""
-    url = (
-        f"{AZURE_OPENAI_ENDPOINT}openai/deployments/{deployment}"
-        f"/chat/completions?api-version={AZURE_OPENAI_API_VERSION}"
-    )
-
-    payload = json.dumps({
-        "messages": messages,
-        "max_tokens": max_tokens,
-        "temperature": 0.0,
-    }).encode("utf-8")
-
-    headers = {
-        "api-key": AZURE_API_KEY,
-        "Content-Type": "application/json",
-    }
-
-    req = Request(url, data=payload, headers=headers, method="POST")
-    return _call_with_retry(req)
-
-
-def call_azure_ai(deployment: str, messages: list[dict], max_tokens: int = 1024) -> str:
-    """Call Azure AI inference endpoint (for Llama, DeepSeek, Mistral, Claude, etc.)."""
-    url = f"{AZURE_AI_ENDPOINT}models/chat/completions"
-
-    payload = json.dumps({
-        "model": deployment,
-        "messages": messages,
-        "max_tokens": max_tokens,
-        "temperature": 0.0,
-    }).encode("utf-8")
-
-    headers = {
-        "Authorization": f"Bearer {AZURE_API_KEY}",
-        "Content-Type": "application/json",
-    }
-
-    req = Request(url, data=payload, headers=headers, method="POST")
-    return _call_with_retry(req)
-
-
-def _call_with_retry(req: Request, max_retries: int = 3) -> str:
-    """Execute HTTP request with retry logic."""
-    for attempt in range(max_retries):
-        try:
-            with urlopen(req, timeout=120) as resp:
-                data = json.loads(resp.read().decode("utf-8"))
-                return data["choices"][0]["message"]["content"]
-        except Exception as e:
-            if attempt < max_retries - 1:
-                wait = 2 ** (attempt + 1)
-                print(f"    [retry {attempt+1}/{max_retries} in {wait}s: {e}]")
-                time.sleep(wait)
-            else:
-                return f"[ERROR: {e}]"
-
-
-def call_model(model_config: dict, messages: list[dict], max_tokens: int = 1024) -> str:
-    """Route to the correct Azure endpoint based on provider type."""
-    if model_config["provider"] == "azure-openai":
-        return call_azure_openai(model_config["deployment"], messages, max_tokens)
-    elif model_config["provider"] == "azure-ai":
-        return call_azure_ai(model_config["deployment"], messages, max_tokens)
-    else:
-        return f"[ERROR: Unknown provider {model_config['provider']}]"
 
 
 # ── Prompt Construction ────────────────────────────────────────
@@ -311,10 +168,14 @@ def evaluate(problems: list[dict], model_key: str, model_config: dict, results: 
         if model_key not in results:
             results[model_key] = {}
 
+    provider = model_config["provider"]
+    client = get_azure_client() if provider == "azure-openai" else get_ai_client()
+    deployment = model_config["deployment"]
+
     total = len(problems)
     done = len(results.get(model_key, {}))
     _safe_print(f"\n{'='*60}")
-    _safe_print(f"  Model: {model_key} (deployment: {model_config['deployment']})")
+    _safe_print(f"  Model: {model_key} (deployment: {deployment})")
     _safe_print(f"  Provider: {model_config['provider']}")
     _safe_print(f"  Problems: {total} total, {done} already done")
     _safe_print(f"{'='*60}")
@@ -333,15 +194,15 @@ def evaluate(problems: list[dict], model_key: str, model_config: dict, results: 
             {"role": "user", "content": build_user_prompt(prob)},
         ]
 
-        response = call_model(model_config, messages)
+        response = call_llm(client, deployment, messages, max_tokens=PHASE1_MAX_TOKENS)
         answer = extract_answer(response)
         phenomenon = extract_phenomenon(response)
         explanation = extract_explanation(response)
 
-        correct = answer == prob["gold_answer"]
+        correct = answer == prob["gold"]
 
         entry = {
-            "gold": prob["gold_answer"],
+            "gold": prob["gold"],
             "predicted": answer,
             "correct": correct,
             "section": prob["section"],
@@ -356,7 +217,7 @@ def evaluate(problems: list[dict], model_key: str, model_config: dict, results: 
             completed += 1
 
         status = "✓" if correct else "✗"
-        _safe_print(f"  [{model_key}] {completed}/{total}  #{pid} {status}  gold={prob['gold_answer']}  pred={answer}  [{prob['section_name'][:30]}]")
+        _safe_print(f"  [{model_key}] {completed}/{total}  #{pid} {status}  gold={prob['gold']}  pred={answer}  [{prob['section_name'][:30]}]")
 
         if completed % 5 == 0:
             with _results_lock:
@@ -459,14 +320,14 @@ def compute_summary(results: dict, problems: list[dict]) -> str:
     lines.append("")
 
     lines.append("SECTION KEY")
-    for sec, name in SECTIONS.items():
+    for sec, name in FRACAS_SECTIONS.items():
         lines.append(f"  S{sec}: {name}")
     lines.append("")
 
     lines.append("DETAILED SECTION BREAKDOWN")
     lines.append("-" * 60)
     for sec in range(1, 10):
-        lines.append(f"\n  S{sec}: {SECTIONS[sec]}")
+        lines.append(f"\n  S{sec}: {FRACAS_SECTIONS[sec]}")
         lines.append(f"  {'Model':<20} {'Correct':>8} {'Total':>6} {'Accuracy':>9}")
         for model_key in MODELS:
             if model_key not in results:
@@ -497,7 +358,7 @@ def compute_summary(results: dict, problems: list[dict]) -> str:
     lines.append("-" * 60)
     gold_counts = {"yes": 0, "no": 0, "unknown": 0}
     for p in problems:
-        gold_counts[p["gold_answer"]] += 1
+        gold_counts[p["gold"]] += 1
     for label, count in gold_counts.items():
         lines.append(f"  {label:<10} {count:>4} ({count/len(problems)*100:.1f}%)")
 
@@ -533,7 +394,7 @@ def balanced_sample(problems: list[dict], n_per_label: int = 20, seed: int = 42)
 
     by_label = {"yes": [], "no": [], "unknown": []}
     for p in problems:
-        by_label[p["gold_answer"]].append(p)
+        by_label[p["gold"]].append(p)
 
     sampled = []
     for label in ["yes", "no", "unknown"]:
@@ -588,10 +449,10 @@ def main():
     if not args.summary_only:
         missing = [
             name for name, val in [
-                ("AZURE_API_KEY", AZURE_API_KEY),
-                ("AZURE_OPENAI_ENDPOINT", AZURE_OPENAI_ENDPOINT),
-                ("AZURE_OPENAI_API_VERSION", AZURE_OPENAI_API_VERSION),
-                ("AZURE_AI_ENDPOINT", AZURE_AI_ENDPOINT),
+                ("AZURE_API_KEY", os.environ.get("AZURE_API_KEY", "")),
+                ("AZURE_OPENAI_ENDPOINT", os.environ.get("AZURE_OPENAI_ENDPOINT", "")),
+                ("AZURE_OPENAI_API_VERSION", os.environ.get("AZURE_OPENAI_API_VERSION", "")),
+                ("AZURE_AI_ENDPOINT", os.environ.get("AZURE_AI_ENDPOINT", "")),
                 ("FRACAS_XML_URL", FRACAS_XML_URL),
             ] if not val
         ]
@@ -603,7 +464,7 @@ def main():
     # Load FraCaS
     print("Loading FraCaS test suite...")
     download_fracas()
-    problems = parse_fracas(FRACAS_XML_PATH)
+    problems = load_rich(FRACAS_XML_PATH)
     print(f"  Parsed {len(problems)} problems across {len(set(p['section'] for p in problems))} sections")
 
     if args.single_premise_only:
@@ -617,7 +478,7 @@ def main():
     if args.balanced > 0:
         problems = balanced_sample(problems, n_per_label=args.balanced, seed=args.seed)
         from collections import Counter
-        dist = Counter(p["gold_answer"] for p in problems)
+        dist = Counter(p["gold"] for p in problems)
         print(f"  Balanced sample: {len(problems)} problems ({dict(dist)})")
 
     results = load_results() if args.resume or args.summary_only else {}
