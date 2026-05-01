@@ -27,15 +27,12 @@ import tempfile
 import time
 from pathlib import Path
 from dotenv import load_dotenv
-from openai import AzureOpenAI, OpenAI
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from clients.azure import get_azure_client, get_ai_client, call_llm
+from utils.fracas import load_flat
 
 load_dotenv()
-
-# Load environemnt variables
-API_KEY = os.environ.get("AZURE_API_KEY", "")
-OPENAI_ENDPOINT = os.environ.get("AZURE_OPENAI_ENDPOINT", "")
-OPENAI_API_VERSION = os.environ.get("AZURE_OPENAI_API_VERSION", "")
-AZURE_AI_ENDPOINT = os.environ.get("AZURE_AI_ENDPOINT", "")
 
 PROVER9_PATH = os.environ.get("PROVER9_PATH", "")
 MACE4_PATH = os.environ.get("MACE4_PATH", "")
@@ -44,29 +41,7 @@ PROVER_TIMEOUT = int(os.environ.get("PROVER_TIMEOUT", "0") or 0)
 MAX_RETRIES = int(os.environ.get("MAX_RETRIES", "0") or 0)
 PROMPT_DIR = Path(__file__).parent / "prompts"
 
-
-# ============================================================
-# LLM CLIENTS
-# ============================================================
-
-def get_azure_client():
-    return AzureOpenAI(
-        api_version=OPENAI_API_VERSION,
-        azure_endpoint=OPENAI_ENDPOINT,
-        api_key=API_KEY,
-    )
-
-def get_ai_client():
-    return OpenAI(base_url=AZURE_AI_ENDPOINT, api_key=API_KEY)
-
-
-def call_llm(client, model, messages, temperature=0.0, max_tokens=500):
-    resp = client.chat.completions.create(
-        model=model, messages=messages,
-        temperature=temperature, max_tokens=max_tokens,
-    )
-    return resp.choices[0].message.content
-
+FOL_MAX_TOKENS = 500
 
 # ============================================================
 # FOL TRANSLATION
@@ -84,7 +59,7 @@ def translate_to_fol(client, model, premise, hypothesis):
         {"role": "system", "content": "You are an expert in first-order logic and formal semantics."},
         {"role": "user", "content": prompt},
     ]
-    return call_llm(client, model, messages)
+    return call_llm(client, model, messages, max_tokens=FOL_MAX_TOKENS)
 
 
 def parse_fol_output(raw_text):
@@ -246,7 +221,7 @@ def fix_fol(client, model, premise, hypothesis, previous_fol, error_message):
         {"role": "system", "content": "You are an expert in first-order logic. Fix the errors."},
         {"role": "user", "content": prompt},
     ]
-    return call_llm(client, model, messages)
+    return call_llm(client, model, messages, max_tokens=FOL_MAX_TOKENS)
 
 
 def run_fol_pipeline(client, model, premise, hypothesis, max_retries=None):
@@ -373,40 +348,6 @@ def run_batch(items, client, model, output_file=None):
 
 
 # ============================================================
-# FRACAS LOADER
-# ============================================================
-
-def load_fracas(xml_path):
-    """Load FraCaS items from XML."""
-    import xml.etree.ElementTree as ET
-    tree = ET.parse(xml_path)
-    root = tree.getroot()
-    items = []
-
-    for problem in root.iter("problem"):
-        pid = problem.get("id", "")
-        answer = problem.get("fracas_answer", "").strip().lower()
-
-        premises = []
-        for p in problem.iter("p"):
-            if p.text:
-                premises.append(p.text.strip())
-
-        hyp_elem = problem.find(".//h")
-        hypothesis = hyp_elem.text.strip() if hyp_elem is not None and hyp_elem.text else ""
-
-        if premises and hypothesis:
-            items.append({
-                "id": f"fracas-{pid}",
-                "premise": " ".join(premises),
-                "hypothesis": hypothesis,
-                "gold": answer,
-            })
-
-    return items
-
-
-# ============================================================
 # MAIN
 # ============================================================
 
@@ -429,26 +370,9 @@ if __name__ == "__main__":
                         help="FraCaS section filter (e.g. '1' for quantifiers)")
     args = parser.parse_args()
 
-    missing = [
-        name for name, val in [
-            ("AZURE_API_KEY", API_KEY),
-            ("AZURE_OPENAI_ENDPOINT", OPENAI_ENDPOINT),
-            ("AZURE_OPENAI_API_VERSION", OPENAI_API_VERSION),
-            ("AZURE_AI_ENDPOINT", AZURE_AI_ENDPOINT),
-            ("PROVER9_PATH", PROVER9_PATH),
-            ("MACE4_PATH", MACE4_PATH),
-            ("PROVER_TIMEOUT", PROVER_TIMEOUT),
-            ("MAX_RETRIES", MAX_RETRIES),
-        ] if not val
-    ]
-    if missing:
-        print(f"ERROR: missing required env vars: {', '.join(missing)}")
-        print("  copy .env.example to .env and fill in values")
-        sys.exit(1)
-
     # Load data
     if args.data.endswith(".xml"):
-        items = load_fracas(args.data)
+        items = load_flat(args.data)
     else:
         with open(args.data) as f:
             items = json.load(f)
