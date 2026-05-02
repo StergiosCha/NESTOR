@@ -37,6 +37,13 @@ Phase 3: Analysis
 
 ```
 NESTOR/
+├── clients/               # Shared LLM client setup
+│   └── azure.py           # get_azure_client, get_ai_client, call_llm
+│
+├── utils/                 # Shared utilities
+│   ├── models.py          # model registry
+│   └── fracas.py          # load_rich, load_flat, FraCaS sections, get_section
+│
 ├── phase1_nli_eval/       # Phase 1: LLM-only NLI
 │   ├── fracas_eval.py     # OpenAI evaluation script
 │   ├── fracas_eval_azure.py  # Azure evaluation script
@@ -141,18 +148,9 @@ Formalise premise P and hypothesis H directly. The proof itself serves as the ex
 Based on [Valentino et al. (ACL 2025)](https://arxiv.org/abs/2502.12345). Formalise the LLM's explanation E as axioms, then prove P ∪ E ⊨ H. Useful when common-sense knowledge bridges the gap between P and H.
 
 ## Configuration
+Copy `.env.example` to `.env` and fill in `AZURE_API_KEY`
 
-Set your Azure API key:
-```bash
-export AZURE_KEY="your-key-here"
-```
-
-Both pipelines read from environment variables:
-- `AZURE_KEY` — API key
-- `AZURE_OPENAI_ENDPOINT` — GPT models endpoint
-- `AZURE_AI_ENDPOINT` — Llama/DeepSeek endpoint
-- `COQC_PATH` — path to coqc (default: `coqc`)
-- `PROVER9_PATH` / `MACE4_PATH` — paths to provers (default: `prover9` / `mace4`)
+`.env.example` lists every variable the pipelines read (Azure endpoints, tool paths, timeouts, max retries). See [CONTRIBUTING.md](CONTRIBUTING.md) for setup and installation instructions.
 
 ## Authors
 
