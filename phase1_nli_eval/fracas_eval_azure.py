@@ -34,40 +34,14 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from dotenv import load_dotenv
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from clients.azure import get_azure_client, get_ai_client, call_llm
+from clients.azure import get_client, call_llm
+from utils.models import MODELS
 from utils.fracas import load_rich, SECTIONS as FRACAS_SECTIONS
 
 load_dotenv()
 
 LLM_RATE_LIMIT = float(os.environ.get("LLM_RATE_LIMIT", "0") or 0)
 PHASE1_MAX_TOKENS = 1024
-
-# Model registry: each model has a deployment name and a provider type
-# provider: "azure-openai" uses the OpenAI-compatible endpoint
-#           "azure-ai" uses the Azure AI model inference endpoint
-MODELS = {
-    "gpt-4o": {
-        "deployment": "gpt-4o",
-        "provider": "azure-openai",
-    },
-    # Uncomment these as you deploy them:
-    # "deepseek-r1": {
-    #     "deployment": "DeepSeek-R1",
-    #     "provider": "azure-ai",
-    # },
-    # "llama-70b": {
-    #     "deployment": "Llama-3.3-70B-Instruct",
-    #     "provider": "azure-ai",
-    # },
-    # "llama-8b": {
-    #     "deployment": "Llama-3.1-8B-Instruct",
-    #     "provider": "azure-ai",
-    # },
-    # "claude-sonnet": {
-    #     "deployment": "Claude-Sonnet-4.6",
-    #     "provider": "azure-ai",
-    # },
-}
 
 FRACAS_XML_URL = os.environ.get("FRACAS_XML_URL", "")
 FRACAS_XML_PATH = Path("fracas.xml")
@@ -168,8 +142,7 @@ def evaluate(problems: list[dict], model_key: str, model_config: dict, results: 
         if model_key not in results:
             results[model_key] = {}
 
-    provider = model_config["provider"]
-    client = get_azure_client() if provider == "azure-openai" else get_ai_client()
+    client = get_client(model_key)
     deployment = model_config["deployment"]
 
     total = len(problems)
