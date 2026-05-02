@@ -1,12 +1,14 @@
-"""Shared Azure LLM client setup.
+"""Shared LLM client setup.
 
-Two endpoint flavours behind a single chat-completions call:
+Three endpoint flavours behind a single chat-completions call:
   - get_azure_openai_client(): AzureOpenAI SDK for GPT deployments (provider "azure-openai").
   - get_azure_ai_client():     OpenAI SDK pointed at the Azure AI inference endpoint
                                (provider "azure-ai" for Llama, DeepSeek, Mistral, Phi).
+  - get_krikri_client():       OpenAI SDK pointed at the ILSP LiteLLM proxy
+                               (provider "krikri" — requires LITELLM_HOST + LITELLM_ILSP_EVAL_API_KEY).
 
 get_client(model_name) auto-selects the right client from the MODELS registry.
-call_llm() takes either client and uses the OpenAI chat-completions contract.
+call_llm() takes any client and uses the OpenAI chat-completions contract.
 """
 
 import os
@@ -29,6 +31,14 @@ def get_azure_ai_client():
     )
 
 
+def get_krikri_client():
+    host = os.environ.get("LITELLM_HOST", "").rstrip("/")
+    return OpenAI(
+        base_url=f"{host}/v1",
+        api_key=os.environ.get("LITELLM_ILSP_EVAL_API_KEY", ""),
+    )
+
+
 def get_client(model_name: str):
     if model_name not in MODELS:
         valid = ", ".join(sorted(MODELS))
@@ -36,6 +46,8 @@ def get_client(model_name: str):
     provider = MODELS[model_name]["provider"]
     if provider == "azure-openai":
         return get_azure_openai_client()
+    if provider == "krikri":
+        return get_krikri_client()
     return get_azure_ai_client()
 
 
