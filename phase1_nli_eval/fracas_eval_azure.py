@@ -44,7 +44,7 @@ LLM_RATE_LIMIT = float(os.environ.get("LLM_RATE_LIMIT", "0") or 0)
 PHASE1_MAX_TOKENS = 1024
 
 FRACAS_XML_URL = os.environ.get("FRACAS_XML_URL", "")
-FRACAS_XML_PATH = Path("fracas.xml")
+FRACAS_XML_PATH = Path("../data/fracas/fracas.xml")
 RESULTS_PATH = Path("fracas_results_azure.json")
 SUMMARY_PATH = Path("fracas_summary_azure.txt")
 
