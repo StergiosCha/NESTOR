@@ -4,8 +4,6 @@ This guide gets a new contributor from a fresh clone to a working test of every 
 
 *Work in progress*
 
----
-
 ## 1. Prerequisites
 
 ### Python
@@ -40,8 +38,6 @@ All LLM calls go through Azure AI Foundry. You need:
 
 See `utils/models.py` for the full model registry.
 
----
-
 ## 2. Clone and configure
 
 ```bash
@@ -52,8 +48,6 @@ cp .env.example .env
 
 Open `.env` and fill in `AZURE_API_KEY`. 
 `.env` is gitignored; never commit your secrets.
-
----
 
 ## 3. Environment variables
 
@@ -75,8 +69,6 @@ Full reference to `.env` configuration:
 | `FRACAS_XML_URL` | Phase 1 | URL to download FraCaS XML (auto-download on first run) |
 
 If a required variable is missing, the pipeline will fail or revert to default configuration.
-
----
 
 ## 4. Create virtual env for Python and install dependencies
 
@@ -107,13 +99,10 @@ conda activate nestor
 pip install -r requirements.txt
 ```
 
----
-
 ## 5. Running each phase pipeline
 
 See [README](./README.md).
 
----
 
 ## 6. Adding a new Azure model
 
@@ -127,8 +116,8 @@ See [README](./README.md).
        "provider": "azure-ai",              # Llama, DeepSeek, Mistral, etc. (Azure AI Inference)
    },
    ```
-3. Run any pipeline with `--model my-model` argument. 
----
+3. Run any pipeline with the `--model my-model` argument. 
+
 
 ## 7. Where results land
 
@@ -138,8 +127,8 @@ See [README](./README.md).
 | Phase 2: FOL pipeline | `phase2_fol/results/*.json` | gitignored |
 | Phase 2: Coq pipeline | `phase2_coq/results/*.json` | gitignored |
 
-*Results are intentionally gitignored to prevent each contributor's local results from being accidentally overwritten.*
----
+Results are intentionally gitignored to prevent each contributor's local results from being accidentally overwritten.
+
 
 ## 8. Branching strategy
 
