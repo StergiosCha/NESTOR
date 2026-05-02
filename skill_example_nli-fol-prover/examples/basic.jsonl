@@ -1,0 +1,8 @@
+{"premise": "All cats are animals", "hypothesis": "Some cats are animals", "label": "entailment"}
+{"premise": "Every linguist reads a paper", "hypothesis": "Some linguist reads a paper", "label": "entailment"}
+{"premise": "No dog is a cat", "hypothesis": "Some dog is a cat", "label": "contradiction"}
+{"premise": "All dogs bark", "hypothesis": "Fido barks", "label": "neutral"}
+{"premise": "John is a student", "hypothesis": "John is a person", "label": "neutral"}
+{"premise": "All birds fly", "hypothesis": "No bird flies", "label": "contradiction"}
+{"premise": "Some students are lazy", "hypothesis": "All students are lazy", "label": "neutral"}
+{"premise": "Every man is mortal. Socrates is a man", "hypothesis": "Socrates is mortal", "label": "entailment"}
