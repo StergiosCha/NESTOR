@@ -1,0 +1,60 @@
+{
+  "models": [
+    {
+      "name": "claude-sonnet-4",
+      "provider": "anthropic",
+      "model": "claude-sonnet-4-20250514",
+      "api_key_env": "ANTHROPIC_API_KEY"
+    },
+    {
+      "name": "gpt-4o",
+      "provider": "azure",
+      "model": "gpt-4o",
+      "endpoint": "https://YOUR_RESOURCE.openai.azure.com",
+      "api_key_env": "AZURE_OPENAI_KEY",
+      "api_version": "2024-06-01"
+    },
+    {
+      "name": "gpt-4.1",
+      "provider": "azure",
+      "model": "gpt-4.1",
+      "endpoint": "https://YOUR_RESOURCE.openai.azure.com",
+      "api_key_env": "AZURE_OPENAI_KEY",
+      "api_version": "2024-06-01"
+    },
+    {
+      "name": "llama-3.1-70b",
+      "provider": "together",
+      "model": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+      "endpoint": "https://api.together.xyz",
+      "api_key_env": "TOGETHER_API_KEY"
+    },
+    {
+      "name": "mistral-large",
+      "provider": "compatible",
+      "model": "mistral-large-latest",
+      "endpoint": "https://api.mistral.ai",
+      "api_key_env": "MISTRAL_API_KEY"
+    },
+    {
+      "name": "deepseek-v3",
+      "provider": "compatible",
+      "model": "deepseek-chat",
+      "endpoint": "https://api.deepseek.com",
+      "api_key_env": "DEEPSEEK_API_KEY"
+    },
+    {
+      "name": "qwen-2.5-72b",
+      "provider": "groq",
+      "model": "qwen-2.5-72b",
+      "endpoint": "https://api.groq.com/openai",
+      "api_key_env": "GROQ_API_KEY"
+    },
+    {
+      "name": "gemma-2-27b-local",
+      "provider": "ollama",
+      "model": "gemma2:27b",
+      "endpoint": "http://localhost:11434"
+    }
+  ]
+}

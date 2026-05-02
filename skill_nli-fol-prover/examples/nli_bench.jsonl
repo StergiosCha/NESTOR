@@ -1,0 +1,20 @@
+{"id": 1, "premise": "All cats are animals", "hypothesis": "Some cats are animals", "label": "entailment", "phenomenon": "monotonicity_upward"}
+{"id": 2, "premise": "No dog is a cat", "hypothesis": "Some dog is a cat", "label": "contradiction", "phenomenon": "negation"}
+{"id": 3, "premise": "Every student passed the exam", "hypothesis": "Some student failed the exam", "label": "contradiction", "phenomenon": "universal_negation"}
+{"id": 4, "premise": "Some linguists study syntax", "hypothesis": "All linguists study syntax", "label": "neutral", "phenomenon": "some_not_all"}
+{"id": 5, "premise": "John is a bachelor", "hypothesis": "John is married", "label": "neutral", "phenomenon": "lexical_knowledge"}
+{"id": 6, "premise": "Every man is mortal. Socrates is a man", "hypothesis": "Socrates is mortal", "label": "entailment", "phenomenon": "syllogism"}
+{"id": 7, "premise": "No reptile is a mammal", "hypothesis": "No mammal is a reptile", "label": "entailment", "phenomenon": "conversion_no"}
+{"id": 8, "premise": "All birds fly. Tweety is a bird", "hypothesis": "Tweety flies", "label": "entailment", "phenomenon": "universal_instantiation"}
+{"id": 9, "premise": "Mary read every book", "hypothesis": "Mary read some book", "label": "entailment", "phenomenon": "monotonicity_object"}
+{"id": 10, "premise": "No student read every book", "hypothesis": "Every student read some book", "label": "neutral", "phenomenon": "scope_ambiguity"}
+{"id": 11, "premise": "John and Mary are students", "hypothesis": "John is a student", "label": "entailment", "phenomenon": "conjunction_elimination"}
+{"id": 12, "premise": "John is tall and thin", "hypothesis": "John is tall", "label": "entailment", "phenomenon": "adjective_conjunction"}
+{"id": 13, "premise": "All students who study pass", "hypothesis": "All students pass", "label": "neutral", "phenomenon": "relative_clause_restriction"}
+{"id": 14, "premise": "Every Italian loves some opera", "hypothesis": "There is an opera that every Italian loves", "label": "neutral", "phenomenon": "quantifier_scope"}
+{"id": 15, "premise": "Most students passed", "hypothesis": "Some students passed", "label": "entailment", "phenomenon": "most_implies_some"}
+{"id": 16, "premise": "At least three students passed", "hypothesis": "At least two students passed", "label": "entailment", "phenomenon": "numerical_monotonicity"}
+{"id": 17, "premise": "John did not see Mary", "hypothesis": "Mary was seen by John", "label": "contradiction", "phenomenon": "passive_negation"}
+{"id": 18, "premise": "Every cat chased a mouse", "hypothesis": "A mouse was chased by every cat", "label": "neutral", "phenomenon": "passive_scope"}
+{"id": 19, "premise": "John likes himself", "hypothesis": "John likes John", "label": "entailment", "phenomenon": "reflexive"}
+{"id": 20, "premise": "If it rains then the street is wet. It rains", "hypothesis": "The street is wet", "label": "entailment", "phenomenon": "modus_ponens"}
