@@ -26,7 +26,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from clients.azure import get_azure_client, get_ai_client, call_llm
+from clients.azure import get_client, call_llm
 from utils.fracas import load_flat
 
 load_dotenv()
@@ -266,12 +266,18 @@ if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser(description="NESTOR Coq Pipeline")
-    parser.add_argument("--data", default="../data/fracas/fracas.xml")
-    parser.add_argument("--model", default="gpt-4o")
-    parser.add_argument("--client", default="azure", choices=["azure", "ai"])
-    parser.add_argument("--approach", default="direct", choices=["direct", "valentino"])
-    parser.add_argument("--output", default=None)
-    parser.add_argument("--limit", type=int, default=None)
+    parser.add_argument("--data", default="../data/fracas/fracas.xml",
+                        help="Path to dataset (FraCaS XML or JSON)")
+    parser.add_argument("--model", default="gpt-4o",
+                        help="Model key (see utils/models.py)")
+    parser.add_argument("--approach", default="direct", choices=["direct", "valentino"],
+                        help="Coq approach: direct or valentino")
+    parser.add_argument("--output", default=None,
+                        help="Output JSON file")
+    parser.add_argument("--limit", type=int, default=None,
+                        help="Max items to process")
+    parser.add_argument("--section", default=None,
+                        help="FraCaS section filter (e.g. '1' for quantifiers)")
     args = parser.parse_args()
 
     missing = [
@@ -291,11 +297,13 @@ if __name__ == "__main__":
         sys.exit(1)
 
     items = load_flat(args.data) if args.data.endswith(".xml") else json.load(open(args.data))
+    if args.section:
+        items = [it for it in items if it["id"].split("-")[1].startswith(args.section)]
     if args.limit:
         items = items[:args.limit]
 
     print(f"Loaded {len(items)} items, Model: {args.model}, Approach: {args.approach}\n")
 
-    client = get_azure_client() if args.client == "azure" else get_ai_client()
+    client = get_client(args.model)
     output = args.output or f"results/coq_{args.approach}_{args.model}_{len(items)}items.json"
     run_batch(items, client, args.model, approach=args.approach, output_file=output)
