@@ -42,7 +42,7 @@ NESTOR/
 │
 ├── utils/                 # Shared utilities
 │   ├── models.py          # model registry
-│   └── fracas.py          # load_rich, load_flat, FraCaS sections, get_section
+│   └── fracas.py          # legacy FraCaS loader
 │
 ├── phase1_nli_eval/       # Phase 1: LLM-only NLI
 │   ├── fracas_eval.py     # OpenAI evaluation script
@@ -78,10 +78,12 @@ NESTOR/
 │   ├── Coqification_1-5.v
 │   └── ...
 │
-├── data/
+├── data/                  # Datasets + unified loaders
+│   ├── schema.py          # Sample dataclass, LABELS, SOURCES, FRACAS_LABEL_MAP
+│   ├── loaders.py         # load_fracas, load_greek_fracas, load_oyxoy → list[Sample]
 │   ├── fracas/            # English FraCaS (fracas.xml)
-│   ├── greek_fracas/      # Greek FraCaS (to be added)
-│   └── oyxoy/             # OYXOY-NLI (to be added)
+│   ├── greek_fracas/      # Greek FraCaS (greek_fracas.json)
+│   └── oyxoy/             # OYXOY-NLI (OYXOY.json)
 │
 ├── docs/
 │   ├── protocol.tex       # Full experimental protocol
