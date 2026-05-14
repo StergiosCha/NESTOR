@@ -1,8 +1,6 @@
-"""Dataset loaders for FraCaS, Greek FraCaS and OYXOY. 
-Each load_* function returns a list[Sample] under
-the unified schema in ~/data/schema.py
-
-Assuming Greek FraCaS follows exact OYXOY-style json format"
+"""Dataset loaders for FraCaS, multilabel FraCaS and OYXOY.
+Each load_* function returns a list[Sample] under the unified schema
+in data/schema.py.
 """
 
 import json
@@ -10,9 +8,24 @@ import re
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
-from data.schema import FRACAS_LABEL_MAP, Sample
+from data.schema import (
+    FRACAS_LABEL_MAP,
+    FRACAS_XML_SECTION_MAP,
+    OYXOY_TO_FRACAS_SECTION,
+    Sample,
+)
 
 _FRACAS_NUMBERING = re.compile(r"^\s*\d+(?:\.\d+)*\s+")
+
+
+def _fracas_sections_from_tags(tags) -> list[str]:
+    seen, out = set(), []
+    for t in tags:
+        sec = OYXOY_TO_FRACAS_SECTION.get(t)
+        if sec is not None and sec not in seen:
+            seen.add(sec)
+            out.append(sec)
+    return out
 
 
 def load_fracas(xml_path) -> list[Sample]:
@@ -59,31 +72,36 @@ def load_fracas(xml_path) -> list[Sample]:
             source="fracas",
             premise=" ".join(premises),
             hypothesis=hypothesis,
+            language="en",
             labels=[gold],
             tags=[tag] if tag else [],
+            fracas_sections=[FRACAS_XML_SECTION_MAP[section]] if section else [],
         ))
 
     return samples
 
 
-def load_json(json_path, source: str) -> list[Sample]:
+def _load_json(json_path, source: str) -> list[Sample]:
     raw = json.loads(Path(json_path).read_text(encoding="utf-8"))
-    return [
-        Sample(
+    out = []
+    for i, s in enumerate(raw["samples"], start=1):
+        tags = list(s.get("tags", []))
+        out.append(Sample(
             id=f"{source}-{i:04d}",
             source=source,
             premise=s["premise"],
             hypothesis=s["hypothesis"],
+            language="el",
             labels=list(s.get("labels", [])),
-            tags=list(s.get("tags", [])),
-        )
-        for i, s in enumerate(raw["samples"], start=1)
-    ]
+            tags=tags,
+            fracas_sections=_fracas_sections_from_tags(tags),
+        ))
+    return out
 
 
-def load_greek_fracas(json_path) -> list[Sample]:
-    return load_json(json_path, "greek-fracas")
+def load_multilabel_fracas(json_path) -> list[Sample]:
+    return _load_json(json_path, "multilabel-fracas")
 
 
 def load_oyxoy(json_path) -> list[Sample]:
-    return load_json(json_path, "oyxoy")
+    return _load_json(json_path, "oyxoy")
