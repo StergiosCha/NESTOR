@@ -3,13 +3,86 @@
 from dataclasses import dataclass, field
 
 LABELS = ("Entailment", "Contradiction", "Unknown")
-SOURCES = ("fracas", "greek-fracas", "oyxoy")
+
+SOURCES = (
+    "fracas",
+    "fracas-translated",
+    "fracas-extended",
+    "multilabel-fracas",
+    "oyxoy",
+)
+
+MULTILABEL_SOURCES = frozenset({"multilabel-fracas", "oyxoy"})
+
+LANGUAGES = ("en", "el")
 
 FRACAS_LABEL_MAP = {
     "yes": "Entailment",
     "no": "Contradiction",
     "unknown": "Unknown",
     "undef": "Unknown",
+}
+
+FRACAS_SECTIONS = (
+    "Generalized Quantifiers",
+    "Plurals",
+    "Anaphora",
+    "Ellipsis",
+    "Adjectives",
+    "Comparatives",
+    "Temporal Reference",
+    "Verbs",
+    "Attitudes",
+)
+
+# Sections as they appear in the original FraCaS XML <comment class="section"> headers.
+FRACAS_XML_SECTION_MAP = {
+    "GENERALIZED QUANTIFIERS": "Generalized Quantifiers",
+    "PLURALS": "Plurals",
+    "(NOMINAL) ANAPHORA": "Anaphora",
+    "ELLIPSIS": "Ellipsis",
+    "ADJECTIVES": "Adjectives",
+    "COMPARATIVES": "Comparatives",
+    "TEMPORAL REFERENCE": "Temporal Reference",
+    "VERBS": "Verbs",
+    "ATTITUDES": "Attitudes",
+}
+
+# OYXOY tag to canonical FraCaS section mapping.
+# Tags absent from this dict contribute nothing to a Sample's fracas_sections.
+OYXOY_TO_FRACAS_SECTION = {
+    "Lexical Entailment:Lexical Semantics:Hyponymy": "Generalized Quantifiers",
+    "Lexical Entailment:Lexical Semantics:Hypernymy": "Generalized Quantifiers",
+    "Lexical Entailment:Lexical Semantics:Synonymy": "Verbs",
+    "Lexical Entailment:Lexical Semantics:Antonymy": "Verbs",
+    "Lexical Entailment:Lexical Semantics:Meronymy": "Plurals",
+    "Lexical Entailment:Morphological Modification": "Adjectives",
+    "Lexical Entailment:Factivity:Factive": "Attitudes",
+    "Lexical Entailment:Factivity:Non-Factive": "Attitudes",
+    "Lexical Entailment:Symmetry/Collectivity": "Plurals",
+    "Lexical Entailment:Redundancy": "Adjectives",
+    "Lexical Entailment:FAO": "Generalized Quantifiers",
+    "Predicate-Argument Structure:Syntactic Ambiguity": "Adjectives",
+    "Predicate-Argument Structure:Core Arguments": "Verbs",
+    "Predicate-Argument Structure:Alternations": "Verbs",
+    "Predicate-Argument Structure:Ellipsis": "Ellipsis",
+    "Predicate-Argument Structure:Anaphora/Coreference": "Anaphora",
+    "Predicate-Argument Structure:Intersectivity:Intersective": "Adjectives",
+    "Predicate-Argument Structure:Intersectivity:Non-Intersective": "Adjectives",
+    "Predicate-Argument Structure:Restrictivity:Restrictive": "Anaphora",
+    "Predicate-Argument Structure:Restrictivity:Non-Restrictive": "Anaphora",
+    "Logic:Single Negation": "Generalized Quantifiers",
+    "Logic:Multiple Negations": "Generalized Quantifiers",
+    "Logic:Conjunction": "Plurals",
+    "Logic:Disjunction": "Generalized Quantifiers",
+    "Logic:Conditionals": "Attitudes",
+    "Logic:Negative Concord": "Generalized Quantifiers",
+    "Logic:Quantification:Universal": "Generalized Quantifiers",
+    "Logic:Quantification:Existential": "Generalized Quantifiers",
+    "Logic:Quantification:Non-Standard": "Generalized Quantifiers",
+    "Logic:Comparatives": "Comparatives",
+    "Logic:Temporal": "Temporal Reference",
+    "Common Sense/Knowledge": "Attitudes",
 }
 
 
@@ -19,5 +92,11 @@ class Sample:
     source: str
     premise: str
     hypothesis: str
+    language: str
     labels: list[str] = field(default_factory=list)
     tags: list[str] = field(default_factory=list)
+    fracas_sections: list[str] = field(default_factory=list)
+
+    @property
+    def multilabel(self) -> bool:
+        return self.source in MULTILABEL_SOURCES
