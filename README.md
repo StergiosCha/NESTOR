@@ -17,9 +17,11 @@ A verification loop (k=3) feeds prover/compiler errors back to the LLM for self-
 
 ```
 Phase 1: LLM-only NLI evaluation
-  ├── English FraCaS (346 items, 9 phenomena)
-  ├── Greek FraCaS
-  └── OYXOY-NLI (1,762 pairs, multi-label)
+  ├── English FraCaS         (346 items, 9 phenomena, single-label)
+  ├── Translated FraCaS      (Greek translation of FraCaS, single-label)
+  ├── Extended FraCaS        (Greek FraCaS extension, ids 347+, single-label)
+  ├── Multilabel FraCaS      (Greek, multi-label)
+  └── OYXOY-NLI              (Greek, multi-label, common-sense oriented)
 
 Phase 2: Formal verification (parallel paths)
   ├── FOL path: NL → FOL → Prover9/MACE4
@@ -79,10 +81,13 @@ NESTOR/
 │   └── ...
 │
 ├── data/                  # Datasets + unified loaders
-│   ├── schema.py          # Sample dataclass, LABELS, SOURCES, FRACAS_LABEL_MAP
-│   ├── loaders.py         # load_fracas, load_greek_fracas, load_oyxoy → list[Sample]
+│   ├── schema.py          # Sample dataclass, LABELS, SOURCES, FRACAS_LABEL_MAP, OYXOY_TO_FRACAS_SECTION
+│   ├── loaders.py         # load_fracas, load_translated_fracas, load_extended_fracas,
+│   │                      # load_multilabel_fracas, load_oyxoy → list[Sample]
 │   ├── fracas/            # English FraCaS (fracas.xml)
-│   ├── greek_fracas/      # Greek FraCaS (greek_fracas.json)
+│   ├── translated_fracas/ # Greek translation of FraCaS (translated_fracas.xml)
+│   ├── extended_fracas/   # Greek FraCaS extension, ids 347+ (extended_fracas.xml)
+│   ├── multilabel_fracas/ # Greek multilabel FraCaS (multilabel_fracas.json)
 │   └── oyxoy/             # OYXOY-NLI (OYXOY.json)
 │
 ├── docs/
