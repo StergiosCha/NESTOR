@@ -52,8 +52,9 @@ def get_client(model_name: str):
 
 
 def call_llm(client, model, messages, max_tokens, temperature=0.0):
+    deployment = MODELS[model]["deployment"] if model in MODELS else model
     resp = client.chat.completions.create(
-        model=model,
+        model=deployment,
         messages=messages,
         temperature=temperature,
         max_tokens=max_tokens,

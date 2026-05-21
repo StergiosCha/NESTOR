@@ -35,9 +35,9 @@ load_dotenv()
 
 PROVER9_PATH = os.environ.get("PROVER9_PATH", "")
 MACE4_PATH = os.environ.get("MACE4_PATH", "")
-PROVER_TIMEOUT = int(os.environ.get("PROVER_TIMEOUT", "0") or 0)
+PROVER_TIMEOUT = int(os.environ.get("PROVER_TIMEOUT", "30") or 30)
 
-MAX_RETRIES = int(os.environ.get("MAX_RETRIES", "0") or 0)
+MAX_RETRIES = int(os.environ.get("MAX_RETRIES", "3") or 3)
 PROMPT_DIR = Path(__file__).parent / "prompts"
 
 FOL_MAX_TOKENS = 500

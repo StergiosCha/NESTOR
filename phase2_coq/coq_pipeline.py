@@ -31,9 +31,9 @@ from utils.fracas import load_flat
 
 load_dotenv()
 
-COQC_PATH = os.environ.get("COQC_PATH", "")
-COQ_TIMEOUT = int(os.environ.get("COQ_TIMEOUT", "0") or 0)
-MAX_RETRIES = int(os.environ.get("MAX_RETRIES", "0") or 0)
+COQC_PATH = os.environ.get("COQC_PATH", "coqc")
+COQ_TIMEOUT = int(os.environ.get("COQ_TIMEOUT", "60") or 60)
+MAX_RETRIES = int(os.environ.get("MAX_RETRIES", "3") or 3)
 
 PROMPT_DIR = Path(__file__).parent / "prompts"
 
@@ -264,6 +264,7 @@ def run_batch(items, client, model, approach="direct", output_file=None):
 
 if __name__ == "__main__":
     import argparse
+    from utils.models import MODELS
 
     parser = argparse.ArgumentParser(description="NESTOR Coq Pipeline")
     parser.add_argument("--data", default="../data/fracas/fracas.xml",
@@ -280,17 +281,13 @@ if __name__ == "__main__":
                         help="FraCaS section filter (e.g. '1' for quantifiers)")
     args = parser.parse_args()
 
-    missing = [
-        name for name, val in [
-            ("AZURE_API_KEY", os.environ.get("AZURE_API_KEY", "")),
-            ("AZURE_OPENAI_ENDPOINT", os.environ.get("AZURE_OPENAI_ENDPOINT", "")),
-            ("AZURE_OPENAI_API_VERSION", os.environ.get("AZURE_OPENAI_API_VERSION", "")),
-            ("AZURE_AI_ENDPOINT", os.environ.get("AZURE_AI_ENDPOINT", "")),
-            ("COQC_PATH", COQC_PATH),
-            ("COQ_TIMEOUT", COQ_TIMEOUT),
-            ("MAX_RETRIES", MAX_RETRIES),
-        ] if not val
-    ]
+    # Only check vars needed for the selected model
+    required = [("AZURE_API_KEY", os.environ.get("AZURE_API_KEY", ""))]
+    if MODELS.get(args.model, {}).get("provider") == "azure-openai":
+        required.append(("AZURE_OPENAI_ENDPOINT", os.environ.get("AZURE_OPENAI_ENDPOINT", "")))
+    elif MODELS.get(args.model, {}).get("provider") == "azure-ai":
+        required.append(("AZURE_AI_ENDPOINT", os.environ.get("AZURE_AI_ENDPOINT", "")))
+    missing = [name for name, val in required if not val]
     if missing:
         print(f"ERROR: missing required env vars: {', '.join(missing)}")
         print("  copy .env.example to .env and fill in values")
