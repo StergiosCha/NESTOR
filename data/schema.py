@@ -73,19 +73,19 @@ FRACAS_XML_SECTION_MAP = {
 
 # OYXOY tag to canonical FraCaS section mapping.
 # Tags absent from this dict contribute nothing to a Sample's fracas_sections.
-OYXOY_TO_FRACAS_SECTION = {
+# Contested tags (no defensible single section) map to a list of candidates;
+# the OYXOY loader appends every candidate to the sample's fracas_sections.
+OYXOY_TO_FRACAS_SECTION: dict[str, str | list[str]] = {
+    # --- FIXED ---
     "Lexical Entailment:Lexical Semantics:Hyponymy": "Generalized Quantifiers",
     "Lexical Entailment:Lexical Semantics:Hypernymy": "Generalized Quantifiers",
     "Lexical Entailment:Lexical Semantics:Synonymy": "Verbs",
     "Lexical Entailment:Lexical Semantics:Antonymy": "Verbs",
-    "Lexical Entailment:Lexical Semantics:Meronymy": "Plurals",
     "Lexical Entailment:Morphological Modification": "Adjectives",
     "Lexical Entailment:Factivity:Factive": "Attitudes",
     "Lexical Entailment:Factivity:Non-Factive": "Attitudes",
     "Lexical Entailment:Symmetry/Collectivity": "Plurals",
-    "Lexical Entailment:Redundancy": "Adjectives",
     "Lexical Entailment:FAO": "Generalized Quantifiers",
-    "Predicate-Argument Structure:Syntactic Ambiguity": "Adjectives",
     "Predicate-Argument Structure:Core Arguments": "Verbs",
     "Predicate-Argument Structure:Alternations": "Verbs",
     "Predicate-Argument Structure:Ellipsis": "Ellipsis",
@@ -106,6 +106,10 @@ OYXOY_TO_FRACAS_SECTION = {
     "Logic:Comparatives": "Comparatives",
     "Logic:Temporal": "Temporal Reference",
     "Common Sense/Knowledge": "Attitudes",
+    # --- CONTESTED: randomly pick one at inference time ---
+    "Lexical Entailment:Lexical Semantics:Meronymy": ["Plurals", "Generalized Quantifiers"],
+    "Lexical Entailment:Redundancy": ["Generalized Quantifiers", "Adjectives", "Temporal Reference"],
+    "Predicate-Argument Structure:Syntactic Ambiguity": ["Adjectives", "Generalized Quantifiers"],
 }
 
 

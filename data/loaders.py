@@ -21,10 +21,14 @@ _FRACAS_NUMBERING = re.compile(r"^\s*\d+(?:\.\d+)*\s+")
 def _fracas_sections_from_tags(tags) -> list[str]:
     seen, out = set(), []
     for t in tags:
-        sec = OYXOY_TO_FRACAS_SECTION.get(t)
-        if sec is not None and sec not in seen:
-            seen.add(sec)
-            out.append(sec)
+        mapped = OYXOY_TO_FRACAS_SECTION.get(t)
+        if mapped is None:
+            continue
+        candidates = mapped if isinstance(mapped, list) else [mapped]
+        for sec in candidates:
+            if sec not in seen:
+                seen.add(sec)
+                out.append(sec)
     return out
 
 
