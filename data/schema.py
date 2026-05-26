@@ -1,8 +1,31 @@
 """Unified Sample schema shared by all NESTOR dataset loaders."""
 
+import json
 from dataclasses import dataclass, field
 
 LABELS = ("Entailment", "Contradiction", "Unknown")
+
+# Case-folded surface labels (as emitted by the LLM under the prompts in
+# `P1 prompts.md`) → canonical entries of LABELS. parse_response normalises
+# every parsed label through this map.
+LABEL_SURFACE_MAP = {
+    "yes": "Entailment",
+    "ναι": "Entailment",
+    "entailment": "Entailment",
+    "συνεπαγωγή": "Entailment",
+    "no": "Contradiction",
+    "όχι": "Contradiction",
+    "contradiction": "Contradiction",
+    "αντίφαση": "Contradiction",
+    "unknown": "Unknown",
+    "άγνωστο": "Unknown",
+    "neutral": "Unknown",
+    "ουδέτερο": "Unknown",
+}
+
+# case-folded JSON-key aliases for LLM responses
+LABEL_KEY_ALIASES = frozenset({"label", "answer", "απάντηση"})
+REASONING_KEY_ALIASES = frozenset({"reasoning", "explanation", "εξήγηση"})
 
 SOURCES = (
     "fracas",
@@ -100,3 +123,54 @@ class Sample:
     @property
     def multilabel(self) -> bool:
         return self.source in MULTILABEL_SOURCES
+
+
+@dataclass(frozen=True)
+class Result:
+    label: str | list[str]
+    reasoning: str
+
+
+def to_canonical_label(surface: object) -> str | None:
+    if not isinstance(surface, str):
+        return None
+    return LABEL_SURFACE_MAP.get(surface.strip().casefold())
+
+
+def pick(obj: dict, aliases: frozenset[str]):
+    for k, v in obj.items():
+        if isinstance(k, str) and k.strip().casefold() in aliases:
+            return v
+    return None
+
+
+def parse_response(raw: str, multilabel: bool) -> Result | None:
+    """Parse the model's JSON response into a canonical Result, or None on any mismatch.
+
+    Accepts language-localised JSON keys:
+      label key:     "label" | "answer" | "απάντηση" 
+      reasoning key: "reasoning" | "explanation" | "εξήγηση"
+      
+    The label value may be a surface form or already canonical; normalised via LABEL_SURFACE_MAP.
+    """
+    try:
+        obj = json.loads(raw)
+    except (json.JSONDecodeError, TypeError):
+        return None
+    if not isinstance(obj, dict):
+        return None
+    label = pick(obj, LABEL_KEY_ALIASES)
+    reasoning = pick(obj, REASONING_KEY_ALIASES)
+    if not isinstance(reasoning, str):
+        return None
+    if multilabel:
+        if not isinstance(label, list) or not label:
+            return None
+        canonical = [to_canonical_label(x) for x in label]
+        if any(c is None for c in canonical):
+            return None
+        return Result(label=canonical, reasoning=reasoning)  # type: ignore
+    canonical = to_canonical_label(label)
+    if canonical is None:
+        return None
+    return Result(label=canonical, reasoning=reasoning)
