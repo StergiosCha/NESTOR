@@ -30,7 +30,7 @@ load_dotenv()
 
 ROOT = Path(__file__).resolve().parent.parent
 DATA_DIR = ROOT / "data"
-RESULTS_DIR = ROOT / "results" / "phase1"
+RESULTS_DIR = Path(__file__).resolve().parent / "results"
 
 DATASETS = {
     "fracas": (load_fracas, DATA_DIR / "fracas" / "fracas.xml"),
