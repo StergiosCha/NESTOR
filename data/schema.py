@@ -148,6 +148,30 @@ def pick(obj: dict, aliases: frozenset[str]):
     return None
 
 
+def dump_entry(sample: "Sample", parsed: "Result | None", raw: str, gold: list[str]) -> dict:
+    """Shape one result-file entry. Persisted predicted labels are canonical.
+
+    On parse failure (`parsed is None`) the raw payload is retained, predicted is
+    None, reasoning is "" and success=0. On parse success, success is set-equality
+    over the canonical predicted-label list vs. `gold`.
+    """
+    base = {
+        "id": sample.id,
+        "source": sample.source,
+        "language": sample.language,
+        "premise": sample.premise,
+        "hypothesis": sample.hypothesis,
+        "tags": list(sample.tags),
+        "fracas_sections": list(sample.fracas_sections),
+        "gold": gold,
+    }
+    if parsed is None:
+        return {**base, "predicted": None, "reasoning": "", "raw": raw, "success": 0}
+    predicted_list = parsed.label if isinstance(parsed.label, list) else [parsed.label]
+    success = 1 if set(predicted_list) == set(gold) else 0
+    return {**base, "predicted": parsed.label, "reasoning": parsed.reasoning, "success": success}
+
+
 def parse_response(raw: str, multilabel: bool) -> Result | None:
     """Parse the model's JSON response into a canonical Result, or None on any mismatch.
 
