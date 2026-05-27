@@ -8,13 +8,34 @@ Three endpoint flavours behind a single chat-completions call:
                                (provider "krikri" — requires LITELLM_HOST + LITELLM_ILSP_EVAL_API_KEY).
 
 get_client(model_name) auto-selects the right client from the MODELS registry.
-call_llm() takes any client and uses the OpenAI chat-completions contract.
+call_llm() takes any client and uses the OpenAI chat-completions contract
 """
 
 import os
 
 from openai import AzureOpenAI, OpenAI
-from utils.models import MODELS
+from clients.models import MODELS
+
+# Required environment variables per provider.
+PROVIDER_ENV_VARS = {
+    "azure-openai": ("AZURE_OPENAI_API_VERSION", "AZURE_OPENAI_ENDPOINT", "AZURE_API_KEY"),
+    "azure-ai":     ("AZURE_AI_ENDPOINT", "AZURE_API_KEY"),
+    "krikri":       ("LITELLM_HOST", "LITELLM_ILSP_EVAL_API_KEY"),
+}
+
+
+def assert_env(provider: str) -> None:
+    required = PROVIDER_ENV_VARS.get(provider)
+    if required is None:
+        raise ValueError(
+            f"Unknown provider '{provider}'"
+        )
+    missing = [v for v in required if not os.environ.get(v)]
+    if missing:
+        raise EnvironmentError(
+            f"Provider '{provider}' missing required environment variables: {', '.join(missing)}"
+        )
+
 
 def get_azure_openai_client():
     return AzureOpenAI(

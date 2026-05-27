@@ -264,13 +264,13 @@ def run_batch(items, client, model, approach="direct", output_file=None):
 
 if __name__ == "__main__":
     import argparse
-    from utils.models import MODELS
+    from clients.models import MODELS
 
     parser = argparse.ArgumentParser(description="NESTOR Coq Pipeline")
     parser.add_argument("--data", default="../data/fracas/fracas.xml",
                         help="Path to dataset (FraCaS XML or JSON)")
     parser.add_argument("--model", default="gpt-4o",
-                        help="Model key (see utils/models.py)")
+                        help="Model key (see clients/models.py)")
     parser.add_argument("--approach", default="direct", choices=["direct", "valentino"],
                         help="Coq approach: direct or valentino")
     parser.add_argument("--output", default=None,

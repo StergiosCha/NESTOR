@@ -357,7 +357,7 @@ if __name__ == "__main__":
     parser.add_argument("--data", default="../data/fracas/fracas.xml",
                         help="Path to dataset (FraCaS XML or JSON)")
     parser.add_argument("--model", default="gpt-4o",
-                        help="Model key (see utils/models.py)")
+                        help="Model key (see clients/models.py)")
     parser.add_argument("--output", default=None,
                         help="Output JSON file")
     parser.add_argument("--limit", type=int, default=None,
