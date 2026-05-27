@@ -1,10 +1,7 @@
 """Phase 1 prompt assembly.
 
 One template module per technique (zero_shot, few_shot, cot), each exposing
-`EN_SINGLE`, `EN_MULTI`, `EL_SINGLE`, `EL_MULTI`. `build_prompt` selects the
-right template from (technique, language, sample.multilabel), formats it, and
-appends a one-line JSON fallback instruction only when the model's provider
-does NOT support a native JSON-schema response_format.
+`EN_SINGLE`,MULTI`, `EL_SINGLE`, `EL_MULTI`. 
 """
 
 from __future__ import annotations
@@ -30,13 +27,6 @@ _EXAMPLE_HEADINGS = {
     "en": ("Premise(s)", "Hypothesis", "Answer"),
     "el": ("Προκείμενη/ες", "Υπόθεση", "Απάντηση"),
 }
-
-# One-line JSON fallback appended only when the provider has no native json_schema response_format. 
-JSON_INSTRUCTION = {
-    "en": 'Respond with a JSON object only: {"answer": <label or list of labels>, "explanation": "<1–3 sentences>"}.',
-    "el": 'Απάντησε μόνο με ένα JSON αντικείμενο: {"απάντηση": <ετικέτα ή λίστα ετικετών>, "εξήγηση": "<1–3 προτάσεις>"}.',
-}
-
 
 def select_template(technique: str, language: str, multilabel: bool) -> str:
     module = _TEMPLATES[technique]
@@ -71,15 +61,11 @@ def build_prompt(
     language: str,
     multilabel: bool,
     examples: list[Sample] | None = None,
-    native_json_schema: bool = False,
 ) -> list[dict]:
-
     template = select_template(technique, language, multilabel)
     body = template.format(
         premise=sample.premise,
         hypothesis=sample.hypothesis,
         examples=format_examples(examples or [], language, multilabel),
     )
-    if not native_json_schema:
-        body = f"{body}\n\n{JSON_INSTRUCTION[language]}"
     return [{"role": "user", "content": body}]
