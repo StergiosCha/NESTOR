@@ -55,7 +55,23 @@ def _new_state(dataset_key: str, model_key: str, technique: str, language: str, 
     }
 
 
+def summarize_results(results: list[dict]) -> dict:
+    total = len(results)
+    llm_error = sum(1 for e in results if isinstance(e.get("raw"), str) and e["raw"].startswith("<LLM call failed"))
+    parse_fail = sum(1 for e in results if e.get("predicted") is None) - llm_error
+    success_count = sum(1 for e in results if e.get("success") == 1)
+    accuracy = success_count / total if total else None
+    return {
+        "total": total,
+        "parse_fail": parse_fail,
+        "llm_error": llm_error,
+        "success_count": success_count,
+        "accuracy": accuracy,
+    }
+
+
 def _flush(path: Path, state: dict) -> None:
+    state["summary"] = summarize_results(state["results"])
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8")
 
