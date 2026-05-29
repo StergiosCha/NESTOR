@@ -60,7 +60,7 @@ def _flush(path: Path, state: dict) -> None:
     path.write_text(json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
-def run(dataset_key: str, model_key: str, technique: str, language: str, resume: bool) -> int:
+def run(dataset_key: str, model_key: str, technique: str, language: str, resume: bool, limit: int | None = None) -> int:
     multilabel = dataset_key in MULTILABEL_SOURCES
     provider = MODELS[model_key]["provider"]
     assert_env(provider)
@@ -78,6 +78,8 @@ def run(dataset_key: str, model_key: str, technique: str, language: str, resume:
         completed = set()
 
     pending = [s for s in samples if s.id not in completed]
+    if limit is not None:
+        pending = pending[:limit]
     total, skipped = len(samples), len(samples) - len(pending)
     print(
         f"[run] dataset={dataset_key} model={model_key} technique={technique} "
@@ -127,12 +129,14 @@ def build_parser() -> argparse.ArgumentParser:
                    help="Prompt-body language (independent of dataset language).")
     p.add_argument("--resume", action="store_true",
                    help="Resume an existing results file for this combination.")
+    p.add_argument("--limit", type=int, default=None, metavar="N",
+                   help="Process at most N samples.")
     return p
 
 
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
-    return run(args.data, args.model, args.technique, args.language, args.resume)
+    return run(args.data, args.model, args.technique, args.language, args.resume, args.limit)
 
 
 if __name__ == "__main__":
