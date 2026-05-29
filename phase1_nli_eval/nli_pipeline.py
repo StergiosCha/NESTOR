@@ -15,49 +15,21 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 from clients.azure import assert_env, call_llm, get_client
-from data.loaders import (
-    load_extended_fracas,
-    load_fracas,
-    load_multilabel_fracas,
-    load_oyxoy,
-    load_translated_fracas,
-)
+from data.loaders import load_dataset
 from data.schema import LANGUAGES, MULTILABEL_SOURCES, Sample, dump_entry, parse_response
 from phase1_nli_eval.prompts import build_prompt, select_examples
 from clients.models import MODELS
 
 load_dotenv()
 
-ROOT = Path(__file__).resolve().parent.parent
-DATA_DIR = ROOT / "data"
 RESULTS_DIR = Path(__file__).resolve().parent / "results"
 
-DATASETS = {
-    "fracas": (load_fracas, DATA_DIR / "fracas" / "fracas.xml"),
-    "fracas-translated": (
-        load_translated_fracas,
-        DATA_DIR / "translated_fracas" / "fracas_greek_final_ipa_team_crete.xml",
-    ),
-    "fracas-extended": (
-        load_extended_fracas,
-        DATA_DIR / "extended_fracas" / "fracas_greek_extended_team_crete.xml",
-    ),
-    "multilabel-fracas": (
-        load_multilabel_fracas,
-        DATA_DIR / "multilabel_fracas" / "multilabel_fracas.json",
-    ),
-    "oyxoy": (load_oyxoy, DATA_DIR / "oyxoy" / "OYXOY.json"),
-}
+DATASETS = {"fracas", "fracas-translated", "fracas-extended", "fracas-multilabel", "oyxoy"}
 
 TECHNIQUES = ("zero-shot", "few-shot", "cot")
 FLUSH_EVERY = 10
 MAX_TOKENS = 800
 FEW_SHOT_K = 3
-
-
-def load_dataset(key: str) -> list[Sample]:
-    loader, path = DATASETS[key]
-    return loader(path)
 
 
 def _results_path(dataset_key: str, model_key: str, technique: str, language: str) -> Path:
@@ -83,12 +55,28 @@ def _new_state(dataset_key: str, model_key: str, technique: str, language: str, 
     }
 
 
+def summarize_results(results: list[dict]) -> dict:
+    total = len(results)
+    llm_error = sum(1 for e in results if isinstance(e.get("raw"), str) and e["raw"].startswith("<LLM call failed"))
+    parse_fail = sum(1 for e in results if e.get("predicted") is None) - llm_error
+    success_count = sum(1 for e in results if e.get("success") == 1)
+    accuracy = success_count / total if total else None
+    return {
+        "total": total,
+        "parse_fail": parse_fail,
+        "llm_error": llm_error,
+        "success_count": success_count,
+        "accuracy": accuracy,
+    }
+
+
 def _flush(path: Path, state: dict) -> None:
+    state["summary"] = summarize_results(state["results"])
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
-def run(dataset_key: str, model_key: str, technique: str, language: str, resume: bool) -> int:
+def run(dataset_key: str, model_key: str, technique: str, language: str, resume: bool, limit: int | None = None) -> int:
     multilabel = dataset_key in MULTILABEL_SOURCES
     provider = MODELS[model_key]["provider"]
     assert_env(provider)
@@ -106,6 +94,8 @@ def run(dataset_key: str, model_key: str, technique: str, language: str, resume:
         completed = set()
 
     pending = [s for s in samples if s.id not in completed]
+    if limit is not None:
+        pending = pending[:limit]
     total, skipped = len(samples), len(samples) - len(pending)
     print(
         f"[run] dataset={dataset_key} model={model_key} technique={technique} "
@@ -155,12 +145,14 @@ def build_parser() -> argparse.ArgumentParser:
                    help="Prompt-body language (independent of dataset language).")
     p.add_argument("--resume", action="store_true",
                    help="Resume an existing results file for this combination.")
+    p.add_argument("--limit", type=int, default=None, metavar="N",
+                   help="Process at most N samples.")
     return p
 
 
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
-    return run(args.data, args.model, args.technique, args.language, args.resume)
+    return run(args.data, args.model, args.technique, args.language, args.resume, args.limit)
 
 
 if __name__ == "__main__":

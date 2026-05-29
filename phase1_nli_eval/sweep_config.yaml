@@ -1,0 +1,28 @@
+# Sample sweep config for the Phase 1 bulk runner.
+#
+# Run with:
+#   cd nestor
+#   python -m phase1_nli_eval.run_bulk --config phase1_nli_eval/sweep_config.yaml
+#
+# The Cartesian product of the four dimensions is expanded into one combo per
+# {dataset, model, technique, language}. Each combo writes to its own JSON at
+# phase1_nli_eval/results/{dataset}__{model}__{technique}__{language}.json
+# and is resumed from disk by default.
+
+datasets:
+  - fracas
+  - fracas-translated
+
+models:
+  - gpt-4o
+  - deepseek-r1
+
+techniques:
+  - zero-shot
+
+languages:
+  - en
+  - el
+
+resume: true     # skip already-completed samples in each per-combo file
+limit: null      # cap samples per combo; null = no cap

@@ -5,6 +5,7 @@ in data/schema.py.
 
 import json
 import re
+from unittest import case
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
@@ -18,18 +19,14 @@ from data.schema import (
 _FRACAS_NUMBERING = re.compile(r"^\s*\d+(?:\.\d+)*\s+")
 
 
-def _fracas_sections_from_tags(tags) -> list[str]:
-    seen, out = set(), []
-    for t in tags:
-        mapped = OYXOY_TO_FRACAS_SECTION.get(t)
-        if mapped is None:
-            continue
-        candidates = mapped if isinstance(mapped, list) else [mapped]
-        for sec in candidates:
-            if sec not in seen:
-                seen.add(sec)
-                out.append(sec)
-    return out
+def _fracas_sections_from_tags(tags: list[str]) -> list[str]:
+    sections = []
+    for tag in tags:
+        mapped = OYXOY_TO_FRACAS_SECTION.get(tag)
+        if mapped:
+            sections.extend(mapped if isinstance(mapped, list) else [mapped])
+            
+    return list(dict.fromkeys(sections))
 
 
 def load_fracas(xml_path) -> list[Sample]:
@@ -81,7 +78,7 @@ def load_fracas(xml_path) -> list[Sample]:
             tags=[tag] if tag else [],
             fracas_sections=[FRACAS_XML_SECTION_MAP[section]] if section else [],
         ))
-
+    print(f"[load_fracas] loaded {len(samples)} samples from {xml_path}")
     return samples
 
 
@@ -172,3 +169,19 @@ def load_translated_fracas(xml_path) -> list[Sample]:
 
 def load_extended_fracas(xml_path) -> list[Sample]:
     return _load_fracas_greek_xml(xml_path, "fracas-extended")
+
+def load_dataset(key: str) -> list[Sample]:
+    match key:
+        case "fracas":
+            return load_fracas("data/fracas/fracas.xml")
+        case "fracas-translated":
+            return load_translated_fracas("data/translated_fracas/fracas_greek_final_ipa_team_crete.xml")
+        case "fracas-extended":
+            return load_extended_fracas("data/extended_fracas/fracas_greek_extended_team_crete.xml")
+        case "fracas-multilabel":
+            return load_multilabel_fracas("data/multilabel_fracas/multilabel_fracas.json")
+        case "oyxoy":
+            return load_oyxoy("data/oyxoy/OYXOY.json")
+        case _:
+            raise ValueError(f"Unknown dataset key '{key}'")
+
