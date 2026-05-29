@@ -1,13 +1,13 @@
 """Unified Sample schema shared by all NESTOR dataset loaders."""
 
 import json
+import re
 from dataclasses import dataclass, field
 
 LABELS = ("Entailment", "Contradiction", "Unknown")
 
-# Case-folded surface labels (as emitted by the LLM under the prompts in
-# `P1 prompts.md`) → canonical entries of LABELS. parse_response normalises
-# every parsed label through this map.
+# Case-folded surface labels → canonical entries of LABELS. 
+# parse_response normalises every parsed label through this map.
 LABEL_SURFACE_MAP = {
     "yes": "Entailment",
     "ναι": "Entailment",
@@ -172,6 +172,14 @@ def dump_entry(sample: "Sample", parsed: "Result | None", raw: str, gold: list[s
     return {**base, "predicted": parsed.label, "reasoning": parsed.reasoning, "success": success}
 
 
+def _extract_json(raw: str) -> str:
+    text = re.sub(r"<think>.*?</think>", "", raw, flags=re.DOTALL)
+    m = re.search(r"```json\s*(.*?)\s*```", text, re.DOTALL)
+    if m:
+        return m.group(1).strip()
+    return text.strip()
+
+
 def parse_response(raw: str, multilabel: bool) -> Result | None:
     """Parse the model's JSON response into a canonical Result, or None on any mismatch.
 
@@ -182,7 +190,7 @@ def parse_response(raw: str, multilabel: bool) -> Result | None:
     The label value may be a surface form or already canonical; normalised via LABEL_SURFACE_MAP.
     """
     try:
-        obj = json.loads(raw)
+        obj = json.loads(_extract_json(raw))
     except (json.JSONDecodeError, TypeError):
         return None
     if not isinstance(obj, dict):
