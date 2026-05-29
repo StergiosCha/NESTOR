@@ -33,7 +33,7 @@ FEW_SHOT_K = 3
 
 
 def _results_path(dataset_key: str, model_key: str, technique: str, language: str) -> Path:
-    return RESULTS_DIR / f"{dataset_key}__{model_key}__{technique}__{language}.json"
+    return RESULTS_DIR / dataset_key / f"{dataset_key}__{model_key}__{technique}__{language}.json"
 
 
 def _now_iso() -> str:
