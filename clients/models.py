@@ -59,4 +59,9 @@ MODELS = {
         "provider": "azure-ai",
         "reasoning": True,
     },
+    "krikri-8b": {
+        "deployment": "llama-krikri-8b-instruct-v1.5",
+        "provider": "krikri",
+        "reasoning": False,
+    },
 }
