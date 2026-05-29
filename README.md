@@ -115,10 +115,30 @@ For Coq verification:
 
 ### Phase 1: LLM-only NLI
 
+Run single combination from project root via `nli_pipeline`:
+
 ```bash
-cd phase1_nli_eval
-python fracas_eval_azure.py --model gpt-4o --limit 10
+python -m phase1_nli_eval.nli_pipeline \
+    --data fracas --model gpt-4o --technique zero-shot --language en \
+    [--resume] [--limit N]
 ```
+
+- `--data`: `fracas | fracas-translated | fracas-extended | fracas-multilabel | oyxoy`
+- `--model`: any key from `clients/models.py::MODELS`
+- `--technique`: `zero-shot | few-shot | cot`
+- `--language`: prompt-body language, `en | el`
+- `--resume`: skip samples already present in the per-combo result JSON
+- `--limit N`: process at most N pending samples
+
+One result JSON per combination is written to `phase1_nli_eval/results/{dataset}__{model}__{technique}__{language}.json`. Each file carries a `summary` block (`total`, `parse_fail`, `llm_error`, `success_count`, `accuracy`) recomputed from the full results list on every flush.
+
+Bulk sweep via `run_bulk`:
+
+```bash
+python -m phase1_nli_eval.run_bulk --config phase1_nli_eval/sweep_config.yaml
+```
+
+The YAML lists the four dimensions explicitly; the runner expands the Cartesian product, executes each combo sequentially (delegating to `nli_pipeline.run`), isolates per-combo failures, and prints a final PASS/FAIL table sourced from each JSON's `summary`. Exit code is non-zero if any combo fails. See `sweep_config.yaml` for the schema.
 
 ### Phase 2: FOL verification
 
