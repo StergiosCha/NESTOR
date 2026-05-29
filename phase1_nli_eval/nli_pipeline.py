@@ -15,49 +15,21 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 from clients.azure import assert_env, call_llm, get_client
-from data.loaders import (
-    load_extended_fracas,
-    load_fracas,
-    load_multilabel_fracas,
-    load_oyxoy,
-    load_translated_fracas,
-)
+from data.loaders import load_dataset
 from data.schema import LANGUAGES, MULTILABEL_SOURCES, Sample, dump_entry, parse_response
 from phase1_nli_eval.prompts import build_prompt, select_examples
 from clients.models import MODELS
 
 load_dotenv()
 
-ROOT = Path(__file__).resolve().parent.parent
-DATA_DIR = ROOT / "data"
 RESULTS_DIR = Path(__file__).resolve().parent / "results"
 
-DATASETS = {
-    "fracas": (load_fracas, DATA_DIR / "fracas" / "fracas.xml"),
-    "fracas-translated": (
-        load_translated_fracas,
-        DATA_DIR / "translated_fracas" / "fracas_greek_final_ipa_team_crete.xml",
-    ),
-    "fracas-extended": (
-        load_extended_fracas,
-        DATA_DIR / "extended_fracas" / "fracas_greek_extended_team_crete.xml",
-    ),
-    "multilabel-fracas": (
-        load_multilabel_fracas,
-        DATA_DIR / "multilabel_fracas" / "multilabel_fracas.json",
-    ),
-    "oyxoy": (load_oyxoy, DATA_DIR / "oyxoy" / "OYXOY.json"),
-}
+DATASETS = {"fracas", "fracas-translated", "fracas-extended", "fracas-multilabel", "oyxoy"}
 
 TECHNIQUES = ("zero-shot", "few-shot", "cot")
 FLUSH_EVERY = 10
 MAX_TOKENS = 800
 FEW_SHOT_K = 3
-
-
-def load_dataset(key: str) -> list[Sample]:
-    loader, path = DATASETS[key]
-    return loader(path)
 
 
 def _results_path(dataset_key: str, model_key: str, technique: str, language: str) -> Path:
