@@ -1,0 +1,89 @@
+You are an expert in Coq and formal semantics. Formalise the following NLI pair in Coq and prove the entailment relation.
+
+Premise: {premise}
+Hypothesis: {hypothesis}
+
+=== CONDITION ===
+
+C1 (blind): No label given. Decide the relation yourself and formalise accordingly.
+C2 (Phase 1 prediction): A previous model predicted: {phase1_label}
+C3 (gold label): The correct relation is: {gold_label}
+C4 (Phase 1 + explanation): Prediction: {phase1_label}. Explanation: {phase1_explanation}
+
+TODO: Students, build condition switching into coq_pipeline.py or make
+4 prompt files. The {phase1_label} and {phase1_explanation} come from
+fracas_results_azure.json.
+
+=== END CONDITION ===
+
+=== COQ SYNTAX RULES ===
+
+Use this setup pattern:
+
+  Parameter Entity : Type.
+  (* Declare predicates as Parameters *)
+  Parameter man : Entity -> Prop.
+  Parameter woman : Entity -> Prop.
+  Parameter walk : Entity -> Prop.
+  (* Declare relations with two arguments *)
+  Parameter love : Entity -> Entity -> Prop.
+  (* Declare named individuals *)
+  Parameter john mary : Entity.
+
+Quantifiers:
+  "every man walks"    -> forall x : Entity, man x -> walk x
+  "some man walks"     -> exists x : Entity, man x /\ walk x
+  "no man walks"       -> ~ exists x : Entity, man x /\ walk x
+
+Connectives:
+  /\  (and)
+  \/  (or)
+  ~   (not)
+  ->  (implies)
+  <-> (iff)
+
+TODO: Students, add more patterns here. Ideas:
+- How to handle "most", "few", "at least two"
+- How to handle adjectives ("tall man")
+- How to handle relative clauses ("man who walks")
+- How to handle negation scope
+- How to handle multi-premise items (multiple Axioms)
+
+=== PROOF INSTRUCTIONS ===
+
+For entailment: prove that the premise implies the hypothesis.
+  Theorem nli_result : (* premise -> hypothesis *).
+  Proof. (* your proof *) Qed.
+
+For contradiction: prove that the premise implies the negation of the hypothesis.
+  Theorem nli_result : (* premise -> ~ hypothesis *).
+  Proof. (* your proof *) Qed.
+
+For neutral/unknown: the goal should not be provable. Use Abort.
+  Theorem nli_result : (* premise -> hypothesis *).
+  Proof. (* attempt *) Abort.
+
+TODO: Students, add guidance on proof tactics. Ideas:
+- When to use intro, apply, exact, destruct, exists
+- When to use firstorder or auto
+- Should the LLM always try firstorder first?
+
+=== EXAMPLES ===
+
+TODO: Students, add 2-3 worked examples. Pick easy FraCaS items and
+show the complete Coq file. For example:
+
+(* Example: "All men walk" entails "Some men walk" *)
+Parameter Entity : Type.
+Parameter man walk : Entity -> Prop.
+Parameter some_man : Entity.
+Axiom premise : forall x, man x -> walk x.
+Axiom witness : man some_man.
+Theorem nli_result : exists x, man x /\ walk x.
+Proof. exists some_man. split. apply witness. apply premise. apply witness. Qed.
+
+TODO: add 1-2 more, including a contradiction and a neutral case
+
+=== END ===
+
+Output only the complete Coq file. No natural language commentary.

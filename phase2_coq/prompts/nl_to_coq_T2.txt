@@ -1,0 +1,74 @@
+You are an expert in Coq and formal semantics. Formalise the following NLI pair in Coq and prove the entailment relation.
+
+Premise: {premise}
+Hypothesis: {hypothesis}
+
+=== CONDITION ===
+
+C1 (blind): No label given. Decide the relation yourself.
+C2 (Phase 1 prediction): A previous model predicted: {phase1_label}
+C3 (gold label): The correct relation is: {gold_label}
+C4 (Phase 1 + explanation): Prediction: {phase1_label}. Explanation: {phase1_explanation}
+
+=== END CONDITION ===
+
+=== COQ SYNTAX RULES ===
+
+(same as T0/T1 -- paste your finalised rules here)
+
+=== PROOF INSTRUCTIONS ===
+
+For entailment: Theorem + Proof + Qed.
+For contradiction: prove premise -> ~ hypothesis, then Qed.
+For neutral/unknown: Abort.
+
+=== FOUNDATION FILES (section-matched) ===
+
+The following Coq definitions are relevant to this FraCaS section.
+Use them as reference. Reuse definitions and proof patterns where applicable.
+
+{foundation_files}
+
+TODO: Students, the {foundation_files} placeholder gets filled automatically
+by the prompt builder function. You need to write that function.
+
+Here is the section-to-file mapping (in coq_pipeline.py or a new file):
+
+SECTION_FILES = {
+    "1": ["Montague.v", "BarwiseCooper.v"],          # Quantifiers
+    "2": ["Link1983.v", "Montague.v"],                # Plurals
+    "3": ["DonkeyScope.v", "Montague.v"],             # Anaphora
+    "4": ["Montague.v"],                              # Ellipsis
+    "5": ["AdjectivesExtension.v", "MTT_base.v"],     # Adjectives
+    "6": ["AdjectivesExtension.v", "Montague.v"],     # Comparatives
+    "7": ["DowtyTense.v", "Montague.v"],              # Temporal
+    "8": ["PTQ.v", "kratzer2.v"],                     # Verbs/Attitudes
+    "9": ["MTT_base.v", "Montague.v"],                # Nominalization
+}
+
+def build_coq_prompt(template_path, section_id, premise, hypothesis, label, condition):
+    template = open(template_path).read()
+    files = SECTION_FILES.get(section_id, ["Montague.v"])
+    context = ""
+    for f in files:
+        path = f"../coq_foundations/{f}"
+        context += f"--- BEGIN {f} ---\n"
+        context += open(path).read()
+        context += f"\n--- END {f} ---\n\n"
+    # Fill in template
+    return template.replace("{foundation_files}", context)
+    # TODO: also replace {premise}, {hypothesis}, condition placeholders
+
+TODO: Students, integrate this into coq_pipeline.py. The function needs to:
+  1. Detect the FraCaS section from the item ID (e.g., "fracas-1-023" -> section "1")
+  2. Load the right foundation files
+  3. Fill all placeholders
+  4. Handle the condition (C1/C2/C3/C4) by including or excluding label/explanation
+
+=== EXAMPLES ===
+
+TODO: add 2-3 worked examples that use definitions from the foundation files
+
+=== END ===
+
+Output only the complete Coq file. No natural language commentary.

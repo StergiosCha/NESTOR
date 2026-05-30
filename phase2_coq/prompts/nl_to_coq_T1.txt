@@ -1,0 +1,53 @@
+You are an expert in Coq and formal semantics. Formalise the following NLI pair in Coq and prove the entailment relation.
+
+Premise: {premise}
+Hypothesis: {hypothesis}
+
+=== CONDITION ===
+
+C1 (blind): No label given. Decide the relation yourself.
+C2 (Phase 1 prediction): A previous model predicted: {phase1_label}
+C3 (gold label): The correct relation is: {gold_label}
+C4 (Phase 1 + explanation): Prediction: {phase1_label}. Explanation: {phase1_explanation}
+
+TODO: Students, same as T0 -- implement condition switching.
+
+=== END CONDITION ===
+
+=== COQ SYNTAX RULES ===
+
+(same as T0 -- copy or import the rules you finalised in T0)
+
+TODO: Students, paste your finalised T0 syntax rules here.
+
+=== PROOF INSTRUCTIONS ===
+
+For entailment: Theorem + Proof + Qed.
+For contradiction: prove premise -> ~ hypothesis, then Qed.
+For neutral/unknown: Abort.
+
+=== FOUNDATION: Montague-style semantics ===
+
+Use the following definitions as your reference. You may reuse these
+definitions directly or follow the same patterns in your formalisation.
+
+--- BEGIN Montague.v ---
+
+{montague_v}
+
+--- END Montague.v ---
+
+TODO: Students, the {montague_v} placeholder needs to be filled by the
+prompt builder. Either:
+  (a) Paste Montague.v contents directly here and remove the placeholder, or
+  (b) Write a function in coq_pipeline.py that reads coq_foundations/Montague.v
+      and inserts it at build time. Option (b) is better.
+
+=== EXAMPLES ===
+
+TODO: Students, add 2-3 worked examples that USE the Montague definitions.
+Show how to reuse "every", "some", "no" from the foundation file.
+
+=== END ===
+
+Output only the complete Coq file. No natural language commentary.

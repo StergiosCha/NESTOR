@@ -1,0 +1,63 @@
+You are an expert in Coq and formal semantics. Formalise the following NLI pair in Coq and prove the entailment relation.
+
+Premise: {premise}
+Hypothesis: {hypothesis}
+
+=== CONDITION ===
+
+C1 (blind): No label given. Decide the relation yourself.
+C2 (Phase 1 prediction): A previous model predicted: {phase1_label}
+C3 (gold label): The correct relation is: {gold_label}
+C4 (Phase 1 + explanation): Prediction: {phase1_label}. Explanation: {phase1_explanation}
+
+=== END CONDITION ===
+
+=== COQ SYNTAX RULES ===
+
+(same as T0/T1/T2 -- paste your finalised rules here)
+
+=== PROOF INSTRUCTIONS ===
+
+For entailment: Theorem + Proof + Qed.
+For contradiction: prove premise -> ~ hypothesis, then Qed.
+For neutral/unknown: Abort.
+
+=== FOUNDATION FILES (rich context) ===
+
+This is T3: we include the full theory stack for this section.
+The context is larger (10-20K tokens). Only use with GPT-4o or Llama-70B.
+Small models (8B) will degrade with this much context.
+
+{foundation_files}
+
+TODO: Students, same prompt builder as T2 but with more files per section:
+
+SECTION_FILES_T3 = {
+    "1": ["Montague.v", "BarwiseCooper.v", "Quantifiers.v", "DonkeyScope.v"],
+    "2": ["Link1983.v", "Montague.v", "champollion_full.v"],
+    "3": ["DonkeyScope.v", "Montague.v", "BarwiseCooper.v"],
+    "4": ["Montague.v"],
+    "5": ["AdjectivesExtension.v", "MTT_base.v", "Quantifiers.v"],
+    "6": ["AdjectivesExtension.v", "Montague.v", "MTT_base.v"],
+    "7": ["DowtyTense.v", "Montague.v", "Aspect.v", "ImperfectiveParadox.v"],
+    "8": ["PTQ.v", "kratzer2.v", "PTQ_deep.v"],
+    "9": ["MTT_base.v", "Montague.v"],
+}
+
+WARNING: Check token counts before running. If a section's files exceed
+the model's context window, fall back to T2.
+
+TODO: Students, add a token counting check to the prompt builder:
+  import tiktoken
+  enc = tiktoken.encoding_for_model("gpt-4o")
+  token_count = len(enc.encode(full_prompt))
+  if token_count > 100000:
+      print(f"WARNING: prompt is {token_count} tokens, falling back to T2")
+
+=== EXAMPLES ===
+
+TODO: add examples that reference definitions from multiple foundation files
+
+=== END ===
+
+Output only the complete Coq file. No natural language commentary.
