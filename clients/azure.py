@@ -78,6 +78,6 @@ def call_llm(client, model, messages, max_tokens, temperature=0.0):
         model=deployment,
         messages=messages,
         temperature=temperature,
-        max_tokens=max_tokens,
+        max_completion_tokens=max_tokens,
     )
     return resp.choices[0].message.content
