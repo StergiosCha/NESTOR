@@ -5,76 +5,91 @@ Hypothesis: {hypothesis}
 
 === CONDITION (pick one per experiment run) ===
 
-C1 (blind): The LLM gets no label. It must decide the relation AND formalise.
-   -> Do not include any label or hint in the prompt.
+C1 (blind): No label given. Decide the relation AND formalise.
+C2 (Phase 1 prediction): A previous model predicted: {phase1_label}
+C3 (gold label): The correct relation is: {gold_label}
+C4 (Phase 1 + explanation): Prediction: {phase1_label}. Explanation: {phase1_explanation}
 
-C2 (Phase 1 prediction): The LLM gets its own Phase 1 NLI prediction as a hint.
-   -> Add: "A previous model predicted the relation is: {phase1_label}"
-   -> TODO: students, decide where this goes and how to phrase it
-
-C3 (gold label): The LLM gets the correct label.
-   -> Add: "The correct relation is: {gold_label}"
-   -> The LLM only needs to formalise, not decide.
-
-C4 (Phase 1 + explanation): The LLM gets Phase 1 prediction AND explanation.
-   -> Add: "A previous model predicted: {phase1_label}"
-   -> Add: "Its explanation: {phase1_explanation}"
-   -> TODO: students, does the explanation change how you ask for FOL?
-
-TODO: Students, you need to make 4 versions of this prompt (or use
-if/else in fol_pipeline.py) so the pipeline can switch between C1-C4.
+TODO: Students, implement condition switching in fol_pipeline.py.
 The {phase1_label} and {phase1_explanation} come from fracas_results_azure.json.
 
 === END CONDITION ===
 
 Use Prover9 syntax:
-- Quantifiers: all x, exists x
-- Connectives: & (and), | (or), - (not), -> (implies), <-> (iff)
-- Predicates: lowercase, e.g. student(x), runs(x)
-- Constants: lowercase, e.g. john, mary
-- Variables: x, y, z
+- Universal: all x (P(x) -> Q(x))
+- Existential: exists x (P(x) & Q(x))
+- Implication: ->
+- Conjunction: &
+- Disjunction: |
+- Negation: -
+- Biconditional: <->
+- Equality: =
+- Variables: x, y, z, u, v, w (lowercase)
+- Constants: lowercase (john, mary, socrates)
+- Predicates: lowercase (cat, run, read)
 
-=== NAMING CONVENTIONS (consistency rules) ===
+=== TRANSLATION CONVENTIONS ===
+(adapted from skill_nli-fol-prover/scripts/nl_to_fol.py)
 
-TODO: Students, define rules here so the LLM uses the same predicates
-across all premises and the hypothesis. Without these, the LLM will
-use "person(x)" in one premise and "human(x)" in another, and the
-prover will treat them as unrelated.
+1. "All/Every A are/is B"       -> all x (A(x) -> B(x))
+2. "Some/A few A are B"         -> exists x (A(x) & B(x))
+3. "No A is B"                  -> all x (A(x) -> -B(x))
+4. "A is B" (proper name)       -> B(a)  where a is a constant
+5. "Most A are B"               -> cannot express in FOL, approximate as: exists x (A(x) & B(x))
+6. Bare plurals / generics      -> treat as universal: all x (A(x) -> B(x))
+7. Definite "the A"             -> exists x (A(x) & all y (A(y) -> y = x) & ...)
+8. Transitive verbs             -> 2-place predicates: read(x, y)
+9. Adjectives                   -> 1-place predicates: tall(x), red(x)
+10. Relative clauses            -> conjoin: all x ((man(x) & run(x)) -> ...)
+11. "If A then B"               -> translate A as premise, B as separate formula
+12. Negation "does not", "isn't" -> use -
 
-Ideas to consider:
-- One predicate per concept (e.g., always "man(x)", never "male(x)")
-- 1-place predicates for properties: man(x), student(x), tall(x)
-- 2-place predicates for relations: loves(x,y), owns(x,y)
-- Constants for named entities: john, mary (not j, m)
-- TODO: add 3-5 concrete examples showing good vs bad naming
+=== CONSISTENCY RULES ===
 
-=== STRUCTURAL RULES ===
+- Use ONE predicate name per concept across all premises and hypothesis.
+  GOOD: man(x) in premise, man(x) in hypothesis
+  BAD:  man(x) in premise, male(x) in hypothesis
+- Predicate arity must be consistent: if love(x,y) in one formula, always love(x,y).
+- Constants for named entities: john, mary, bill (not j, m, b).
+- Multi-premise items: all premises share the same vocabulary.
 
-TODO: Students, add rules about formula structure. Ideas:
-- How to handle "every": all x (N(x) -> VP(x))
-- How to handle "some": exists x (N(x) & VP(x))
-- How to handle "no": -exists x (N(x) & VP(x))  OR  all x (N(x) -> -VP(x))
-- Negation scope: where does "not" attach?
-- How to handle multi-premise items (FraCaS has 2-4 premises sometimes)
-- TODO: write out the patterns you want the LLM to follow
+TODO: Students, review these conventions. Questions to think about:
+- Rule 5 says "most" is approximated. Is there a better way? What about "few", "many"?
+- Rule 7 for definites is complex. Does the LLM handle this consistently?
+- Should we add rules for passives? Comparatives? Temporal expressions?
+- Add 2-3 more worked examples below showing multi-premise items.
 
 === EXAMPLES ===
 
-TODO: Students, add 2-3 worked examples here. Pick easy FraCaS items
-from Section 1 and show the correct translation. For example:
-
-Example 1:
+Example 1 (entailment):
   Premise: "All cats are animals"
   Hypothesis: "Some cats are animals"
-  Translation:
   Premises:
   all x (cat(x) -> animal(x))
   Hypothesis:
   exists x (cat(x) & animal(x))
 
-TODO: add 1-2 more examples, including a multi-premise one
+Example 2 (contradiction):
+  Premise: "No dog is a cat"
+  Hypothesis: "Some dog is a cat"
+  Premises:
+  all x (dog(x) -> -cat(x))
+  Hypothesis:
+  exists x (dog(x) & cat(x))
 
-=== END OF CONVENTIONS ===
+Example 3 (multi-premise entailment):
+  Premise: "Every man is mortal. Socrates is a man."
+  Hypothesis: "Socrates is mortal"
+  Premises:
+  all x (man(x) -> mortal(x))
+  man(socrates)
+  Hypothesis:
+  mortal(socrates)
+
+TODO: Students, add 2-3 more examples from FraCaS Section 1.
+Pick items where you know the correct FOL and show the translation.
+
+=== END ===
 
 Output format (exactly):
 Premises:
