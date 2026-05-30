@@ -13,6 +13,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from dotenv import load_dotenv
+from rich.progress import track as rich_track
 
 from clients.azure import assert_env, call_llm, get_client
 from data.loaders import load_dataset
@@ -106,7 +107,8 @@ def run(dataset_key: str, model_key: str, technique: str, language: str, resume:
     )
 
     pool = samples if technique == "few-shot" else []
-    for i, sample in enumerate(pending, start=1):
+    desc = f"  {dataset_key} / {model_key} / {technique} / {language}"
+    for i, sample in enumerate(rich_track(pending, description=desc), start=1):
         examples = select_examples(sample, pool, k=FEW_SHOT_K) if technique == "few-shot" else None
         messages = build_prompt(
             sample,
@@ -129,7 +131,6 @@ def run(dataset_key: str, model_key: str, technique: str, language: str, resume:
         state["results"] = list(results_by_id.values())
         if i % FLUSH_EVERY == 0:
             _flush(path, state)
-            print(f"  [{i}/{len(pending)}] flushed -> {path.name}")
 
     state["results"] = list(results_by_id.values())
     state["metadata"]["completed_at"] = _now_iso()
