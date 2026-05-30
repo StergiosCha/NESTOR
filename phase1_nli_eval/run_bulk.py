@@ -11,16 +11,21 @@ from __future__ import annotations
 import argparse
 import itertools
 import json
-import sys
 from dataclasses import dataclass
 from pathlib import Path
 
 import yaml
+from rich import box
+from rich.console import Console
+from rich.table import Table
+from rich.text import Text
 
 from clients.models import MODELS
 from data.schema import LANGUAGES
 from phase1_nli_eval import nli_pipeline
 from phase1_nli_eval.nli_pipeline import DATASETS, TECHNIQUES, run
+
+console = Console()
 
 
 @dataclass(frozen=True)
@@ -96,32 +101,48 @@ def _read_summary(combo: tuple[str, str, str, str]) -> dict | None:
         return None
 
 
-def _print_table(rows: list[tuple[str, str, str]]) -> None:
-    width = max((len(r[0]) for r in rows), default=10)
-    print()
-    print(f"{'combo'.ljust(width)}  status  detail")
-    print(f"{'-' * width}  ------  ------")
-    for combo, status, detail in rows:
-        print(f"{combo.ljust(width)}  {status:<6}  {detail}")
+def _print_table(rows: list[tuple[tuple[str, str, str, str], str, str, str, str, str]]) -> None:
+    table = Table(box=box.ROUNDED, show_header=True, header_style="bold")
+    table.add_column("dataset")
+    table.add_column("model")
+    table.add_column("technique")
+    table.add_column("lang")
+    table.add_column("status", justify="center")
+    table.add_column("accuracy", justify="right")
+    table.add_column("parse_fail", justify="right")
+    table.add_column("llm_error", justify="right")
+    table.add_column("detail")
+
+    for combo, status, accuracy, parse_fail, llm_error, detail in rows:
+        dataset, model, technique, language = combo
+        status_text = Text(status, style="green bold" if status == "PASS" else "red bold")
+        table.add_row(dataset, model, technique, language, status_text, accuracy, parse_fail, llm_error, detail)
+
+    console.print()
+    console.print(table)
 
 
 def run_sweep(cfg: SweepConfig) -> int:
     combos = expand_combinations(cfg)
-    print(f"[sweep] {len(combos)} combination(s) to run")
-    rows: list[tuple[str, str, str]] = []
+    console.print(f"[bold][sweep][/bold] {len(combos)} combination(s) to run")
+    rows: list[tuple[tuple[str, str, str, str], str, str, str, str, str]] = []
     any_fail = False
     for i, combo in enumerate(combos, start=1):
-        key = _combo_key(combo)
-        print(f"\n[sweep {i}/{len(combos)}] {key}")
+        console.print(f"\n[{i}/{len(combos)}] {_combo_key(combo)}")
         try:
             run(*combo, resume=cfg.resume, limit=cfg.limit)
             summary = _read_summary(combo) or {}
-            detail = f"{summary.get('success_count', '?')}/{summary.get('total', '?')}"
-            rows.append((key, "PASS", detail))
+            ok = summary.get("success_count", 0)
+            total = summary.get("total", 0)
+            pct = f"{100 * ok / total:.1f}%" if total else "n/a"
+            accuracy = f"{ok}/{total} ({pct})"
+            parse_fail = str(summary.get("parse_fail", "?"))
+            llm_error = str(summary.get("llm_error", "?"))
+            rows.append((combo, "PASS", accuracy, parse_fail, llm_error, ""))
         except Exception as e:
             any_fail = True
-            rows.append((key, "FAIL", f"{type(e).__name__}: {e}"))
-            print(f"  [sweep] FAIL: {type(e).__name__}: {e}")
+            rows.append((combo, "FAIL", "-", "-", "-", f"{type(e).__name__}: {e}"))
+            console.print(f"  [red]FAIL:[/red] {type(e).__name__}: {e}")
 
     _print_table(rows)
     return 1 if any_fail else 0
