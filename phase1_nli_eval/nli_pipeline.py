@@ -88,9 +88,11 @@ def run(dataset_key: str, model_key: str, technique: str, language: str, resume:
 
     if resume and path.exists():
         state = json.loads(path.read_text(encoding="utf-8"))
-        completed = {e["id"] for e in state["results"]}
+        results_by_id = {e["id"]: e for e in state["results"]}
+        completed = {eid for eid, e in results_by_id.items() if e.get("predicted") is not None}
     else:
         state = _new_state(dataset_key, model_key, technique, language, multilabel)
+        results_by_id = {}
         completed = set()
 
     pending = [s for s in samples if s.id not in completed]
@@ -118,11 +120,13 @@ def run(dataset_key: str, model_key: str, technique: str, language: str, resume:
         except Exception as e:
             raw = f"<LLM call failed: {type(e).__name__}: {e}>"
             parsed = None
-        state["results"].append(dump_entry(sample, parsed, raw, list(sample.labels)))
+        results_by_id[sample.id] = dump_entry(sample, parsed, raw, list(sample.labels))
+        state["results"] = list(results_by_id.values())
         if i % FLUSH_EVERY == 0:
             _flush(path, state)
             print(f"  [{i}/{len(pending)}] flushed -> {path.name}")
 
+    state["results"] = list(results_by_id.values())
     state["metadata"]["completed_at"] = _now_iso()
     _flush(path, state)
     successes = sum(1 for e in state["results"] if e["success"] == 1)
