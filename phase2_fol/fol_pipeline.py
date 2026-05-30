@@ -43,6 +43,89 @@ PROMPT_DIR = Path(__file__).parent / "prompts"
 FOL_MAX_TOKENS = 500
 
 # ============================================================
+# PHASE 1 RESULTS (for C2/C4 conditions)
+# ============================================================
+
+PHASE1_RESULTS_PATH = Path(__file__).resolve().parent.parent / "phase1_nli_eval" / "results" / "fracas_results_azure.json"
+
+_phase1_cache = None
+
+def load_phase1_results():
+    """Load Phase 1 predictions (cached)."""
+    global _phase1_cache
+    if _phase1_cache is None:
+        if PHASE1_RESULTS_PATH.exists():
+            with open(PHASE1_RESULTS_PATH, encoding="utf-8") as f:
+                _phase1_cache = json.load(f)
+        else:
+            print(f"WARNING: Phase 1 results not found at {PHASE1_RESULTS_PATH}")
+            _phase1_cache = {}
+    return _phase1_cache
+
+
+def get_phase1_prediction(item_id, model="gpt-4o"):
+    """Get Phase 1 prediction and explanation for an item."""
+    results = load_phase1_results()
+    # fracas_results_azure.json is keyed by model -> item_number
+    item_num = item_id.split("-")[-1] if "-" in str(item_id) else str(item_id)
+    model_results = results.get(model, {})
+    entry = model_results.get(item_num, {})
+    return {
+        "label": entry.get("predicted", "unknown"),
+        "explanation": entry.get("explanation", ""),
+    }
+
+
+# ============================================================
+# PROMPT SELECTION
+# ============================================================
+
+PROMPT_FILES = {
+    "F0": "nl_to_fol.txt",
+    "F1": "nl_to_fol_F1.txt",
+    "F2": "nl_to_fol_F2.txt",
+}
+
+
+def build_fol_prompt(prompt_tier, condition, premise, hypothesis,
+                     gold_label=None, item_id=None):
+    """Build the full prompt with condition-specific content.
+
+    prompt_tier: "F0", "F1", or "F2"
+    condition: "c1", "c2", "c3", or "c4"
+    """
+    filename = PROMPT_FILES.get(prompt_tier, "nl_to_fol.txt")
+    template = (PROMPT_DIR / filename).read_text(encoding="utf-8")
+
+    # Prepare condition-specific values
+    phase1_label = ""
+    phase1_explanation = ""
+    if condition in ("c2", "c4") and item_id:
+        p1 = get_phase1_prediction(item_id)
+        phase1_label = p1["label"]
+        phase1_explanation = p1["explanation"]
+
+    # Fill template
+    prompt = template.format(
+        premise=premise,
+        hypothesis=hypothesis,
+        gold_label=gold_label or "",
+        phase1_label=phase1_label,
+        phase1_explanation=phase1_explanation,
+    )
+
+    # For C1 (blind), strip the condition block so LLM gets no hints
+    if condition == "c1" and prompt_tier != "F0":
+        # Remove everything between === CONDITION === and === END CONDITION ===
+        import re
+        prompt = re.sub(
+            r"=== CONDITION.*?=== END CONDITION ===\s*",
+            "", prompt, flags=re.DOTALL)
+
+    return prompt
+
+
+# ============================================================
 # FOL TRANSLATION
 # ============================================================
 
@@ -50,10 +133,12 @@ def load_prompt(name):
     return (PROMPT_DIR / name).read_text(encoding="utf-8")
 
 
-def translate_to_fol(client, model, premise, hypothesis):
+def translate_to_fol(client, model, premise, hypothesis,
+                     prompt_tier="F0", condition="c1",
+                     gold_label=None, item_id=None):
     """Ask LLM to translate P, H into FOL (Prover9 syntax)."""
-    template = load_prompt("nl_to_fol.txt")
-    prompt = template.format(premise=premise, hypothesis=hypothesis)
+    prompt = build_fol_prompt(prompt_tier, condition, premise, hypothesis,
+                              gold_label=gold_label, item_id=item_id)
     messages = [
         {"role": "system", "content": "You are an expert in first-order logic and formal semantics."},
         {"role": "user", "content": prompt},
@@ -223,7 +308,9 @@ def fix_fol(client, model, premise, hypothesis, previous_fol, error_message):
     return call_llm(client, model, messages, max_tokens=FOL_MAX_TOKENS)
 
 
-def run_fol_pipeline(client, model, premise, hypothesis, max_retries=None):
+def run_fol_pipeline(client, model, premise, hypothesis, max_retries=None,
+                     prompt_tier="F0", condition="c1",
+                     gold_label=None, item_id=None):
     """Full pipeline with verification loop.
 
     Returns dict with:
@@ -239,7 +326,9 @@ def run_fol_pipeline(client, model, premise, hypothesis, max_retries=None):
     for attempt in range(1, max_retries + 1):
         # Step 1: Get FOL translation
         if attempt == 1:
-            raw = translate_to_fol(client, model, premise, hypothesis)
+            raw = translate_to_fol(client, model, premise, hypothesis,
+                                   prompt_tier=prompt_tier, condition=condition,
+                                   gold_label=gold_label, item_id=item_id)
         else:
             raw = fix_fol(client, model, premise, hypothesis,
                          previous_raw, errors[-1])
@@ -294,7 +383,8 @@ def run_fol_pipeline(client, model, premise, hypothesis, max_retries=None):
 # BATCH RUNNER
 # ============================================================
 
-def run_batch(items, client, model, output_file=None):
+def run_batch(items, client, model, output_file=None,
+              prompt_tier="F0", condition="c1"):
     """Run FOL pipeline on a list of NLI items.
 
     items: list of dicts with 'premise', 'hypothesis', 'gold' keys
@@ -305,7 +395,10 @@ def run_batch(items, client, model, output_file=None):
         print(f"[{i+1}/{len(items)}] {item.get('id', i+1)}: ", end="", flush=True)
 
         result = run_fol_pipeline(client, model,
-                                  item["premise"], item["hypothesis"])
+                                  item["premise"], item["hypothesis"],
+                                  prompt_tier=prompt_tier, condition=condition,
+                                  gold_label=item.get("gold"),
+                                  item_id=item.get("id"))
         result["id"] = item.get("id", i+1)
         result["gold"] = item.get("gold", "")
         result["premise_nl"] = item["premise"]
@@ -364,6 +457,10 @@ if __name__ == "__main__":
                         help="Max items to process")
     parser.add_argument("--section", default=None,
                         help="FraCaS section filter (e.g. '1' for quantifiers)")
+    parser.add_argument("--prompt", default="F0", choices=["F0", "F1", "F2"],
+                        help="Prompt tier: F0 (bare), F1 (conventions), F2 (Davidsonian)")
+    parser.add_argument("--condition", default="c1", choices=["c1", "c2", "c3", "c4"],
+                        help="Condition: c1 (blind), c2 (phase1 pred), c3 (gold), c4 (phase1+expl)")
     args = parser.parse_args()
 
     # Load data
@@ -380,11 +477,12 @@ if __name__ == "__main__":
         items = items[:args.limit]
 
     print(f"Loaded {len(items)} items from {args.data}")
-    print(f"Model: {args.model}\n")
+    print(f"Model: {args.model}, Prompt: {args.prompt}, Condition: {args.condition}\n")
 
     # Setup client
     client = get_client(args.model)
 
     # Run
-    output = args.output or f"results/fol_{args.model}_{len(items)}items.json"
-    run_batch(items, client, args.model, output_file=output)
+    output = args.output or f"results/fol_{args.prompt}_{args.condition}_{args.model}_{len(items)}items.json"
+    run_batch(items, client, args.model, output_file=output,
+              prompt_tier=args.prompt, condition=args.condition)

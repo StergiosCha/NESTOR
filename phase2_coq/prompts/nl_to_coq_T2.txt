@@ -1,4 +1,5 @@
-You are an expert in Coq and formal semantics. Formalise the following NLI pair in Coq and prove the entailment relation.
+You are an expert in Coq and formal semantics. Formalise the following NLI pair
+in Coq and determine whether the relation is entailment, contradiction, or neutral.
 
 Premise: {premise}
 Hypothesis: {hypothesis}
@@ -12,62 +13,145 @@ C4 (Phase 1 + explanation): Prediction: {phase1_label}. Explanation: {phase1_exp
 
 === END CONDITION ===
 
-=== COQ SYNTAX RULES ===
+=== COQ SETUP ===
 
-(same as T0/T1 -- paste your finalised rules here)
+Declare a single base type for individuals and predicates as functions:
 
-=== PROOF INSTRUCTIONS ===
+  Parameter Entity : Type.
+  (* 1-place predicates for properties *)
+  Parameter man woman student : Entity -> Prop.
+  (* 2-place predicates for relations *)
+  Parameter love read : Entity -> Entity -> Prop.
+  (* Named individuals *)
+  Parameter john mary : Entity.
 
-For entailment: Theorem + Proof + Qed.
-For contradiction: prove premise -> ~ hypothesis, then Qed.
-For neutral/unknown: Abort.
+This is standard Montague-style semantics in Coq. Entity is the domain
+of individuals. Predicates map entities to propositions. This is NOT
+type theory (MTT) where nouns would be separate types.
+
+=== QUANTIFIER PATTERNS ===
+
+"every man walks"       forall x : Entity, man x -> walk x
+"some man walks"        exists x : Entity, man x /\ walk x
+"no man walks"          ~ exists x : Entity, man x /\ walk x
+                        OR equivalently: forall x : Entity, man x -> ~ walk x
+"at least two men walk" exists x : Entity, exists y : Entity,
+                          man x /\ man y /\ walk x /\ walk y /\ x <> y
+"the man walks"         exists x : Entity, man x /\
+                          (forall y : Entity, man y -> y = x) /\ walk x
+
+Connectives: /\ (and), \/ (or), ~ (not), -> (implies), <-> (iff)
+
+Adjective + noun: use conjunction.
+  "tall man"  ->  man x /\ tall x      (NOT a separate type)
+
+Relative clauses: conjoin inside the restriction.
+  "every man who runs is tired"
+  ->  forall x : Entity, (man x /\ run x) -> tired x
+
+=== HOW TO DETERMINE THE RELATION ===
+
+You must attempt TWO proofs. This is how we decide the relation:
+
+STEP 1: Try to prove ENTAILMENT (premise implies hypothesis).
+  Theorem entailment : (* formalised premise *) -> (* formalised hypothesis *).
+  Proof. (* attempt *) Qed.
+
+  If this proof goes through (Qed succeeds): the relation is ENTAILMENT.
+
+STEP 2: Try to prove CONTRADICTION (premise implies negation of hypothesis).
+  Theorem contradiction : (* formalised premise *) -> ~ (* formalised hypothesis *).
+  Proof. (* attempt *) Qed.
+
+  If this proof goes through (Qed succeeds): the relation is CONTRADICTION.
+
+STEP 3: If NEITHER proof goes through, the relation is NEUTRAL/UNKNOWN.
+  In this case, write both theorems but use Abort on both:
+
+  Theorem entailment : (* ... *).
+  Proof. (* stuck *) Abort.
+
+  Theorem contradiction : (* ... *).
+  Proof. (* stuck *) Abort.
+
+IMPORTANT: always attempt both directions. Do not skip to Abort without trying.
+
+=== PROOF TACTICS ===
+
+Common tactics that work for NLI proofs:
+  intro / intros    introduce hypotheses
+  apply H           apply a hypothesis or lemma
+  exact H           finish with an exact hypothesis
+  exists t          provide a witness for existential
+  destruct H        break apart /\ or \/
+  split             prove a conjunction (left then right)
+  left / right      choose a disjunct
+  unfold X          expand a definition
+  firstorder        automatic solver (try this first, often works)
+  auto              simpler automatic solver
+  tauto             propositional tautology solver
+
+Strategy: try "firstorder" first. If it works, done. If not, do it manually
+with intro/destruct/exists/apply.
 
 === FOUNDATION FILES (section-matched) ===
 
-The following Coq definitions are relevant to this FraCaS section.
-Use them as reference. Reuse definitions and proof patterns where applicable.
+The following Coq definitions are relevant to the FraCaS section of this
+item. Use them as reference for definitions, type signatures, and proof
+patterns. You may reuse these definitions directly or follow the same
+patterns in your formalisation.
 
 {foundation_files}
 
-TODO: Students, the {foundation_files} placeholder gets filled automatically
-by the prompt builder function. You need to write that function.
-
-Here is the section-to-file mapping (in coq_pipeline.py or a new file):
-
-SECTION_FILES = {
-    "1": ["Montague.v", "BarwiseCooper.v"],          # Quantifiers
-    "2": ["Link1983.v", "Montague.v"],                # Plurals
-    "3": ["DonkeyScope.v", "Montague.v"],             # Anaphora
-    "4": ["Montague.v"],                              # Ellipsis
-    "5": ["AdjectivesExtension.v", "MTT_base.v"],     # Adjectives
-    "6": ["AdjectivesExtension.v", "Montague.v"],     # Comparatives
-    "7": ["DowtyTense.v", "Montague.v"],              # Temporal
-    "8": ["PTQ.v", "kratzer2.v"],                     # Verbs/Attitudes
-    "9": ["MTT_base.v", "Montague.v"],                # Nominalization
-}
-
-def build_coq_prompt(template_path, section_id, premise, hypothesis, label, condition):
-    template = open(template_path).read()
-    files = SECTION_FILES.get(section_id, ["Montague.v"])
-    context = ""
-    for f in files:
-        path = f"../coq_foundations/{f}"
-        context += f"--- BEGIN {f} ---\n"
-        context += open(path).read()
-        context += f"\n--- END {f} ---\n\n"
-    # Fill in template
-    return template.replace("{foundation_files}", context)
-    # TODO: also replace {premise}, {hypothesis}, condition placeholders
-
-TODO: Students, integrate this into coq_pipeline.py. The function needs to:
-  1. Detect the FraCaS section from the item ID (e.g., "fracas-1-023" -> section "1")
-  2. Load the right foundation files
-  3. Fill all placeholders
-  4. Handle the condition (C1/C2/C3/C4) by including or excluding label/explanation
-
 === EXAMPLES ===
 
-TODO: add 2-3 worked examples that use definitions from the foundation files
+Example 1 (entailment):
+  Premise: "Every man is mortal. Socrates is a man."
+  Hypothesis: "Socrates is mortal."
+
+  Parameter Entity : Type.
+  Parameter man mortal : Entity -> Prop.
+  Parameter socrates : Entity.
+
+  Axiom p1 : forall x : Entity, man x -> mortal x.
+  Axiom p2 : man socrates.
+
+  Theorem entailment : mortal socrates.
+  Proof. apply p1. exact p2. Qed.
+
+  Theorem contradiction : ~ mortal socrates.
+  Proof. Abort.
+
+Example 2 (contradiction):
+  Premise: "No dog is a cat."
+  Hypothesis: "Some dog is a cat."
+
+  Parameter Entity : Type.
+  Parameter dog cat : Entity -> Prop.
+
+  Axiom p1 : forall x : Entity, dog x -> ~ cat x.
+
+  Theorem entailment : exists x : Entity, dog x /\ cat x.
+  Proof. Abort.
+
+  Theorem contradiction : ~ exists x : Entity, dog x /\ cat x.
+  Proof. intro H. destruct H as [x [Hd Hc]]. apply (p1 x Hd). exact Hc. Qed.
+
+Example 3 (neutral):
+  Premise: "John is a student."
+  Hypothesis: "John is a good student."
+
+  Parameter Entity : Type.
+  Parameter student good : Entity -> Prop.
+  Parameter john : Entity.
+
+  Axiom p1 : student john.
+
+  Theorem entailment : student john /\ good john.
+  Proof. Abort.
+
+  Theorem contradiction : ~ (student john /\ good john).
+  Proof. Abort.
 
 === END ===
 
