@@ -14,8 +14,8 @@ MODELS = {
         "provider": "azure-openai",
         "reasoning": False,
     },
-    "gpt-5.4-pro": {
-        "deployment": "gpt-5.4-pro",
+    "gpt-5.4": {
+        "deployment": "gpt-5.4",
         "provider": "azure-openai",
         "reasoning": False,
     },
