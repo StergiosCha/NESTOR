@@ -30,6 +30,7 @@ TECHNIQUES = ("zero-shot", "few-shot", "cot")
 FLUSH_EVERY = 10
 MAX_TOKENS = 800
 FEW_SHOT_K = 3
+MAX_RETRIES = 3
 
 
 def _results_path(dataset_key: str, model_key: str, technique: str, language: str) -> Path:
@@ -114,12 +115,16 @@ def run(dataset_key: str, model_key: str, technique: str, language: str, resume:
             multilabel,
             examples=examples,
         )
-        try:
-            raw = call_llm(client, deployment, messages, max_tokens=MAX_TOKENS) or ""
-            parsed = parse_response(raw, multilabel)
-        except Exception as e:
-            raw = f"<LLM call failed: {type(e).__name__}: {e}>"
-            parsed = None
+        raw, parsed = "", None
+        for i in range(MAX_RETRIES):
+            try:
+                raw = call_llm(client, deployment, messages, max_tokens=MAX_TOKENS) or ""
+                parsed = parse_response(raw, multilabel)
+            except Exception as e:
+                raw = f"<LLM call failed: {type(e).__name__}: {e}>"
+                parsed = None
+            if parsed is not None:
+                break
         results_by_id[sample.id] = dump_entry(sample, parsed, raw, list(sample.labels))
         state["results"] = list(results_by_id.values())
         if i % FLUSH_EVERY == 0:
