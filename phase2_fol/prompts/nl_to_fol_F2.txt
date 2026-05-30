@@ -1,0 +1,85 @@
+Translate the following premise and hypothesis into first-order logic formulas.
+
+Premise: {premise}
+Hypothesis: {hypothesis}
+
+=== CONDITION (pick one per experiment run) ===
+
+C1 (blind): No label. LLM decides the relation AND formalises.
+C2 (Phase 1 prediction): Add "{phase1_label}" as a hint.
+C3 (gold label): Add "{gold_label}". LLM only formalises.
+C4 (Phase 1 + explanation): Add "{phase1_label}" + "{phase1_explanation}".
+
+TODO: Students, same as F1 -- build condition switching into the pipeline
+or make 4 prompt files. See F1 for details.
+
+=== END CONDITION ===
+
+Use Prover9 syntax:
+- Quantifiers: all x, exists x
+- Connectives: & (and), | (or), - (not), -> (implies), <-> (iff)
+- Predicates: lowercase, e.g. student(x), runs(x)
+- Constants: lowercase, e.g. john, mary
+- Variables: x, y, z
+
+=== THEORY CHOICE ===
+
+TODO: Students, pick ONE of the two approaches below and delete the other.
+Then fill in the details. The choice affects how verbs and modifiers
+are represented.
+
+--- OPTION A: Plain predicate logic ---
+
+Verbs are simple predicates:
+  "John runs"        -> runs(john)
+  "John loves Mary"  -> loves(john, mary)
+  "John is a student" -> student(john)
+
+Modifiers attach directly:
+  "John runs quickly" -> runs_quickly(john)  OR  runs(john) & quickly(john)
+
+TODO: decide how to handle modifiers (new predicate or conjunction?)
+TODO: decide how to handle passives ("Mary is loved by John")
+TODO: add rules for relative clauses, if-clauses, negation scope
+
+--- OPTION B: Davidsonian event semantics ---
+
+Every verb introduces an event variable:
+  "John runs"        -> exists e (running(e) & agent(e, john))
+  "John loves Mary"  -> exists e (loving(e) & agent(e, john) & patient(e, mary))
+
+Modifiers are conjuncts on the event:
+  "John runs quickly" -> exists e (running(e) & agent(e, john) & quick(e))
+
+Thematic roles:
+  agent(e, x)    - the doer
+  patient(e, x)  - the one affected
+  theme(e, x)    - TODO: define when to use theme vs patient
+  goal(e, x)     - TODO: define
+  location(e, x) - TODO: define
+
+TODO: decide which thematic roles you need for FraCaS
+TODO: how to handle statives ("John is tall") -- event or not?
+TODO: how to handle negation with events
+TODO: add 2-3 worked examples in whichever style you choose
+
+=== NAMING CONVENTIONS ===
+
+TODO: same as F1 -- copy the conventions you wrote there, or improve them
+
+=== EXAMPLES ===
+
+TODO: add 2-3 worked examples in your chosen theory. Include:
+- A simple entailment (Section 1)
+- A multi-premise item
+- One that shows how your theory handles modifiers or tense
+
+=== END ===
+
+Output format (exactly):
+Premises:
+<one formula per line>
+Hypothesis:
+<single formula>
+
+No commentary, no explanation, no natural language.

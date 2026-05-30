@@ -1,0 +1,85 @@
+Translate the following premise and hypothesis into first-order logic formulas.
+
+Premise: {premise}
+Hypothesis: {hypothesis}
+
+=== CONDITION (pick one per experiment run) ===
+
+C1 (blind): The LLM gets no label. It must decide the relation AND formalise.
+   -> Do not include any label or hint in the prompt.
+
+C2 (Phase 1 prediction): The LLM gets its own Phase 1 NLI prediction as a hint.
+   -> Add: "A previous model predicted the relation is: {phase1_label}"
+   -> TODO: students, decide where this goes and how to phrase it
+
+C3 (gold label): The LLM gets the correct label.
+   -> Add: "The correct relation is: {gold_label}"
+   -> The LLM only needs to formalise, not decide.
+
+C4 (Phase 1 + explanation): The LLM gets Phase 1 prediction AND explanation.
+   -> Add: "A previous model predicted: {phase1_label}"
+   -> Add: "Its explanation: {phase1_explanation}"
+   -> TODO: students, does the explanation change how you ask for FOL?
+
+TODO: Students, you need to make 4 versions of this prompt (or use
+if/else in fol_pipeline.py) so the pipeline can switch between C1-C4.
+The {phase1_label} and {phase1_explanation} come from fracas_results_azure.json.
+
+=== END CONDITION ===
+
+Use Prover9 syntax:
+- Quantifiers: all x, exists x
+- Connectives: & (and), | (or), - (not), -> (implies), <-> (iff)
+- Predicates: lowercase, e.g. student(x), runs(x)
+- Constants: lowercase, e.g. john, mary
+- Variables: x, y, z
+
+=== NAMING CONVENTIONS (consistency rules) ===
+
+TODO: Students, define rules here so the LLM uses the same predicates
+across all premises and the hypothesis. Without these, the LLM will
+use "person(x)" in one premise and "human(x)" in another, and the
+prover will treat them as unrelated.
+
+Ideas to consider:
+- One predicate per concept (e.g., always "man(x)", never "male(x)")
+- 1-place predicates for properties: man(x), student(x), tall(x)
+- 2-place predicates for relations: loves(x,y), owns(x,y)
+- Constants for named entities: john, mary (not j, m)
+- TODO: add 3-5 concrete examples showing good vs bad naming
+
+=== STRUCTURAL RULES ===
+
+TODO: Students, add rules about formula structure. Ideas:
+- How to handle "every": all x (N(x) -> VP(x))
+- How to handle "some": exists x (N(x) & VP(x))
+- How to handle "no": -exists x (N(x) & VP(x))  OR  all x (N(x) -> -VP(x))
+- Negation scope: where does "not" attach?
+- How to handle multi-premise items (FraCaS has 2-4 premises sometimes)
+- TODO: write out the patterns you want the LLM to follow
+
+=== EXAMPLES ===
+
+TODO: Students, add 2-3 worked examples here. Pick easy FraCaS items
+from Section 1 and show the correct translation. For example:
+
+Example 1:
+  Premise: "All cats are animals"
+  Hypothesis: "Some cats are animals"
+  Translation:
+  Premises:
+  all x (cat(x) -> animal(x))
+  Hypothesis:
+  exists x (cat(x) & animal(x))
+
+TODO: add 1-2 more examples, including a multi-premise one
+
+=== END OF CONVENTIONS ===
+
+Output format (exactly):
+Premises:
+<one formula per line>
+Hypothesis:
+<single formula>
+
+No commentary, no explanation, no natural language.
