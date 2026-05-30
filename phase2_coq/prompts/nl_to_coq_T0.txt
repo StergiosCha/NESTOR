@@ -1,88 +1,148 @@
-You are an expert in Coq and formal semantics. Formalise the following NLI pair in Coq and prove the entailment relation.
+You are an expert in Coq and formal semantics. Formalise the following NLI pair
+in Coq and determine whether the relation is entailment, contradiction, or neutral.
 
 Premise: {premise}
 Hypothesis: {hypothesis}
 
 === CONDITION ===
 
-C1 (blind): No label given. Decide the relation yourself and formalise accordingly.
+C1 (blind): No label given. Decide the relation yourself.
 C2 (Phase 1 prediction): A previous model predicted: {phase1_label}
 C3 (gold label): The correct relation is: {gold_label}
 C4 (Phase 1 + explanation): Prediction: {phase1_label}. Explanation: {phase1_explanation}
 
-TODO: Students, build condition switching into coq_pipeline.py or make
-4 prompt files. The {phase1_label} and {phase1_explanation} come from
-fracas_results_azure.json.
-
 === END CONDITION ===
 
-=== COQ SYNTAX RULES ===
+=== COQ SETUP ===
 
-Use this setup pattern:
+Declare a single base type for individuals and predicates as functions:
 
   Parameter Entity : Type.
-  (* Declare predicates as Parameters *)
-  Parameter man : Entity -> Prop.
-  Parameter woman : Entity -> Prop.
-  Parameter walk : Entity -> Prop.
-  (* Declare relations with two arguments *)
-  Parameter love : Entity -> Entity -> Prop.
-  (* Declare named individuals *)
+  (* 1-place predicates for properties *)
+  Parameter man woman student : Entity -> Prop.
+  (* 2-place predicates for relations *)
+  Parameter love read : Entity -> Entity -> Prop.
+  (* Named individuals *)
   Parameter john mary : Entity.
 
-Quantifiers:
-  "every man walks"    -> forall x : Entity, man x -> walk x
-  "some man walks"     -> exists x : Entity, man x /\ walk x
-  "no man walks"       -> ~ exists x : Entity, man x /\ walk x
+This is standard Montague-style semantics in Coq. Entity is the domain
+of individuals. Predicates map entities to propositions. This is NOT
+type theory (MTT) where nouns would be separate types.
 
-Connectives:
-  /\  (and)
-  \/  (or)
-  ~   (not)
-  ->  (implies)
-  <-> (iff)
+=== QUANTIFIER PATTERNS ===
 
-TODO: Students, add more patterns here. Ideas:
-- How to handle "most", "few", "at least two"
-- How to handle adjectives ("tall man")
-- How to handle relative clauses ("man who walks")
-- How to handle negation scope
-- How to handle multi-premise items (multiple Axioms)
+"every man walks"       forall x : Entity, man x -> walk x
+"some man walks"        exists x : Entity, man x /\ walk x
+"no man walks"          ~ exists x : Entity, man x /\ walk x
+                        OR equivalently: forall x : Entity, man x -> ~ walk x
+"at least two men walk" exists x : Entity, exists y : Entity,
+                          man x /\ man y /\ walk x /\ walk y /\ x <> y
+"the man walks"         exists x : Entity, man x /\
+                          (forall y : Entity, man y -> y = x) /\ walk x
 
-=== PROOF INSTRUCTIONS ===
+Connectives: /\ (and), \/ (or), ~ (not), -> (implies), <-> (iff)
 
-For entailment: prove that the premise implies the hypothesis.
-  Theorem nli_result : (* premise -> hypothesis *).
-  Proof. (* your proof *) Qed.
+Adjective + noun: use conjunction.
+  "tall man"  ->  man x /\ tall x      (NOT a separate type)
 
-For contradiction: prove that the premise implies the negation of the hypothesis.
-  Theorem nli_result : (* premise -> ~ hypothesis *).
-  Proof. (* your proof *) Qed.
+Relative clauses: conjoin inside the restriction.
+  "every man who runs is tired"
+  ->  forall x : Entity, (man x /\ run x) -> tired x
 
-For neutral/unknown: the goal should not be provable. Use Abort.
-  Theorem nli_result : (* premise -> hypothesis *).
-  Proof. (* attempt *) Abort.
+=== HOW TO DETERMINE THE RELATION ===
 
-TODO: Students, add guidance on proof tactics. Ideas:
-- When to use intro, apply, exact, destruct, exists
-- When to use firstorder or auto
-- Should the LLM always try firstorder first?
+You must attempt TWO proofs. This is how we decide the relation:
+
+STEP 1: Try to prove ENTAILMENT (premise implies hypothesis).
+  Theorem entailment : (* formalised premise *) -> (* formalised hypothesis *).
+  Proof. (* attempt *) Qed.
+
+  If this proof goes through (Qed succeeds): the relation is ENTAILMENT.
+
+STEP 2: Try to prove CONTRADICTION (premise implies negation of hypothesis).
+  Theorem contradiction : (* formalised premise *) -> ~ (* formalised hypothesis *).
+  Proof. (* attempt *) Qed.
+
+  If this proof goes through (Qed succeeds): the relation is CONTRADICTION.
+
+STEP 3: If NEITHER proof goes through, the relation is NEUTRAL/UNKNOWN.
+  In this case, write both theorems but use Abort on both:
+
+  Theorem entailment : (* ... *).
+  Proof. (* stuck *) Abort.
+
+  Theorem contradiction : (* ... *).
+  Proof. (* stuck *) Abort.
+
+IMPORTANT: always attempt both directions. Do not skip to Abort without trying.
+
+=== PROOF TACTICS ===
+
+Common tactics that work for NLI proofs:
+  intro / intros    introduce hypotheses
+  apply H           apply a hypothesis or lemma
+  exact H           finish with an exact hypothesis
+  exists t          provide a witness for existential
+  destruct H        break apart /\ or \/
+  split             prove a conjunction (left then right)
+  left / right      choose a disjunct
+  unfold X          expand a definition
+  firstorder        automatic solver (try this first, often works)
+  auto              simpler automatic solver
+  tauto             propositional tautology solver
+
+Strategy: try "firstorder" first. If it works, done. If not, do it manually
+with intro/destruct/exists/apply.
 
 === EXAMPLES ===
 
-TODO: Students, add 2-3 worked examples. Pick easy FraCaS items and
-show the complete Coq file. For example:
+Example 1 (entailment):
+  Premise: "Every man is mortal. Socrates is a man."
+  Hypothesis: "Socrates is mortal."
 
-(* Example: "All men walk" entails "Some men walk" *)
-Parameter Entity : Type.
-Parameter man walk : Entity -> Prop.
-Parameter some_man : Entity.
-Axiom premise : forall x, man x -> walk x.
-Axiom witness : man some_man.
-Theorem nli_result : exists x, man x /\ walk x.
-Proof. exists some_man. split. apply witness. apply premise. apply witness. Qed.
+  Parameter Entity : Type.
+  Parameter man mortal : Entity -> Prop.
+  Parameter socrates : Entity.
 
-TODO: add 1-2 more, including a contradiction and a neutral case
+  Axiom p1 : forall x : Entity, man x -> mortal x.
+  Axiom p2 : man socrates.
+
+  Theorem entailment : mortal socrates.
+  Proof. apply p1. exact p2. Qed.
+
+  Theorem contradiction : ~ mortal socrates.
+  Proof. Abort. (* Cannot prove: entailment holds, not contradiction *)
+
+Example 2 (contradiction):
+  Premise: "No dog is a cat."
+  Hypothesis: "Some dog is a cat."
+
+  Parameter Entity : Type.
+  Parameter dog cat : Entity -> Prop.
+
+  Axiom p1 : forall x : Entity, dog x -> ~ cat x.
+
+  Theorem entailment : exists x : Entity, dog x /\ cat x.
+  Proof. Abort. (* Cannot prove: no witness available *)
+
+  Theorem contradiction : ~ exists x : Entity, dog x /\ cat x.
+  Proof. intro H. destruct H as [x [Hd Hc]]. apply (p1 x Hd). exact Hc. Qed.
+
+Example 3 (neutral):
+  Premise: "John is a student."
+  Hypothesis: "John is a good student."
+
+  Parameter Entity : Type.
+  Parameter student good : Entity -> Prop.
+  Parameter john : Entity.
+
+  Axiom p1 : student john.
+
+  Theorem entailment : student john /\ good john.
+  Proof. Abort. (* Cannot prove: we don't know if John is good *)
+
+  Theorem contradiction : ~ (student john /\ good john).
+  Proof. Abort. (* Cannot prove either: John might be good *)
 
 === END ===
 
