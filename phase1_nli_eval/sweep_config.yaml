@@ -9,20 +9,23 @@
 # phase1_nli_eval/results/{dataset}__{model}__{technique}__{language}.json
 # and is resumed from disk by default.
 
+# fracas | fracas-translated | fracas-extended | fracas-multilabel | oyxoy
 datasets:
   - fracas
-  - fracas-translated
 
+# gpt-4o | gpt-5.4 | deepseek-r1 | deepseek-v4-pro | llama-3.3-70b | llama-4-maverick 
+# mistral-large-3 | phi-4 | grok-4-20 | grok-4-20-reasoning | krikri-8b
 models:
   - gpt-4o
-  - deepseek-r1
 
+# zero-shot | few-shot | cot
 techniques:
   - zero-shot
+  - few-shot
 
+# en | el 
 languages:
   - en
-  - el
 
-resume: true     # skip already-completed samples in each per-combo file
-limit: null      # cap samples per combo; null = no cap
+resume: true  # true = skip completed + retry nulls; false = start fresh
+limit:        # cap samples per combo; null = no cap
