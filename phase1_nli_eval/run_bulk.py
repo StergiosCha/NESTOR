@@ -11,6 +11,8 @@ from __future__ import annotations
 import argparse
 import itertools
 import json
+import threading
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -125,27 +127,48 @@ def _print_table(rows: list[tuple[tuple[str, str, str, str], str, str, str, str,
 def run_sweep(cfg: SweepConfig) -> int:
     combos = expand_combinations(cfg)
     console.print(f"[bold][sweep][/bold] {len(combos)} combination(s) to run")
+
+    deploy_locks: dict[str, threading.Lock] = {}
+    for _, model, _, _ in combos:
+        dep = MODELS[model]["deployment"]
+        if dep not in deploy_locks:
+            deploy_locks[dep] = threading.Lock()
+    n_workers = max(1, len(deploy_locks))
+
     rows: list[tuple[tuple[str, str, str, str], str, str, str, str, str]] = []
-    any_fail = False
-    for i, combo in enumerate(combos, start=1):
-        console.print(f"\n[{i}/{len(combos)}] {_combo_key(combo)}")
-        try:
-            run(*combo, resume=cfg.resume, limit=cfg.limit)
-            summary = _read_summary(combo) or {}
-            ok = summary.get("success_count", 0)
-            total = summary.get("total", 0)
-            pct = f"{100 * ok / total:.1f}%" if total else "n/a"
-            accuracy = f"{ok}/{total} ({pct})"
-            parse_fail = str(summary.get("parse_fail", "?"))
-            llm_error = str(summary.get("llm_error", "?"))
-            rows.append((combo, "PASS", accuracy, parse_fail, llm_error, ""))
-        except Exception as e:
-            any_fail = True
-            rows.append((combo, "FAIL", "-", "-", "-", f"{type(e).__name__}: {e}"))
-            console.print(f"  [red]FAIL:[/red] {type(e).__name__}: {e}")
+    rows_lock = threading.Lock()
+    any_fail = [False]
+
+    def _run_combo(enum_combo: tuple[int, tuple[str, str, str, str]]) -> None:
+        i, combo = enum_combo
+        _, model, _, _ = combo
+        dep = MODELS[model]["deployment"]
+        with deploy_locks[dep]:
+            console.print(f"\n[{i}/{len(combos)}] {_combo_key(combo)}")
+            try:
+                run(*combo, resume=cfg.resume, limit=cfg.limit)
+                summary = _read_summary(combo) or {}
+                ok = summary.get("success_count", 0)
+                n_total = summary.get("total", 0)
+                pct = f"{100 * ok / n_total:.1f}%" if n_total else "n/a"
+                accuracy = f"{ok}/{n_total} ({pct})"
+                parse_fail = str(summary.get("parse_fail", "?"))
+                llm_error = str(summary.get("llm_error", "?"))
+                with rows_lock:
+                    rows.append((combo, "PASS", accuracy, parse_fail, llm_error, ""))
+            except Exception as e:
+                with rows_lock:
+                    any_fail[0] = True
+                    rows.append((combo, "FAIL", "-", "-", "-", f"{type(e).__name__}: {e}"))
+                console.print(f"  [red]FAIL:[/red] {type(e).__name__}: {e}")
+
+    with ThreadPoolExecutor(max_workers=n_workers) as executor:
+        futs = [executor.submit(_run_combo, (i, combo)) for i, combo in enumerate(combos, 1)]
+        for fut in as_completed(futs):
+            fut.result()
 
     _print_table(rows)
-    return 1 if any_fail else 0
+    return 1 if any_fail[0] else 0
 
 
 def main(argv: list[str] | None = None) -> int:
