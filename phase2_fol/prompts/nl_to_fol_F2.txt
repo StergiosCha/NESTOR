@@ -1,78 +1,192 @@
-Translate the following premise and hypothesis into first-order logic formulas.
+Translate the following premise and hypothesis into first-order logic formulas
+using Davidsonian event semantics.
 
 Premise: {premise}
 Hypothesis: {hypothesis}
 
-=== CONDITION (pick one per experiment run) ===
+=== CONDITION ===
 
-C1 (blind): No label. LLM decides the relation AND formalises.
-C2 (Phase 1 prediction): Add "{phase1_label}" as a hint.
-C3 (gold label): Add "{gold_label}". LLM only formalises.
-C4 (Phase 1 + explanation): Add "{phase1_label}" + "{phase1_explanation}".
-
-TODO: Students, same as F1 -- build condition switching into the pipeline
-or make 4 prompt files. See F1 for details.
+C1 (blind): No label given. Decide the relation AND formalise.
+C2 (Phase 1 prediction): A previous model predicted: {phase1_label}
+C3 (gold label): The correct relation is: {gold_label}
+C4 (Phase 1 + explanation): Prediction: {phase1_label}. Explanation: {phase1_explanation}
 
 === END CONDITION ===
 
-Use Prover9 syntax:
-- Quantifiers: all x, exists x
+=== PROVER9 SYNTAX ===
+
+- Universal: all x (P(x) -> Q(x))
+- Existential: exists x (P(x) & Q(x))
 - Connectives: & (and), | (or), - (not), -> (implies), <-> (iff)
-- Predicates: lowercase, e.g. student(x), runs(x)
-- Constants: lowercase, e.g. john, mary
-- Variables: x, y, z
+- Equality: =
+- Variables: lowercase (x, y, z, e, e1, e2)
+- Constants: lowercase (john, mary)
+- Predicates: lowercase (run, agent, patient)
 
-=== THEORY CHOICE ===
+=== DAVIDSONIAN EVENT SEMANTICS ===
 
-TODO: Students, pick ONE of the two approaches below and delete the other.
-Then fill in the details. The choice affects how verbs and modifiers
-are represented.
+Core idea: every verb introduces an event variable. Modifiers, agents,
+patients are all separate conjuncts on that event. This makes modification
+compositional: adding "quickly" is just adding quick(e), not changing the
+whole predicate.
 
---- OPTION A: Plain predicate logic ---
+--- Thematic roles ---
 
-Verbs are simple predicates:
-  "John runs"        -> runs(john)
-  "John loves Mary"  -> loves(john, mary)
-  "John is a student" -> student(john)
+agent(e, x)      the one who acts (subjects of active verbs)
+patient(e, x)    the one affected (objects of active verbs)
+theme(e, x)      what is moved/transferred (objects of give, send, throw)
+goal(e, x)       destination or recipient (indirect objects)
+location(e, x)   where the event happens
+instrument(e, x) what is used to do it
 
-Modifiers attach directly:
-  "John runs quickly" -> runs_quickly(john)  OR  runs(john) & quickly(john)
+--- How to translate ---
 
-TODO: decide how to handle modifiers (new predicate or conjunction?)
-TODO: decide how to handle passives ("Mary is loved by John")
-TODO: add rules for relative clauses, if-clauses, negation scope
+1. INTRANSITIVE VERBS: introduce event, add agent
+   "John runs"
+   -> exists e (run(e) & agent(e, john))
 
---- OPTION B: Davidsonian event semantics ---
+   "Some man walks"
+   -> exists x exists e (man(x) & walk(e) & agent(e, x))
 
-Every verb introduces an event variable:
-  "John runs"        -> exists e (running(e) & agent(e, john))
-  "John loves Mary"  -> exists e (loving(e) & agent(e, john) & patient(e, mary))
+   "Every student sleeps"
+   -> all x (student(x) -> exists e (sleep(e) & agent(e, x)))
 
-Modifiers are conjuncts on the event:
-  "John runs quickly" -> exists e (running(e) & agent(e, john) & quick(e))
+2. TRANSITIVE VERBS: event + agent + patient
+   "John loves Mary"
+   -> exists e (love(e) & agent(e, john) & patient(e, mary))
 
-Thematic roles:
-  agent(e, x)    - the doer
-  patient(e, x)  - the one affected
-  theme(e, x)    - TODO: define when to use theme vs patient
-  goal(e, x)     - TODO: define
-  location(e, x) - TODO: define
+   "Every man reads a book"
+   -> all x (man(x) -> exists y exists e (book(y) & read(e) & agent(e, x) & patient(e, y)))
 
-TODO: decide which thematic roles you need for FraCaS
-TODO: how to handle statives ("John is tall") -- event or not?
-TODO: how to handle negation with events
-TODO: add 2-3 worked examples in whichever style you choose
+3. DITRANSITIVE VERBS: event + agent + theme + goal
+   "John gave Mary a book"
+   -> exists e exists x (give(e) & agent(e, john) & theme(e, x) & book(x) & goal(e, mary))
 
-=== NAMING CONVENTIONS ===
+4. ADJECTIVES: 1-place predicates on entities, NOT on events
+   "John is tall"         -> tall(john)
+   "A tall man runs"      -> exists x exists e (man(x) & tall(x) & run(e) & agent(e, x))
 
-TODO: same as F1 -- copy the conventions you wrote there, or improve them
+5. ADVERBS / MANNER: 1-place predicates on events
+   "John runs quickly"    -> exists e (run(e) & agent(e, john) & quick(e))
+   "John carefully opened the door"
+   -> exists e (open(e) & agent(e, john) & patient(e, door1) & careful(e))
 
-=== EXAMPLES ===
+6. LOCATIVES and TEMPORALS: predicates on events
+   "John runs in the park"
+   -> exists e (run(e) & agent(e, john) & location(e, park1))
 
-TODO: add 2-3 worked examples in your chosen theory. Include:
-- A simple entailment (Section 1)
-- A multi-premise item
-- One that shows how your theory handles modifiers or tense
+7. PASSIVES: swap agent/patient
+   "The book was read by John"
+   -> exists e (read(e) & agent(e, john) & patient(e, book1))
+   Same as active, just the roles tell you who did what.
+
+8. NEGATION: negate the event existence
+   "John does not run"
+   -> -exists e (run(e) & agent(e, john))
+
+   "No man walks"
+   -> all x (man(x) -> -exists e (walk(e) & agent(e, x)))
+
+9. STATIVES: "is", "has", copular sentences
+   "John is a student"   -> student(john)          (no event needed)
+   "John is tall"         -> tall(john)             (no event needed)
+   "John has a car"       -> exists x (car(x) & have(john, x))  (or use event if you prefer)
+
+   Rule: use events for dynamic verbs, skip events for pure statives
+   (is, has, belongs to). If in doubt, use an event.
+
+10. QUANTIFIERS (same as F1)
+    "All A are B"          -> all x (A(x) -> B(x))
+    "Some A are B"         -> exists x (A(x) & B(x))
+    "No A is B"            -> all x (A(x) -> -B(x))
+    "Most A are B"         -> approximate: exists x (A(x) & B(x))
+    "The A"                -> exists x (A(x) & all y (A(y) -> y = x) & ...)
+
+11. RELATIVE CLAUSES: conjoin inside the quantifier
+    "Every man who runs is tired"
+    -> all x ((man(x) & exists e (run(e) & agent(e, x))) -> tired(x))
+
+12. MULTI-PREMISE ITEMS: same vocabulary across all premises
+    Every premise becomes a separate formula. Use the same predicate
+    names and constants everywhere.
+
+=== CONSISTENCY RULES ===
+
+- ONE predicate per concept across all formulas. Never man(x) in one
+  formula and male(x) in another.
+- Arity must be consistent: if love(e) in one formula, always love(e).
+- Thematic roles are always 2-place: agent(e, x), patient(e, x).
+- Event variables: e, e1, e2. Entity variables: x, y, z, u, v, w.
+- Constants for named entities: john, mary, bill (not j, m, b).
+
+=== WORKED EXAMPLES ===
+
+Example 1 (entailment, FraCaS-style):
+  Premise: "Every man who runs sees a dog"
+  Hypothesis: "Some man sees a dog"
+
+  Premises:
+  all x ((man(x) & exists e1 (run(e1) & agent(e1, x))) -> exists y exists e2 (dog(y) & see(e2) & agent(e2, x) & patient(e2, y)))
+  Hypothesis:
+  exists x exists y exists e (man(x) & dog(y) & see(e) & agent(e, x) & patient(e, y))
+
+Example 2 (contradiction):
+  Premise: "No Italian runs"
+  Hypothesis: "Some Italian runs"
+
+  Premises:
+  all x (italian(x) -> -exists e (run(e) & agent(e, x)))
+  Hypothesis:
+  exists x exists e (italian(x) & run(e) & agent(e, x))
+
+Example 3 (multi-premise entailment):
+  Premise: "Every European is a person. Every Italian is a European. John is an Italian."
+  Hypothesis: "John is a person"
+
+  Premises:
+  all x (european(x) -> person(x))
+  all x (italian(x) -> european(x))
+  italian(john)
+  Hypothesis:
+  person(john)
+
+Example 4 (with modifier, entailment):
+  Premise: "John runs quickly"
+  Hypothesis: "John runs"
+
+  Premises:
+  exists e (run(e) & agent(e, john) & quick(e))
+  Hypothesis:
+  exists e (run(e) & agent(e, john))
+
+  Note: this works because Davidsonian semantics makes the inference
+  automatic. "runs quickly" has run(e) as a conjunct, so "runs" follows
+  by conjunction elimination. This is the main advantage of Davidsonian
+  over plain predicate logic.
+
+Example 5 (passive, entailment):
+  Premise: "The book was read by John"
+  Hypothesis: "John read something"
+
+  Premises:
+  exists e (read(e) & agent(e, john) & patient(e, book1))
+  Hypothesis:
+  exists x exists e (read(e) & agent(e, john) & patient(e, x))
+
+=== WHY DAVIDSONIAN? ===
+
+Plain FOL: "John runs quickly" -> runs_quickly(john)
+           "John runs"         -> runs(john)
+           No logical relation between runs_quickly(john) and runs(john)!
+           The prover cannot infer one from the other.
+
+Davidsonian: "John runs quickly" -> exists e (run(e) & agent(e,john) & quick(e))
+             "John runs"         -> exists e (run(e) & agent(e,john))
+             The inference is just conjunction elimination. Automatic.
+
+This matters for FraCaS sections with modifiers, manner adverbs,
+locatives, and temporal expressions. Without events, the prover is blind
+to these inferences.
 
 === END ===
 
