@@ -14,7 +14,7 @@ venv/
 *.glob
 
 # Pipeline results (datasets stay tracked; only outputs are ignored)
-phase*/results/*.json
+phase1_nli_eval/results/
 phase1_nli_eval/fracas_results*.json
 phase1_nli_eval/fracas_summary*.txt
 
