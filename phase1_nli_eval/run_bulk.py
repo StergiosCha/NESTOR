@@ -19,6 +19,7 @@ from pathlib import Path
 import yaml
 from rich import box
 from rich.console import Console
+from rich.progress import BarColumn, MofNCompleteColumn, Progress, SpinnerColumn, TextColumn, TimeElapsedColumn
 from rich.table import Table
 from rich.text import Text
 
@@ -139,33 +140,51 @@ def run_sweep(cfg: SweepConfig) -> int:
     rows_lock = threading.Lock()
     any_fail = [False]
 
-    def _run_combo(enum_combo: tuple[int, tuple[str, str, str, str]]) -> None:
-        i, combo = enum_combo
-        _, model, _, _ = combo
-        dep = MODELS[model]["deployment"]
-        with deploy_locks[dep]:
-            console.print(f"\n[{i}/{len(combos)}] {_combo_key(combo)}")
-            try:
-                run(*combo, resume=cfg.resume, limit=cfg.limit)
-                summary = _read_summary(combo) or {}
-                ok = summary.get("success_count", 0)
-                n_total = summary.get("total", 0)
-                pct = f"{100 * ok / n_total:.1f}%" if n_total else "n/a"
-                accuracy = f"{ok}/{n_total} ({pct})"
-                parse_fail = str(summary.get("parse_fail", "?"))
-                llm_error = str(summary.get("llm_error", "?"))
-                with rows_lock:
-                    rows.append((combo, "PASS", accuracy, parse_fail, llm_error, ""))
-            except Exception as e:
-                with rows_lock:
-                    any_fail[0] = True
-                    rows.append((combo, "FAIL", "-", "-", "-", f"{type(e).__name__}: {e}"))
-                console.print(f"  [red]FAIL:[/red] {type(e).__name__}: {e}")
+    with Progress(
+        SpinnerColumn(),
+        TextColumn("[progress.description]{task.description}"),
+        BarColumn(),
+        MofNCompleteColumn(),
+        TimeElapsedColumn(),
+        console=console,
+    ) as progress:
+        sweep_task = progress.add_task("[bold]sweep[/bold]", total=len(combos))
 
-    with ThreadPoolExecutor(max_workers=n_workers) as executor:
-        futs = [executor.submit(_run_combo, (i, combo)) for i, combo in enumerate(combos, 1)]
-        for fut in as_completed(futs):
-            fut.result()
+        def _run_combo(enum_combo: tuple[int, tuple[str, str, str, str]]) -> None:
+            _, combo = enum_combo
+            _, model, _, _ = combo
+            dep = MODELS[model]["deployment"]
+
+            combo_task = progress.add_task(f"  {_combo_key(combo)}", total=None)
+
+            def on_progress() -> None:
+                progress.advance(combo_task)
+
+            with deploy_locks[dep]:
+                try:
+                    run(*combo, resume=cfg.resume, limit=cfg.limit, on_progress=on_progress)
+                    summary = _read_summary(combo) or {}
+                    ok = summary.get("success_count", 0)
+                    n_total = summary.get("total", 0)
+                    pct = f"{100 * ok / n_total:.1f}%" if n_total else "n/a"
+                    accuracy = f"{ok}/{n_total} ({pct})"
+                    parse_fail = str(summary.get("parse_fail", "?"))
+                    llm_error = str(summary.get("llm_error", "?"))
+                    with rows_lock:
+                        rows.append((combo, "PASS", accuracy, parse_fail, llm_error, ""))
+                except Exception as e:
+                    with rows_lock:
+                        any_fail[0] = True
+                        rows.append((combo, "FAIL", "-", "-", "-", f"{type(e).__name__}: {e}"))
+                    console.print(f"  [red]FAIL:[/red] {_combo_key(combo)}: {type(e).__name__}: {e}")
+                finally:
+                    progress.update(combo_task, visible=False)
+                    progress.advance(sweep_task)
+
+        with ThreadPoolExecutor(max_workers=n_workers) as executor:
+            futs = [executor.submit(_run_combo, (i, combo)) for i, combo in enumerate(combos, 1)]
+            for fut in as_completed(futs):
+                fut.result()
 
     _print_table(rows)
     return 1 if any_fail[0] else 0
