@@ -31,11 +31,11 @@ SOURCES = (
     "fracas",
     "fracas-translated",
     "fracas-extended",
-    "multilabel-fracas",
+    "fracas-multilabel",
     "oyxoy",
 )
 
-MULTILABEL_SOURCES = frozenset({"multilabel-fracas", "oyxoy"})
+MULTILABEL_SOURCES = frozenset({"fracas-multilabel", "oyxoy"})
 
 LANGUAGES = ("en", "el")
 

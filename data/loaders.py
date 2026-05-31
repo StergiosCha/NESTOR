@@ -101,7 +101,7 @@ def _load_json(json_path, source: str) -> list[Sample]:
 
 
 def load_multilabel_fracas(json_path) -> list[Sample]:
-    return _load_json(json_path, "multilabel-fracas")
+    return _load_json(json_path, "fracas-multilabel")
 
 
 def load_oyxoy(json_path) -> list[Sample]:
