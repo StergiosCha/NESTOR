@@ -78,7 +78,7 @@ def load_fracas(xml_path) -> list[Sample]:
             tags=[tag] if tag else [],
             fracas_sections=[FRACAS_XML_SECTION_MAP[section]] if section else [],
         ))
-    print(f"[load_fracas] loaded {len(samples)} samples from {xml_path}")
+
     return samples
 
 

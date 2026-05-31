@@ -9,16 +9,21 @@ from __future__ import annotations
 
 import argparse
 import json
+import threading
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
 from pathlib import Path
+from typing import Callable
 
 from dotenv import load_dotenv
+from rich.progress import BarColumn, MofNCompleteColumn, Progress, SpinnerColumn, TextColumn, TimeElapsedColumn
 
 from clients.azure import assert_env, call_llm, get_client
+from clients.models import MODELS
 from data.loaders import load_dataset
 from data.schema import LANGUAGES, MULTILABEL_SOURCES, Sample, dump_entry, parse_response
+from phase1_nli_eval.concurrency import MAX_CONCURRENCY, RPM_PER_DEPLOYMENT, call_with_backoff, get_limiter
 from phase1_nli_eval.prompts import build_prompt, select_examples
-from clients.models import MODELS
 
 load_dotenv()
 
@@ -42,12 +47,14 @@ def _now_iso() -> str:
 
 
 def _new_state(dataset_key: str, model_key: str, technique: str, language: str, multilabel: bool) -> dict:
+    dataset_language = "en" if dataset_key == "fracas" else "el"
     return {
         "metadata": {
             "dataset": dataset_key,
             "model": model_key,
             "technique": technique,
             "language": language,
+            "crosslingual": language != dataset_language,
             "multilabel": multilabel,
             "started_at": _now_iso(),
             "completed_at": None,
@@ -77,7 +84,17 @@ def _flush(path: Path, state: dict) -> None:
     path.write_text(json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
-def run(dataset_key: str, model_key: str, technique: str, language: str, resume: bool, limit: int | None = None) -> int:
+def run(
+    dataset_key: str,
+    model_key: str,
+    technique: str,
+    language: str,
+    resume: bool,
+    limit: int | None = None,
+    on_progress: Callable[[], None] | None = None,
+    concurrency: int = MAX_CONCURRENCY,
+    rpm: int = RPM_PER_DEPLOYMENT,
+) -> int:
     multilabel = dataset_key in MULTILABEL_SOURCES
     provider = MODELS[model_key]["provider"]
     assert_env(provider)
@@ -105,31 +122,54 @@ def run(dataset_key: str, model_key: str, technique: str, language: str, resume:
         f"language={language} multilabel={multilabel} total={total} skipped(resume)={skipped}"
     )
 
+    limiter = get_limiter(deployment, rpm)
+    lock = threading.Lock()
+    completed_count = [0]
     pool = samples if technique == "few-shot" else []
-    for i, sample in enumerate(pending, start=1):
+
+    def _process(sample: Sample, progress_cb: Callable[[], None] | None) -> None:
         examples = select_examples(sample, pool, k=FEW_SHOT_K) if technique == "few-shot" else None
-        messages = build_prompt(
-            sample,
-            technique,
-            language,
-            multilabel,
-            examples=examples,
-        )
+        messages = build_prompt(sample, technique, language, multilabel, examples=examples)
         raw, parsed = "", None
-        for i in range(MAX_RETRIES):
+        for _ in range(MAX_RETRIES):
             try:
-                raw = call_llm(client, deployment, messages, max_tokens=MAX_TOKENS) or ""
+                limiter.acquire()
+                raw = call_with_backoff(lambda: call_llm(client, deployment, messages, max_tokens=MAX_TOKENS)) or ""
                 parsed = parse_response(raw, multilabel)
             except Exception as e:
                 raw = f"<LLM call failed: {type(e).__name__}: {e}>"
                 parsed = None
             if parsed is not None:
                 break
-        results_by_id[sample.id] = dump_entry(sample, parsed, raw, list(sample.labels))
-        state["results"] = list(results_by_id.values())
-        if i % FLUSH_EVERY == 0:
-            _flush(path, state)
-            print(f"  [{i}/{len(pending)}] flushed -> {path.name}")
+        entry = dump_entry(sample, parsed, raw, list(sample.labels))
+        with lock:
+            results_by_id[sample.id] = entry
+            state["results"] = list(results_by_id.values())
+            completed_count[0] += 1
+            if completed_count[0] % FLUSH_EVERY == 0:
+                _flush(path, state)
+        if progress_cb is not None:
+            progress_cb()
+
+    def _run_all(progress_cb: Callable[[], None] | None) -> None:
+        with ThreadPoolExecutor(max_workers=concurrency) as executor:
+            futs = [executor.submit(_process, s, progress_cb) for s in pending]
+            for fut in as_completed(futs):
+                fut.result()
+
+    desc = f"  {dataset_key} / {model_key} / {technique} / {language}"
+    if on_progress is not None:
+        _run_all(on_progress)
+    else:
+        with Progress(
+            SpinnerColumn(),
+            TextColumn("[progress.description]{task.description}"),
+            BarColumn(),
+            MofNCompleteColumn(),
+            TimeElapsedColumn(),
+        ) as progress:
+            task = progress.add_task(desc, total=len(pending))
+            _run_all(lambda: progress.advance(task))
 
     state["results"] = list(results_by_id.values())
     state["metadata"]["completed_at"] = _now_iso()

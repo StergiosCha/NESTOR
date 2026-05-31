@@ -11,16 +11,24 @@ from __future__ import annotations
 import argparse
 import itertools
 import json
-import sys
+import threading
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass
 from pathlib import Path
 
 import yaml
+from rich import box
+from rich.console import Console
+from rich.progress import BarColumn, MofNCompleteColumn, Progress, SpinnerColumn, TextColumn, TimeElapsedColumn
+from rich.table import Table
+from rich.text import Text
 
 from clients.models import MODELS
 from data.schema import LANGUAGES
 from phase1_nli_eval import nli_pipeline
 from phase1_nli_eval.nli_pipeline import DATASETS, TECHNIQUES, run
+
+console = Console()
 
 
 @dataclass(frozen=True)
@@ -96,35 +104,90 @@ def _read_summary(combo: tuple[str, str, str, str]) -> dict | None:
         return None
 
 
-def _print_table(rows: list[tuple[str, str, str]]) -> None:
-    width = max((len(r[0]) for r in rows), default=10)
-    print()
-    print(f"{'combo'.ljust(width)}  status  detail")
-    print(f"{'-' * width}  ------  ------")
-    for combo, status, detail in rows:
-        print(f"{combo.ljust(width)}  {status:<6}  {detail}")
+def _print_table(rows: list[tuple[tuple[str, str, str, str], str, str, str, str, str]]) -> None:
+    table = Table(box=box.ROUNDED, show_header=True, header_style="bold")
+    table.add_column("dataset")
+    table.add_column("model")
+    table.add_column("technique")
+    table.add_column("lang")
+    table.add_column("status", justify="center")
+    table.add_column("accuracy", justify="right")
+    table.add_column("parse_fail", justify="right")
+    table.add_column("llm_error", justify="right")
+    table.add_column("detail")
+
+    for combo, status, accuracy, parse_fail, llm_error, detail in rows:
+        dataset, model, technique, language = combo
+        status_text = Text(status, style="green bold" if status == "PASS" else "red bold")
+        table.add_row(dataset, model, technique, language, status_text, accuracy, parse_fail, llm_error, detail)
+
+    console.print()
+    console.print(table)
 
 
 def run_sweep(cfg: SweepConfig) -> int:
     combos = expand_combinations(cfg)
-    print(f"[sweep] {len(combos)} combination(s) to run")
-    rows: list[tuple[str, str, str]] = []
-    any_fail = False
-    for i, combo in enumerate(combos, start=1):
-        key = _combo_key(combo)
-        print(f"\n[sweep {i}/{len(combos)}] {key}")
-        try:
-            run(*combo, resume=cfg.resume, limit=cfg.limit)
-            summary = _read_summary(combo) or {}
-            detail = f"{summary.get('success_count', '?')}/{summary.get('total', '?')}"
-            rows.append((key, "PASS", detail))
-        except Exception as e:
-            any_fail = True
-            rows.append((key, "FAIL", f"{type(e).__name__}: {e}"))
-            print(f"  [sweep] FAIL: {type(e).__name__}: {e}")
+    console.print(f"[bold][sweep][/bold] {len(combos)} combination(s) to run")
+
+    deploy_locks: dict[str, threading.Lock] = {}
+    for _, model, _, _ in combos:
+        dep = MODELS[model]["deployment"]
+        if dep not in deploy_locks:
+            deploy_locks[dep] = threading.Lock()
+    n_workers = max(1, len(deploy_locks))
+
+    rows: list[tuple[tuple[str, str, str, str], str, str, str, str, str]] = []
+    rows_lock = threading.Lock()
+    any_fail = [False]
+
+    with Progress(
+        SpinnerColumn(),
+        TextColumn("[progress.description]{task.description}"),
+        BarColumn(),
+        MofNCompleteColumn(),
+        TimeElapsedColumn(),
+        console=console,
+    ) as progress:
+        sweep_task = progress.add_task("[bold]sweep[/bold]", total=len(combos))
+
+        def _run_combo(enum_combo: tuple[int, tuple[str, str, str, str]]) -> None:
+            _, combo = enum_combo
+            _, model, _, _ = combo
+            dep = MODELS[model]["deployment"]
+
+            combo_task = progress.add_task(f"  {_combo_key(combo)}", total=None)
+
+            def on_progress() -> None:
+                progress.advance(combo_task)
+
+            with deploy_locks[dep]:
+                try:
+                    run(*combo, resume=cfg.resume, limit=cfg.limit, on_progress=on_progress)
+                    summary = _read_summary(combo) or {}
+                    ok = summary.get("success_count", 0)
+                    n_total = summary.get("total", 0)
+                    pct = f"{100 * ok / n_total:.1f}%" if n_total else "n/a"
+                    accuracy = f"{ok}/{n_total} ({pct})"
+                    parse_fail = str(summary.get("parse_fail", "?"))
+                    llm_error = str(summary.get("llm_error", "?"))
+                    with rows_lock:
+                        rows.append((combo, "PASS", accuracy, parse_fail, llm_error, ""))
+                except Exception as e:
+                    with rows_lock:
+                        any_fail[0] = True
+                        rows.append((combo, "FAIL", "-", "-", "-", f"{type(e).__name__}: {e}"))
+                    console.print(f"  [red]FAIL:[/red] {_combo_key(combo)}: {type(e).__name__}: {e}")
+                finally:
+                    progress.update(combo_task, visible=False)
+                    progress.advance(sweep_task)
+
+        with ThreadPoolExecutor(max_workers=n_workers) as executor:
+            futs = [executor.submit(_run_combo, (i, combo)) for i, combo in enumerate(combos, 1)]
+            for fut in as_completed(futs):
+                fut.result()
 
     _print_table(rows)
-    return 1 if any_fail else 0
+    return 1 if any_fail[0] else 0
 
 
 def main(argv: list[str] | None = None) -> int:
