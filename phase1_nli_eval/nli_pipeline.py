@@ -47,12 +47,14 @@ def _now_iso() -> str:
 
 
 def _new_state(dataset_key: str, model_key: str, technique: str, language: str, multilabel: bool) -> dict:
+    dataset_language = "en" if dataset_key == "fracas" else "el"
     return {
         "metadata": {
             "dataset": dataset_key,
             "model": model_key,
             "technique": technique,
             "language": language,
+            "crosslingual": language != dataset_language,
             "multilabel": multilabel,
             "started_at": _now_iso(),
             "completed_at": None,
