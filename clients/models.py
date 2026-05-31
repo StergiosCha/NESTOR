@@ -19,6 +19,11 @@ MODELS = {
         "provider": "azure-openai",
         "reasoning": False,
     },
+    "gpt-5.4-pro": {
+        "deployment": "gpt-5.4-pro",
+        "provider": "azure-gpt-5.4-pro",
+        "reasoning": False,
+    },
     "deepseek-r1": {
         "deployment": "DeepSeek-R1",
         "provider": "azure-ai",
