@@ -94,12 +94,12 @@ Common tactics that work for NLI proofs:
 Strategy: try "firstorder" first. If it works, done. If not, do it manually
 with intro/destruct/exists/apply.
 
-=== FOUNDATION FILES (section-matched) ===
+=== FOUNDATION FILES (rich context) ===
 
-The following Coq definitions are relevant to the FraCaS section of this
-item. Use them as reference for definitions, type signatures, and proof
-patterns. You may reuse these definitions directly or follow the same
-patterns in your formalisation.
+This is T3: we include the full theory stack for this FraCaS section.
+The context is larger (10-20K tokens). Multiple foundation files are
+provided below. Use them as reference for definitions, type signatures,
+proof patterns, and linguistic theory. Reuse definitions where applicable.
 
 {foundation_files}
 
