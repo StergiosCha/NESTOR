@@ -94,33 +94,18 @@ Common tactics that work for NLI proofs:
 Strategy: try "firstorder" first. If it works, done. If not, do it manually
 with intro/destruct/exists/apply.
 
-=== FOUNDATION: Montague-style semantics ===
+=== FOUNDATION FILES (section-matched) ===
 
-The following is the Montague.v foundation file. It defines quantifier
-combinators (every, some, no) and a compositional NP/VP framework.
-You may reuse these definitions or follow the same patterns in your
-formalisation. In particular, note how "every", "some", and "no" are
-defined as 2-place functions over predicates.
+The following Coq definitions are relevant to the FraCaS section of this
+item. Use them as reference for definitions, type signatures, and proof
+patterns. You may reuse these definitions directly or follow the same
+patterns in your formalisation.
 
---- BEGIN Montague.v ---
-
-{montague_v}
-
---- END Montague.v ---
-
-When using the foundation file, you can reference the MontagueExtensional
-module for standard quantifiers:
-
-  - every N P = forall x, N x -> P x
-  - some N P  = exists x, N x /\ P x
-  - no N P    = ~ some N P
-
-For counting quantifiers (at least n, exactly n, most), use the
-generalised quantifiers g_at_least, g_exactly, g_most from the file.
+{foundation_files}
 
 === EXAMPLES ===
 
-Example 1 (entailment, using Montague-style every/some):
+Example 1 (entailment):
   Premise: "Every man is mortal. Socrates is a man."
   Hypothesis: "Socrates is mortal."
 
@@ -135,9 +120,9 @@ Example 1 (entailment, using Montague-style every/some):
   Proof. apply p1. exact p2. Qed.
 
   Theorem contradiction : ~ mortal socrates.
-  Proof. Abort. (* Cannot prove: entailment holds, not contradiction *)
+  Proof. Abort.
 
-Example 2 (contradiction, "no" quantifier):
+Example 2 (contradiction):
   Premise: "No dog is a cat."
   Hypothesis: "Some dog is a cat."
 
@@ -147,7 +132,7 @@ Example 2 (contradiction, "no" quantifier):
   Axiom p1 : forall x : Entity, dog x -> ~ cat x.
 
   Theorem entailment : exists x : Entity, dog x /\ cat x.
-  Proof. Abort. (* Cannot prove: no witness available *)
+  Proof. Abort.
 
   Theorem contradiction : ~ exists x : Entity, dog x /\ cat x.
   Proof. intro H. destruct H as [x [Hd Hc]]. apply (p1 x Hd). exact Hc. Qed.
@@ -163,25 +148,9 @@ Example 3 (neutral):
   Axiom p1 : student john.
 
   Theorem entailment : student john /\ good john.
-  Proof. Abort. (* Cannot prove: we don't know if John is good *)
+  Proof. Abort.
 
   Theorem contradiction : ~ (student john /\ good john).
-  Proof. Abort. (* Cannot prove either: John might be good *)
-
-Example 4 (multi-premise chain, entailment):
-  Premise: "Every European is a person. Every Italian is a European."
-  Hypothesis: "Every Italian is a person."
-
-  Parameter Entity : Type.
-  Parameter european person italian : Entity -> Prop.
-
-  Axiom p1 : forall x : Entity, european x -> person x.
-  Axiom p2 : forall x : Entity, italian x -> european x.
-
-  Theorem entailment : forall x : Entity, italian x -> person x.
-  Proof. intros x Hi. apply p1. apply p2. exact Hi. Qed.
-
-  Theorem contradiction : ~ (forall x : Entity, italian x -> person x).
   Proof. Abort.
 
 === END ===
