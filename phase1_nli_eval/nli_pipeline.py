@@ -69,12 +69,16 @@ def summarize_results(results: list[dict]) -> dict:
     parse_fail = sum(1 for e in results if e.get("predicted") is None) - llm_error
     success_count = sum(1 for e in results if e.get("success") == 1)
     accuracy = success_count / total if total else None
+    partial_success_count = sum(1 for e in results if e.get("partial_success") == 1)
+    partial_accuracy = partial_success_count / total if total else None
     return {
         "total": total,
         "parse_fail": parse_fail,
         "llm_error": llm_error,
         "success_count": success_count,
         "accuracy": accuracy,
+        "partial_success_count": partial_success_count,
+        "partial_accuracy": partial_accuracy,
     }
 
 

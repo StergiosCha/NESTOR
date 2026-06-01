@@ -31,11 +31,11 @@ SOURCES = (
     "fracas",
     "fracas-translated",
     "fracas-extended",
-    "multilabel-fracas",
+    "fracas-multilabel",
     "oyxoy",
 )
 
-MULTILABEL_SOURCES = frozenset({"multilabel-fracas", "oyxoy"})
+MULTILABEL_SOURCES = frozenset({"fracas-multilabel", "oyxoy"})
 
 LANGUAGES = ("en", "el")
 
@@ -153,7 +153,9 @@ def dump_entry(sample: "Sample", parsed: "Result | None", raw: str, gold: list[s
 
     On parse failure (`parsed is None`) the raw payload is retained, predicted is
     None, reasoning is "" and success=0. On parse success, success is set-equality
-    over the canonical predicted-label list vs. `gold`.
+    over the canonical predicted-label list vs. `gold`. partial_success is 1 when
+    the predicted set is a subset of `gold` (full match included), over-prediction 
+    earns no credit. For single-label items it coincides with success.
     """
     base = {
         "id": sample.id,
@@ -166,10 +168,11 @@ def dump_entry(sample: "Sample", parsed: "Result | None", raw: str, gold: list[s
         "gold": gold,
     }
     if parsed is None:
-        return {**base, "predicted": None, "reasoning": "", "raw": raw, "success": 0}
+        return {**base, "predicted": None, "reasoning": "", "raw": raw, "success": 0, "partial_success": 0}
     predicted_list = parsed.label if isinstance(parsed.label, list) else [parsed.label]
     success = 1 if set(predicted_list) == set(gold) else 0
-    return {**base, "predicted": parsed.label, "reasoning": parsed.reasoning, "success": success}
+    partial_success = 1 if set(predicted_list) <= set(gold) else 0
+    return {**base, "predicted": parsed.label, "reasoning": parsed.reasoning, "success": success, "partial_success": partial_success}
 
 
 def _extract_json(raw: str) -> str:

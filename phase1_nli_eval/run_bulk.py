@@ -24,7 +24,7 @@ from rich.table import Table
 from rich.text import Text
 
 from clients.models import MODELS
-from data.schema import LANGUAGES
+from data.schema import LANGUAGES, MULTILABEL_SOURCES
 from phase1_nli_eval import nli_pipeline
 from phase1_nli_eval.nli_pipeline import DATASETS, TECHNIQUES, run
 
@@ -104,7 +104,10 @@ def _read_summary(combo: tuple[str, str, str, str]) -> dict | None:
         return None
 
 
-def _print_table(rows: list[tuple[tuple[str, str, str, str], str, str, str, str, str]]) -> None:
+def _print_table(rows: list[tuple[tuple[str, str, str, str], str, str, str, str, str, str]]) -> None:
+    # Partial columns appear only when the sweep includes a multilabel dataset.
+    show_partial_accuracy = any(partial_accuracy != "-" for _, _, _, partial_accuracy, _, _, _ in rows)
+
     table = Table(box=box.ROUNDED, show_header=True, header_style="bold")
     table.add_column("dataset")
     table.add_column("model")
@@ -112,14 +115,20 @@ def _print_table(rows: list[tuple[tuple[str, str, str, str], str, str, str, str,
     table.add_column("lang")
     table.add_column("status", justify="center")
     table.add_column("accuracy", justify="right")
+    if show_partial_accuracy:
+        table.add_column("partial accuracy", justify="right")
     table.add_column("parse_fail", justify="right")
     table.add_column("llm_error", justify="right")
     table.add_column("detail")
 
-    for combo, status, accuracy, parse_fail, llm_error, detail in rows:
+    for combo, status, accuracy, partial_accuracy, parse_fail, llm_error, detail in rows:
         dataset, model, technique, language = combo
         status_text = Text(status, style="green bold" if status == "PASS" else "red bold")
-        table.add_row(dataset, model, technique, language, status_text, accuracy, parse_fail, llm_error, detail)
+        cells = [dataset, model, technique, language, status_text, accuracy]
+        if show_partial_accuracy:
+            cells.append(partial_accuracy)
+        cells += [parse_fail, llm_error, detail]
+        table.add_row(*cells)
 
     console.print()
     console.print(table)
@@ -136,7 +145,7 @@ def run_sweep(cfg: SweepConfig) -> int:
             deploy_locks[dep] = threading.Lock()
     n_workers = max(1, len(deploy_locks))
 
-    rows: list[tuple[tuple[str, str, str, str], str, str, str, str, str]] = []
+    rows: list[tuple[tuple[str, str, str, str], str, str, str, str, str, str]] = []
     rows_lock = threading.Lock()
     any_fail = [False]
 
@@ -152,7 +161,7 @@ def run_sweep(cfg: SweepConfig) -> int:
 
         def _run_combo(enum_combo: tuple[int, tuple[str, str, str, str]]) -> None:
             _, combo = enum_combo
-            _, model, _, _ = combo
+            dataset, model, _, _ = combo
             dep = MODELS[model]["deployment"]
 
             combo_task = progress.add_task(f"  {_combo_key(combo)}", total=None)
@@ -165,17 +174,24 @@ def run_sweep(cfg: SweepConfig) -> int:
                     run(*combo, resume=cfg.resume, limit=cfg.limit, on_progress=on_progress)
                     summary = _read_summary(combo) or {}
                     ok = summary.get("success_count", 0)
+                    
                     n_total = summary.get("total", 0)
                     pct = f"{100 * ok / n_total:.1f}%" if n_total else "n/a"
                     accuracy = f"{ok}/{n_total} ({pct})"
                     parse_fail = str(summary.get("parse_fail", "?"))
                     llm_error = str(summary.get("llm_error", "?"))
+                    partial_accuracy = "-"
+                    if dataset in MULTILABEL_SOURCES:
+                        partial_ok = summary.get("partial_success_count", 0)
+                        partial_pct = f"{100 * partial_ok / n_total:.1f}%" if n_total else "n/a"
+                        partial_accuracy = f"{partial_ok}/{n_total} ({partial_pct})"
+
                     with rows_lock:
-                        rows.append((combo, "PASS", accuracy, parse_fail, llm_error, ""))
+                        rows.append((combo, "PASS", accuracy, partial_accuracy, parse_fail, llm_error, ""))
                 except Exception as e:
                     with rows_lock:
                         any_fail[0] = True
-                        rows.append((combo, "FAIL", "-", "-", "-", f"{type(e).__name__}: {e}"))
+                        rows.append((combo, "FAIL", "-", "-", "-", "-", f"{type(e).__name__}: {e}"))
                     console.print(f"  [red]FAIL:[/red] {_combo_key(combo)}: {type(e).__name__}: {e}")
                 finally:
                     progress.update(combo_task, visible=False)
