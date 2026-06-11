@@ -94,15 +94,6 @@ Common tactics that work for NLI proofs:
 Strategy: try "firstorder" first. If it works, done. If not, do it manually
 with intro/destruct/exists/apply.
 
-=== FOUNDATION FILES (rich context) ===
-
-This is T3: we include the full theory stack for this FraCaS section.
-The context is larger (10-20K tokens). Multiple foundation files are
-provided below. Use them as reference for definitions, type signatures,
-proof patterns, and linguistic theory. Reuse definitions where applicable.
-
-{foundation_files}
-
 === EXAMPLES ===
 
 Example 1 (entailment):
@@ -120,7 +111,7 @@ Example 1 (entailment):
   Proof. apply p1. exact p2. Qed.
 
   Theorem contradiction : ~ mortal socrates.
-  Proof. Abort.
+  Proof. Abort. (* Cannot prove: entailment holds, not contradiction *)
 
 Example 2 (contradiction):
   Premise: "No dog is a cat."
@@ -132,7 +123,7 @@ Example 2 (contradiction):
   Axiom p1 : forall x : Entity, dog x -> ~ cat x.
 
   Theorem entailment : exists x : Entity, dog x /\ cat x.
-  Proof. Abort.
+  Proof. Abort. (* Cannot prove: no witness available *)
 
   Theorem contradiction : ~ exists x : Entity, dog x /\ cat x.
   Proof. intro H. destruct H as [x [Hd Hc]]. apply (p1 x Hd). exact Hc. Qed.
@@ -148,10 +139,10 @@ Example 3 (neutral):
   Axiom p1 : student john.
 
   Theorem entailment : student john /\ good john.
-  Proof. Abort.
+  Proof. Abort. (* Cannot prove: we don't know if John is good *)
 
   Theorem contradiction : ~ (student john /\ good john).
-  Proof. Abort.
+  Proof. Abort. (* Cannot prove either: John might be good *)
 
 === END ===
 
