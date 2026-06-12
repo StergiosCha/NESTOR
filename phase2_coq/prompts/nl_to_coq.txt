@@ -94,9 +94,33 @@ Common tactics that work for NLI proofs:
 Strategy: try "firstorder" first. If it works, done. If not, do it manually
 with intro/destruct/exists/apply.
 
+=== FOUNDATION: Montague-style semantics ===
+
+The following is the Montague.v foundation file. It defines quantifier
+combinators (every, some, no) and a compositional NP/VP framework.
+You may reuse these definitions or follow the same patterns in your
+formalisation. In particular, note how "every", "some", and "no" are
+defined as 2-place functions over predicates.
+
+--- BEGIN Montague.v ---
+
+{montague_v}
+
+--- END Montague.v ---
+
+When using the foundation file, you can reference the MontagueExtensional
+module for standard quantifiers:
+
+  - every N P = forall x, N x -> P x
+  - some N P  = exists x, N x /\ P x
+  - no N P    = ~ some N P
+
+For counting quantifiers (at least n, exactly n, most), use the
+generalised quantifiers g_at_least, g_exactly, g_most from the file.
+
 === EXAMPLES ===
 
-Example 1 (entailment):
+Example 1 (entailment, using Montague-style every/some):
   Premise: "Every man is mortal. Socrates is a man."
   Hypothesis: "Socrates is mortal."
 
@@ -113,7 +137,7 @@ Example 1 (entailment):
   Theorem contradiction : ~ mortal socrates.
   Proof. Abort. (* Cannot prove: entailment holds, not contradiction *)
 
-Example 2 (contradiction):
+Example 2 (contradiction, "no" quantifier):
   Premise: "No dog is a cat."
   Hypothesis: "Some dog is a cat."
 
@@ -143,6 +167,22 @@ Example 3 (neutral):
 
   Theorem contradiction : ~ (student john /\ good john).
   Proof. Abort. (* Cannot prove either: John might be good *)
+
+Example 4 (multi-premise chain, entailment):
+  Premise: "Every European is a person. Every Italian is a European."
+  Hypothesis: "Every Italian is a person."
+
+  Parameter Entity : Type.
+  Parameter european person italian : Entity -> Prop.
+
+  Axiom p1 : forall x : Entity, european x -> person x.
+  Axiom p2 : forall x : Entity, italian x -> european x.
+
+  Theorem entailment : forall x : Entity, italian x -> person x.
+  Proof. intros x Hi. apply p1. apply p2. exact Hi. Qed.
+
+  Theorem contradiction : ~ (forall x : Entity, italian x -> person x).
+  Proof. Abort.
 
 === END ===
 
