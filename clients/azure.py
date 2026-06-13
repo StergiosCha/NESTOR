@@ -50,6 +50,7 @@ def get_azure_ai_client():
     return OpenAI(
         base_url=os.environ.get("AZURE_AI_ENDPOINT", ""),
         api_key=os.environ.get("AZURE_API_KEY", ""),
+        timeout=60,
     )
 
 
@@ -89,7 +90,7 @@ def call_llm(client, model, messages, max_tokens, temperature=0.0):
             "max_output_tokens": max_tokens,
             "model": deployment,
         }
-        resp = requests.post(url, headers=headers, json=data)
+        resp = requests.post(url, headers=headers, json=data, timeout=(10, 60))
         resp.raise_for_status()
 
         return resp.json()["output"][1]["content"][0]["text"]

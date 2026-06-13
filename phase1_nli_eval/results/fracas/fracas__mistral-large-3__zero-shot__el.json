@@ -6,7 +6,7 @@
     "language": "el",
     "multilabel": false,
     "started_at": "2026-05-30T09:15:04Z",
-    "completed_at": "2026-05-31T09:32:27Z",
+    "completed_at": "2026-06-13T14:33:25Z",
     "crosslingual": true
   },
   "results": [
@@ -6514,6 +6514,8 @@
     "parse_fail": 0,
     "llm_error": 0,
     "success_count": 208,
-    "accuracy": 0.6081871345029239
+    "accuracy": 0.6081871345029239,
+    "partial_success_count": 0,
+    "partial_accuracy": 0.0
   }
 }
