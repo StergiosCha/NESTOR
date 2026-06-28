@@ -29,6 +29,7 @@ from dotenv import load_dotenv
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from clients.azure import get_client, call_llm
+from phase2_fol.prompts import build_correction_prompt, build_prompt
 from utils.fracas import load_flat
 
 load_dotenv()
@@ -38,7 +39,6 @@ MACE4_PATH = os.environ.get("MACE4_PATH", "")
 PROVER_TIMEOUT = int(os.environ.get("PROVER_TIMEOUT", "30") or 30)
 
 MAX_RETRIES = int(os.environ.get("MAX_RETRIES", "3") or 3)
-PROMPT_DIR = Path(__file__).parent / "prompts"
 
 FOL_MAX_TOKENS = 500
 
@@ -77,72 +77,24 @@ def get_phase1_prediction(item_id, model="gpt-4o"):
 
 
 # ============================================================
-# PROMPT SELECTION
+# FOL TRANSLATION
 # ============================================================
 
-PROMPT_FILES = {
-    "F0": "nl_to_fol.txt",
-    "F1": "nl_to_fol_F1.txt",
-    "F2": "nl_to_fol_F2.txt",
-}
-
-
-def build_fol_prompt(prompt_tier, condition, premise, hypothesis,
-                     gold_label=None, item_id=None):
-    """Build the full prompt with condition-specific content.
-
-    prompt_tier: "F0", "F1", or "F2"
-    condition: "c1", "c2", "c3", or "c4"
-    """
-    filename = PROMPT_FILES.get(prompt_tier, "nl_to_fol.txt")
-    template = (PROMPT_DIR / filename).read_text(encoding="utf-8")
-
-    # Prepare condition-specific values
+def translate_to_fol(client, model, premise, hypothesis,
+                     condition="c1", gold_label=None, item_id=None):
+    """Ask LLM to translate P, H into FOL (Prover9 syntax, fixed F1 tier)."""
     phase1_label = ""
     phase1_explanation = ""
     if condition in ("c2", "c4") and item_id:
         p1 = get_phase1_prediction(item_id)
         phase1_label = p1["label"]
         phase1_explanation = p1["explanation"]
-
-    # Fill template
-    prompt = template.format(
-        premise=premise,
-        hypothesis=hypothesis,
+    messages = build_prompt(
+        condition, premise, hypothesis,
         gold_label=gold_label or "",
         phase1_label=phase1_label,
         phase1_explanation=phase1_explanation,
     )
-
-    # For C1 (blind), strip the condition block so LLM gets no hints
-    if condition == "c1" and prompt_tier != "F0":
-        # Remove everything between === CONDITION === and === END CONDITION ===
-        import re
-        prompt = re.sub(
-            r"=== CONDITION.*?=== END CONDITION ===\s*",
-            "", prompt, flags=re.DOTALL)
-
-    return prompt
-
-
-# ============================================================
-# FOL TRANSLATION
-# ============================================================
-
-def load_prompt(name):
-    return (PROMPT_DIR / name).read_text(encoding="utf-8")
-
-
-def translate_to_fol(client, model, premise, hypothesis,
-                     prompt_tier="F0", condition="c1",
-                     gold_label=None, item_id=None):
-    """Ask LLM to translate P, H into FOL (Prover9 syntax)."""
-    prompt = build_fol_prompt(prompt_tier, condition, premise, hypothesis,
-                              gold_label=gold_label, item_id=item_id)
-    messages = [
-        {"role": "system", "content": "You are an expert in first-order logic and formal semantics."},
-        {"role": "user", "content": prompt},
-    ]
     return call_llm(client, model, messages, max_tokens=FOL_MAX_TOKENS)
 
 
@@ -296,21 +248,12 @@ def _regex_syntax_check(premises, hypothesis):
 
 def fix_fol(client, model, premise, hypothesis, previous_fol, error_message):
     """Ask LLM to fix FOL based on error feedback."""
-    template = load_prompt("fol_fix.txt")
-    prompt = template.format(
-        premise=premise, hypothesis=hypothesis,
-        previous_fol=previous_fol, error_message=error_message,
-    )
-    messages = [
-        {"role": "system", "content": "You are an expert in first-order logic. Fix the errors."},
-        {"role": "user", "content": prompt},
-    ]
+    messages = build_correction_prompt(premise, hypothesis, previous_fol, error_message)
     return call_llm(client, model, messages, max_tokens=FOL_MAX_TOKENS)
 
 
 def run_fol_pipeline(client, model, premise, hypothesis, max_retries=None,
-                     prompt_tier="F0", condition="c1",
-                     gold_label=None, item_id=None):
+                     condition="c1", gold_label=None, item_id=None):
     """Full pipeline with verification loop.
 
     Returns dict with:
@@ -327,7 +270,7 @@ def run_fol_pipeline(client, model, premise, hypothesis, max_retries=None,
         # Step 1: Get FOL translation
         if attempt == 1:
             raw = translate_to_fol(client, model, premise, hypothesis,
-                                   prompt_tier=prompt_tier, condition=condition,
+                                   condition=condition,
                                    gold_label=gold_label, item_id=item_id)
         else:
             raw = fix_fol(client, model, premise, hypothesis,
@@ -383,8 +326,7 @@ def run_fol_pipeline(client, model, premise, hypothesis, max_retries=None,
 # BATCH RUNNER
 # ============================================================
 
-def run_batch(items, client, model, output_file=None,
-              prompt_tier="F0", condition="c1"):
+def run_batch(items, client, model, output_file=None, condition="c1"):
     """Run FOL pipeline on a list of NLI items.
 
     items: list of dicts with 'premise', 'hypothesis', 'gold' keys
@@ -396,7 +338,7 @@ def run_batch(items, client, model, output_file=None,
 
         result = run_fol_pipeline(client, model,
                                   item["premise"], item["hypothesis"],
-                                  prompt_tier=prompt_tier, condition=condition,
+                                  condition=condition,
                                   gold_label=item.get("gold"),
                                   item_id=item.get("id"))
         result["id"] = item.get("id", i+1)
@@ -457,8 +399,6 @@ if __name__ == "__main__":
                         help="Max items to process")
     parser.add_argument("--section", default=None,
                         help="FraCaS section filter (e.g. '1' for quantifiers)")
-    parser.add_argument("--prompt", default="F0", choices=["F0", "F1", "F2"],
-                        help="Prompt tier: F0 (bare), F1 (conventions), F2 (Davidsonian)")
     parser.add_argument("--condition", default="c1", choices=["c1", "c2", "c3", "c4"],
                         help="Condition: c1 (blind), c2 (phase1 pred), c3 (gold), c4 (phase1+expl)")
     args = parser.parse_args()
@@ -477,12 +417,12 @@ if __name__ == "__main__":
         items = items[:args.limit]
 
     print(f"Loaded {len(items)} items from {args.data}")
-    print(f"Model: {args.model}, Prompt: {args.prompt}, Condition: {args.condition}\n")
+    print(f"Model: {args.model}, Condition: {args.condition}\n")
 
     # Setup client
     client = get_client(args.model)
 
     # Run
-    output = args.output or f"results/fol_{args.prompt}_{args.condition}_{args.model}_{len(items)}items.json"
+    output = args.output or f"results/fol_{args.condition}_{args.model}_{len(items)}items.json"
     run_batch(items, client, args.model, output_file=output,
-              prompt_tier=args.prompt, condition=args.condition)
+              condition=args.condition)
