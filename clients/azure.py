@@ -90,16 +90,17 @@ def call_llm(client, model, messages, max_tokens, temperature=0.0):
             "max_output_tokens": max_tokens,
             "model": deployment,
         }
-        resp = requests.post(url, headers=headers, json=data, timeout=(10, 60))
+        resp = requests.post(url, headers=headers, json=data, timeout=(10, 90))
         resp.raise_for_status()
 
         return resp.json()["output"][1]["content"][0]["text"]
     
     else:
+        token_kwarg = "max_tokens" if model == "mistral-large-3" else "max_completion_tokens"
         resp = client.chat.completions.create(
             model=deployment,
             messages=messages,
             temperature=temperature,
-            max_completion_tokens=max_tokens,
+            **{token_kwarg: max_tokens},
         )
         return resp.choices[0].message.content
