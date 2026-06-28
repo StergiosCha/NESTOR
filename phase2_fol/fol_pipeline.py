@@ -23,14 +23,15 @@ import os
 import subprocess
 import sys
 import tempfile
-import time
+from datetime import datetime, timezone
 from pathlib import Path
 from dotenv import load_dotenv
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from clients.azure import get_client, call_llm
+from data.loaders import load_dataset
+from data.schema import Sample
 from phase2_fol.prompts import build_correction_prompt, build_prompt
-from utils.fracas import load_flat
 
 load_dotenv()
 
@@ -42,37 +43,46 @@ MAX_RETRIES = int(os.environ.get("MAX_RETRIES", "3") or 3)
 
 FOL_MAX_TOKENS = 500
 
+RESULTS_DIR = Path(__file__).resolve().parent / "results"
+DATASETS = {"fracas", "fracas-translated", "fracas-extended", "fracas-multilabel", "oyxoy"}
+
 # ============================================================
 # PHASE 1 RESULTS (for C2/C4 conditions)
 # ============================================================
+# C2/C4 inject a reference model's Phase 1 prediction for the same dataset.
 
-PHASE1_RESULTS_PATH = Path(__file__).resolve().parent.parent / "phase1_nli_eval" / "results" / "fracas_results_azure.json"
+PHASE1_RESULTS_DIR = Path(__file__).resolve().parent.parent / "phase1_nli_eval" / "results"
+PHASE1_SOURCE_TECHNIQUE = "zero-shot"
 
-_phase1_cache = None
+_phase1_cache: dict[tuple[str, str], dict] = {}
 
-def load_phase1_results():
-    """Load Phase 1 predictions (cached)."""
-    global _phase1_cache
-    if _phase1_cache is None:
-        if PHASE1_RESULTS_PATH.exists():
-            with open(PHASE1_RESULTS_PATH, encoding="utf-8") as f:
-                _phase1_cache = json.load(f)
+
+def _phase1_path(dataset: str, model: str = "gpt-4o") -> Path:
+    name = f"{dataset}__{model}__{PHASE1_SOURCE_TECHNIQUE}__en.json"
+    return PHASE1_RESULTS_DIR / dataset / name
+
+
+def load_phase1_results(dataset: str, model: str = "gpt-4o") -> dict:
+    """Load the reference Phase 1 result file for *dataset*/*model*, keyed by sample id (cached)."""
+    key = (dataset, model)
+    if key not in _phase1_cache:
+        path = _phase1_path(dataset, model)
+        if path.exists():
+            state = json.loads(path.read_text(encoding="utf-8"))
+            _phase1_cache[key] = {e["id"]: e for e in state.get("results", [])}
         else:
-            print(f"WARNING: Phase 1 results not found at {PHASE1_RESULTS_PATH}")
-            _phase1_cache = {}
-    return _phase1_cache
+            print(f"WARNING: Phase 1 results not found at {path}")
+            _phase1_cache[key] = {}
+    return _phase1_cache[key]
 
 
-def get_phase1_prediction(item_id, model="gpt-4o"):
-    """Get Phase 1 prediction and explanation for an item."""
-    results = load_phase1_results()
-    # fracas_results_azure.json is keyed by model -> item_number
-    item_num = item_id.split("-")[-1] if "-" in str(item_id) else str(item_id)
-    model_results = results.get(model, {})
-    entry = model_results.get(item_num, {})
+def get_phase1_prediction(item_id, dataset):
+    """Get the reference Phase 1 prediction and reasoning for an item (best-effort)."""
+    entry = load_phase1_results(dataset).get(item_id, {})
+    predicted = entry.get("predicted")
     return {
-        "label": entry.get("predicted", "unknown"),
-        "explanation": entry.get("explanation", ""),
+        "label": predicted if predicted else "unknown",
+        "explanation": entry.get("reasoning", ""),
     }
 
 
@@ -81,12 +91,12 @@ def get_phase1_prediction(item_id, model="gpt-4o"):
 # ============================================================
 
 def translate_to_fol(client, model, premise, hypothesis,
-                     condition="c1", gold_label=None, item_id=None):
+                     condition="c1", gold_label=None, item_id=None, dataset=None):
     """Ask LLM to translate P, H into FOL (Prover9 syntax, fixed F1 tier)."""
     phase1_label = ""
     phase1_explanation = ""
-    if condition in ("c2", "c4") and item_id:
-        p1 = get_phase1_prediction(item_id)
+    if condition in ("c2", "c4") and item_id and dataset:
+        p1 = get_phase1_prediction(item_id, dataset)
         phase1_label = p1["label"]
         phase1_explanation = p1["explanation"]
     messages = build_prompt(
@@ -252,31 +262,35 @@ def fix_fol(client, model, premise, hypothesis, previous_fol, error_message):
     return call_llm(client, model, messages, max_tokens=FOL_MAX_TOKENS)
 
 
-def run_fol_pipeline(client, model, premise, hypothesis, max_retries=None,
-                     condition="c1", gold_label=None, item_id=None):
-    """Full pipeline with verification loop.
+def run_fol_pipeline(client, model, sample: Sample, dataset, max_retries=None,
+                     condition="c1"):
+    """Full pipeline with verification loop for one Sample.
 
-    Returns dict with:
+    Returns the core FOL result dict:
         - fol_premises, fol_hypothesis: final FOL
         - proved, countermodel: prover results
-        - label: "entailment" / "contradiction" / "unknown"
+        - label: "entailment" / "non-entailment" / "unknown"
         - attempts: number of attempts used
         - errors: list of error messages from failed attempts
+        - raw_fol: last LLM output (debugging)
     """
     max_retries = max_retries or MAX_RETRIES
+    premise, hypothesis = sample.premise, sample.hypothesis
+    gold_label = ", ".join(sample.labels)
     errors = []
+    raw = ""
+    premises, hyp = [], None
 
     for attempt in range(1, max_retries + 1):
         # Step 1: Get FOL translation
         if attempt == 1:
             raw = translate_to_fol(client, model, premise, hypothesis,
-                                   condition=condition,
-                                   gold_label=gold_label, item_id=item_id)
+                                   condition=condition, gold_label=gold_label,
+                                   item_id=sample.id, dataset=dataset)
         else:
             raw = fix_fol(client, model, premise, hypothesis,
-                         previous_raw, errors[-1])
+                         raw, errors[-1])
 
-        previous_raw = raw
         premises, hyp = parse_fol_output(raw)
 
         if not premises or not hyp:
@@ -318,7 +332,61 @@ def run_fol_pipeline(client, model, premise, hypothesis, max_retries=None,
         "fol_hypothesis": hyp or "",
         "proved": False, "countermodel": False,
         "label": "unknown", "attempts": max_retries,
-        "errors": errors, "raw_fol": raw if 'raw' in dir() else "",
+        "errors": errors, "raw_fol": raw,
+    }
+
+
+# ============================================================
+# RESULT SHAPING
+# ============================================================
+
+def fol_entry(sample: Sample, fol_result: dict) -> dict:
+    """Shape one result-file entry: Sample metadata + FOL result + success.
+
+    Correctness is a collapsed-gold binary projection: FOL distinguishes only
+    entailment vs. not, so success compares "did FOL prove entailment?" against
+    "is Entailment in the gold set?". Contradiction and Unknown both count as
+    non-entailment (see the Phase 2 FOL doc warning).
+    """
+    gold = list(sample.labels)
+    gold_entails = "Entailment" in set(gold)
+    fol_entails = fol_result["label"] == "entailment"
+    return {
+        "id": sample.id,
+        "source": sample.source,
+        "language": sample.language,
+        "premise": sample.premise,
+        "hypothesis": sample.hypothesis,
+        "tags": list(sample.tags),
+        "fracas_sections": list(sample.fracas_sections),
+        "gold": gold,
+        "fol_premises": fol_result["fol_premises"],
+        "fol_hypothesis": fol_result["fol_hypothesis"],
+        "proved": fol_result["proved"],
+        "countermodel": fol_result["countermodel"],
+        "label": fol_result["label"],
+        "attempts": fol_result["attempts"],
+        "errors": fol_result["errors"],
+        "raw_fol": fol_result["raw_fol"],
+        "success": 1 if fol_entails == gold_entails else 0,
+    }
+
+
+def summarize_results(results: list[dict]) -> dict:
+    total = len(results)
+    proved = sum(1 for r in results if r["proved"])
+    countermodel = sum(1 for r in results if r["countermodel"])
+    unknown = sum(1 for r in results if r["label"] == "unknown")
+    success_count = sum(1 for r in results if r.get("success") == 1)
+    avg_attempts = sum(r["attempts"] for r in results) / total if total else 0
+    return {
+        "total": total,
+        "proved": proved,
+        "countermodel": countermodel,
+        "unknown": unknown,
+        "success_count": success_count,
+        "accuracy": success_count / total if total else None,
+        "avg_attempts": avg_attempts,
     }
 
 
@@ -326,59 +394,59 @@ def run_fol_pipeline(client, model, premise, hypothesis, max_retries=None,
 # BATCH RUNNER
 # ============================================================
 
-def run_batch(items, client, model, output_file=None, condition="c1"):
-    """Run FOL pipeline on a list of NLI items.
+def _now_iso() -> str:
+    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
-    items: list of dicts with 'premise', 'hypothesis', 'gold' keys
-    Returns list of result dicts.
-    """
-    results = []
-    for i, item in enumerate(items):
-        print(f"[{i+1}/{len(items)}] {item.get('id', i+1)}: ", end="", flush=True)
 
-        result = run_fol_pipeline(client, model,
-                                  item["premise"], item["hypothesis"],
-                                  condition=condition,
-                                  gold_label=item.get("gold"),
-                                  item_id=item.get("id"))
-        result["id"] = item.get("id", i+1)
-        result["gold"] = item.get("gold", "")
-        result["premise_nl"] = item["premise"]
-        result["hypothesis_nl"] = item["hypothesis"]
+def _results_path(dataset: str, model: str, condition: str) -> Path:
+    return RESULTS_DIR / dataset / f"{dataset}__{model}__{condition}.json"
 
-        correct = (
-            (result["label"] == "entailment" and item.get("gold") in ("yes", "entailment")) or
-            (result["label"] == "non-entailment" and item.get("gold") in ("no", "unknown", "contradiction", "neutral"))
-        )
-        result["correct"] = correct
 
-        status = "✓" if correct else "✗"
-        print(f"{result['label']} (attempt {result['attempts']}) {status}")
+def _new_state(dataset: str, model: str, condition: str) -> dict:
+    return {
+        "metadata": {
+            "dataset": dataset,
+            "model": model,
+            "condition": condition,
+            "prompt_tier": "F1",
+            "started_at": _now_iso(),
+            "completed_at": None,
+        },
+        "results": [],
+    }
 
-        results.append(result)
-        time.sleep(0.5)
 
-    # Save results
-    if output_file:
-        with open(output_file, "w", encoding="utf-8") as f:
-            json.dump(results, f, indent=2, ensure_ascii=False)
-        print(f"\nResults saved to {output_file}")
+def _flush(path: Path, state: dict) -> None:
+    state["summary"] = summarize_results(state["results"])
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8")
 
-    # Summary
-    total = len(results)
-    correct = sum(1 for r in results if r["correct"])
-    proved = sum(1 for r in results if r["proved"])
-    counter = sum(1 for r in results if r["countermodel"])
-    unknown = sum(1 for r in results if r["label"] == "unknown")
-    avg_attempts = sum(r["attempts"] for r in results) / total if total else 0
 
-    print(f"\n--- Summary ({model}) ---")
-    print(f"Total: {total}")
-    print(f"Proved: {proved}, Countermodel: {counter}, Unknown: {unknown}")
-    print(f"Accuracy: {correct}/{total} ({correct/total:.1%})")
-    print(f"Avg attempts: {avg_attempts:.1f}")
+def run_batch(samples, client, model, dataset, condition="c1", output_file=None):
+    """Run the FOL pipeline over a list of Samples and write a result state file."""
+    path = Path(output_file) if output_file else _results_path(dataset, model, condition)
+    state = _new_state(dataset, model, condition)
 
-    return results
+    for i, sample in enumerate(samples):
+        print(f"[{i+1}/{len(samples)}] {sample.id}: ", end="", flush=True)
+        fol_result = run_fol_pipeline(client, model, sample, dataset, condition=condition)
+        entry = fol_entry(sample, fol_result)
+        state["results"].append(entry)
+        status = "✓" if entry["success"] else "✗"
+        print(f"{entry['label']} (attempt {entry['attempts']}) {status}")
+
+    state["metadata"]["completed_at"] = _now_iso()
+    _flush(path, state)
+
+    s = state["summary"]
+    print(f"\n--- Summary ({dataset} / {model} / {condition}) ---")
+    print(f"Total: {s['total']}")
+    print(f"Proved: {s['proved']}, Countermodel: {s['countermodel']}, Unknown: {s['unknown']}")
+    acc = f"{s['accuracy']:.1%}" if s["accuracy"] is not None else "n/a"
+    print(f"Accuracy: {s['success_count']}/{s['total']} ({acc})")
+    print(f"Avg attempts: {s['avg_attempts']:.1f}")
+    print(f"Results saved to {path}")
+    return state
 
 
 # ============================================================
@@ -389,40 +457,25 @@ if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser(description="NESTOR FOL Pipeline")
-    parser.add_argument("--data", default="../data/fracas/fracas.xml",
-                        help="Path to dataset (FraCaS XML or JSON)")
-    parser.add_argument("--model", default="gpt-4o",
+    parser.add_argument("-d", "--data", required=True, choices=sorted(DATASETS),
+                        help="Dataset key (see data/loaders.py)")
+    parser.add_argument("-m", "--model", default="gpt-4o",
                         help="Model key (see clients/models.py)")
     parser.add_argument("--output", default=None,
-                        help="Output JSON file")
+                        help="Output JSON file (default: results/{dataset}__{model}__{condition}.json)")
     parser.add_argument("--limit", type=int, default=None,
                         help="Max items to process")
-    parser.add_argument("--section", default=None,
-                        help="FraCaS section filter (e.g. '1' for quantifiers)")
     parser.add_argument("--condition", default="c1", choices=["c1", "c2", "c3", "c4"],
                         help="Condition: c1 (blind), c2 (phase1 pred), c3 (gold), c4 (phase1+expl)")
     args = parser.parse_args()
 
-    # Load data
-    if args.data.endswith(".xml"):
-        items = load_flat(args.data)
-    else:
-        with open(args.data) as f:
-            items = json.load(f)
-
-    if args.section:
-        items = [it for it in items if it["id"].split("-")[1].startswith(args.section)]
-
+    samples = load_dataset(args.data)
     if args.limit:
-        items = items[:args.limit]
+        samples = samples[:args.limit]
 
-    print(f"Loaded {len(items)} items from {args.data}")
+    print(f"Loaded {len(samples)} samples from {args.data}")
     print(f"Model: {args.model}, Condition: {args.condition}\n")
 
-    # Setup client
     client = get_client(args.model)
-
-    # Run
-    output = args.output or f"results/fol_{args.condition}_{args.model}_{len(items)}items.json"
-    run_batch(items, client, args.model, output_file=output,
-              condition=args.condition)
+    run_batch(samples, client, args.model, args.data,
+              condition=args.condition, output_file=args.output)
