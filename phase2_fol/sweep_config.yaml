@@ -1,0 +1,21 @@
+# Sample sweep config for the Phase 2 FOL bulk runner.
+#
+# Run with:
+#   cd nestor
+#   python -m phase2_fol.run_bulk --config phase2_fol/sweep_config.yaml
+
+
+# fracas | fracas-translated | fracas-extended | fracas-multilabel | oyxoy
+datasets:
+  - fracas
+
+# gpt-4o | gpt-5.4 | deepseek-r1 | deepseek-v4-pro | llama-3.3-70b | llama-4-maverick
+# mistral-large-3 | phi-4 | grok-4-20 | grok-4-20-reasoning | krikri-8b
+models:
+  - gpt-4o
+
+# c1 (blind) | c2 (phase1 pred) | c3 (gold) | c4 (phase1 + explanation)
+condition: c1
+
+resume: true  # true = skip completed + retry LLM failures; false = start fresh
+limit:        # cap pending samples per combo; null = no cap
