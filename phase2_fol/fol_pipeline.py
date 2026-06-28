@@ -3,15 +3,20 @@ NESTOR Phase 2 — FOL Pipeline
 ==============================
 NL → FOL (via LLM) → Prover9/MACE4 → result
 
-Pipeline:
+Pipeline (per item):
 1. LLM translates P, H into FOL (Prover9 syntax)
 2. Syntax check (parse the FOL before sending to prover)
-3. Prover9: try to prove P ⊢ H (entailment)
-4. MACE4: try to find countermodel for P ∧ ¬H (non-entailment)
-5. Result: proved / countermodel / timeout
+3. Four-phase verdict on the validated FOL:
+   A. Prover9 P ⊢ H        proved            -> Entailment
+   B. Prover9 P ⊢ ¬H       proved            -> Contradiction
+   C. MACE4   P ∧ ¬H        model found       (entailment_refuted)
+   D. MACE4   P ∧ H         model found       (contradiction_refuted)
+      C and D both found -> Unknown; any other no-proof combo -> Undecided
+4. Result: label + steps_detail (the four prover booleans).
 
-Verification loop (Phase 3):
-If syntax error or prover failure, feed error back to LLM, retry up to k=3.
+Verification loop:
+Only LLM / parse / syntax errors re-enter the loop (retry up to k=3).
+Prover timeouts / "not proved" / "no model" are verdicts, not retried.
 
 Requirements:
   pip install openai
