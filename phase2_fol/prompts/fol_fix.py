@@ -1,0 +1,18 @@
+"""Correction-loop prompt template: re-feed the prover error to the LLM."""
+
+TEMPLATE = """Your previous FOL translation produced the following error when run through Prover9:
+
+{error_message}
+
+Original premise: {premise}
+Original hypothesis: {hypothesis}
+Your previous translation:
+{previous_fol}
+
+Fix the FOL formulas. Output the corrected version in the same format:
+Premises:
+<one formula per line>
+Hypothesis:
+<single formula>
+
+No commentary, no explanation."""
