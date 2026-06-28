@@ -288,6 +288,30 @@ def fix_fol(client, model, premise, hypothesis, previous_fol, error_message):
     return call_llm(client, model, messages, max_tokens=FOL_MAX_TOKENS)
 
 
+STEPS = ("entailment_proved", "contradiction_proved",
+              "entailment_refuted", "contradiction_refuted")
+
+
+def build_fol_result(premises, hyp, label, steps, attempt, errors, raw) -> dict:
+    """Assemble run_fol_pipeline's return dict.
+
+    Carries the three-way label and the 4-boolean steps_detail. Transitional
+    legacy keys (proved/countermodel) mirror entailment_proved/entailment_refuted
+    so the binary fol_entry/summarize keep working until Phase 2 migrates them.
+    """
+    return {
+        "fol_premises": premises,
+        "fol_hypothesis": hyp,
+        "label": label,
+        "steps_detail": steps,
+        "proved": steps["entailment_proved"],          # transitional (Phase 2 drops)
+        "countermodel": steps["entailment_refuted"],   # transitional (Phase 2 drops)
+        "attempts": attempt,
+        "errors": errors,
+        "raw_fol": raw,
+    }
+
+
 def run_fol_pipeline(client, model, sample: Sample, dataset, max_retries=None,
                      condition="c1"):
     """Full pipeline with verification loop for one Sample.
@@ -296,10 +320,14 @@ def run_fol_pipeline(client, model, sample: Sample, dataset, max_retries=None,
     prompt (fol_fix) only when a previous translation exists to correct. An LLM
     transport failure leaves no translation, so the next attempt re-runs nl_to_fol.
 
+    Once a translation parses and passes the syntax check, the four-phase verdict
+    (Prover9 P⊢H and P⊢¬H; MACE4 P∧¬H and P∧H) runs once and returns — only
+    LLM/parse/syntax errors re-enter the retry loop.
+
     Returns the core FOL result dict:
         - fol_premises, fol_hypothesis: final FOL
-        - proved, countermodel: prover results
-        - label: "entailment" / "non-entailment" / "unknown"
+        - label: "Entailment" / "Contradiction" / "Unknown" / "Undecided"
+        - steps_detail: the four prover booleans (see STEPS)
         - attempts: number of attempts used
         - errors: list of error messages from failed attempts
         - raw_fol: last LLM output (debugging); "<LLM call failed: ...>" on API error
@@ -310,12 +338,12 @@ def run_fol_pipeline(client, model, sample: Sample, dataset, max_retries=None,
     errors = []
     raw = ""
     premises, hyp = [], None
-    have_translation = False  # True once we hold raw FOL text to correct
+    has_translation = False  # True once we hold raw FOL text to correct
 
     for attempt in range(1, max_retries + 1):
         # Step 1: translate, or correct a previous translation if we have one.
         try:
-            if not have_translation:
+            if not has_translation:
                 raw = translate_to_fol(client, model, premise, hypothesis,
                                        condition=condition, gold_label=gold_label,
                                        item_id=sample.id, dataset=dataset)
@@ -323,9 +351,9 @@ def run_fol_pipeline(client, model, sample: Sample, dataset, max_retries=None,
                 raw = fix_fol(client, model, premise, hypothesis, raw, errors[-1])
         except Exception as e:
             errors.append(f"<LLM call failed: {type(e).__name__}: {e}>")
-            have_translation = False  # next attempt re-translates, not corrects
+            has_translation = False  # next attempt re-translates, not corrects
             continue
-        have_translation = True
+        has_translation = True
 
         premises, hyp = parse_fol_output(raw)
 
@@ -339,37 +367,36 @@ def run_fol_pipeline(client, model, sample: Sample, dataset, max_retries=None,
             errors.append(f"Syntax error: {trim_prover_error(err)}")
             continue
 
-        # Step 3: Run Prover9 (entailment)
-        proved, prover_output = run_prover9(premises, hyp)
-        if proved:
-            return {
-                "fol_premises": premises, "fol_hypothesis": hyp,
-                "proved": True, "countermodel": False,
-                "label": "entailment", "attempts": attempt,
-                "errors": errors, "raw_fol": raw,
-            }
+        # Steps 3-6: four-phase verdict. neg_hyp reuses the validated hypothesis;
+        # MACE4 negates its goal, so passing neg_hyp makes it search P∧H (Phase D).
+        # Prover timeout yields False (no proof / no model)
+        neg_hyp = f"-({hyp})"
+        entailment_proved, _ = run_prover9(premises, hyp)         # Phase A: P ⊢ H
+        contradiction_proved, _ = run_prover9(premises, neg_hyp)  # Phase B: P ⊢ ¬H
+        entailment_refuted = contradiction_refuted = False
+        if entailment_proved and contradiction_proved:
+            label = "Undecided"          # inconsistent P proves both
+        elif entailment_proved:
+            label = "Entailment"
+        elif contradiction_proved:
+            label = "Contradiction"
+        else:
+            entailment_refuted, _ = run_mace4(premises, hyp)         # Phase C: P ∧ ¬H
+            contradiction_refuted, _ = run_mace4(premises, neg_hyp)  # Phase D: P ∧ H
+            label = "Unknown" if (entailment_refuted and contradiction_refuted) else "Undecided"
 
-        # Step 4: Run MACE4 (countermodel)
-        found, mace_output = run_mace4(premises, hyp)
-        if found:
-            return {
-                "fol_premises": premises, "fol_hypothesis": hyp,
-                "proved": False, "countermodel": True,
-                "label": "non-entailment", "attempts": attempt,
-                "errors": errors, "raw_fol": raw,
-            }
+        steps = {
+            "entailment_proved": entailment_proved,
+            "contradiction_proved": contradiction_proved,
+            "entailment_refuted": entailment_refuted,
+            "contradiction_refuted": contradiction_refuted,
+        }
+        return build_fol_result(premises, hyp, label, steps, attempt, errors, raw)
 
-        # Neither proved nor countermodel — record and retry
-        errors.append(f"Prover9: no proof. MACE4: no countermodel. Timeout or undecidable.")
-
-    # All attempts exhausted
-    return {
-        "fol_premises": premises if premises else [],
-        "fol_hypothesis": hyp or "",
-        "proved": False, "countermodel": False,
-        "label": "unknown", "attempts": max_retries,
-        "errors": errors, "raw_fol": raw or (errors[-1] if errors else ""),
-    }
+    # All attempts exhausted: never reached valid FOL.
+    steps = {k: False for k in STEPS}
+    return build_fol_result(premises if premises else [], hyp or "", "Undecided", steps,
+                       max_retries, errors, raw or (errors[-1] if errors else ""))
 
 
 # ============================================================
