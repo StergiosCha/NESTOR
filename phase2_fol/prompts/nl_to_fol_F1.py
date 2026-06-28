@@ -198,5 +198,9 @@ Premises:
 Hypothesis:
 <single formula>
 
+Use ASCII only. Do NOT use Unicode math symbols.
+  BAD:  ∀x (cat(x) → animal(x))
+  GOOD: all x (cat(x) -> animal(x))
+
 No commentary, no explanation, no natural language.
 """

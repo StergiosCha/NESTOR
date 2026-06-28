@@ -17,8 +17,33 @@ from phase2_fol.prompts import fol_fix, nl_to_fol_F1
 
 PROMPT_TIER = "F1"
 
-_SYSTEM_TRANSLATE = "You are an expert in first-order logic and formal semantics."
-_SYSTEM_FIX = "You are an expert in first-order logic. Fix the errors."
+TRANSLATION_SYSTEM_PROMPT = """
+You are an expert in first-order logic and formal semantics. 
+Translate the given natural language premise and hypothesis 
+into FOL formulas using Prover9 syntax (all, exists, & | - -> <->).
+Reply with exactly:
+
+Premises:
+<one formula per line>
+Hypothesis:
+<single formula>
+
+No commentary, no explanation, no markdown.
+"""
+
+CORRECTION_SYSTEM_PROMPT = """
+You are an expert in first-order logic and formal semantics.
+Fix the errors in the translation of the given premise and hypothesis 
+into FOL formulas using Prover9 syntax (all, exists, & | - -> <->).
+Reply with exactly:
+
+Premises:
+<one formula per line>
+Hypothesis:
+<single formula>
+
+No commentary, no explanation, no markdown.
+"""
 
 # Per-condition text spliced into the F1 template's {condition_block} slot.
 # Non-empty blocks carry their own trailing blank line; c1 leaves the slot empty.
@@ -50,7 +75,7 @@ def build_prompt(
         condition_block=condition_block,
     )
     return [
-        {"role": "system", "content": _SYSTEM_TRANSLATE},
+        {"role": "system", "content": TRANSLATION_SYSTEM_PROMPT},
         {"role": "user", "content": body},
     ]
 
@@ -69,6 +94,6 @@ def build_correction_prompt(
         error_message=error_message,
     )
     return [
-        {"role": "system", "content": _SYSTEM_FIX},
+        {"role": "system", "content": CORRECTION_SYSTEM_PROMPT},
         {"role": "user", "content": body},
     ]
