@@ -434,9 +434,6 @@ def summarize_results(results: list[dict]) -> dict:
     def label_count(label: str) -> int:
         return sum(1 for r in results if r["label"] == label)
 
-    def n_step(key: str) -> int:
-        return sum(1 for r in results if r.get("steps_detail", {}).get(key))
-
     llm_error = sum(1 for r in results if _is_llm_error(r))
     success_count = sum(1 for r in results if r.get("success") == 1)
     avg_attempts = sum(r["attempts"] for r in results) / total if total else 0
@@ -450,9 +447,6 @@ def summarize_results(results: list[dict]) -> dict:
         "success_count": success_count,
         "accuracy": success_count / total if total else None,
         "avg_attempts": avg_attempts,
-        # transitional: keep run()/run_bulk working until Phase 3 swaps these out.
-        "proved": n_step("entailment_proved"),
-        "countermodel": n_step("entailment_refuted"),
     }
 
 
@@ -565,7 +559,7 @@ def run(
     acc = f"{s['accuracy']:.1%}" if s["accuracy"] is not None else "n/a"
     print(
         f"[done] {s['success_count']}/{s['total']} ({acc}) | "
-        f"proved={s['proved']} countermodel={s['countermodel']} unknown={s['unknown']} "
+        f"E={s['entailment']} C={s['contradiction']} U={s['unknown']} undec={s['undecided']} "
         f"llm_error={s['llm_error']} -> {path}"
     )
     return 0

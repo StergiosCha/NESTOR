@@ -164,7 +164,8 @@ def run_sweep(cfg: SweepConfig) -> int:
                     accuracy = f"{ok}/{n_total} ({pct})"
                     unknown = str(summary.get("unknown", "?"))
                     llm_error = str(summary.get("llm_error", "?"))
-                    detail = f"proved={summary.get('proved', 0)}, countermodel={summary.get('countermodel', 0)}"
+                    detail = (f"E={summary.get('entailment', 0)} C={summary.get('contradiction', 0)} "
+                              f"U={summary.get('unknown', 0)} undec={summary.get('undecided', 0)}")
                     with rows_lock:
                         rows.append((combo, "PASS", accuracy, unknown, llm_error, detail))
                 except Exception as e:
