@@ -257,6 +257,27 @@ def _regex_syntax_check(premises, hypothesis):
     return True, None
 
 
+ERROR_MARKERS = ("error", "fatal", "%%")
+
+
+def trim_prover_error(output: str, max_lines: int = 10, max_chars: int = 1000) -> str:
+    """Reduce a Prover9/MACE4 dump to the salient error line(s)."""
+
+    if not output:
+        return output
+    lines = output.splitlines()
+    keep: list[str] = []
+    for i, line in enumerate(lines):
+        if any(m in line.lower() for m in ERROR_MARKERS):
+            keep.append(line.strip())
+            nxt = lines[i + 1].strip() if i + 1 < len(lines) else ""
+            if nxt and not any(m in nxt.lower() for m in ERROR_MARKERS):
+                keep.append(nxt)
+    if not keep:
+        return output.strip()[-max_chars:]
+    return "\n".join(keep[:max_lines])[:max_chars]
+
+
 # ============================================================
 # VERIFICATION LOOP (Phase 3)
 # ============================================================
@@ -315,7 +336,7 @@ def run_fol_pipeline(client, model, sample: Sample, dataset, max_retries=None,
         # Step 2: Syntax check
         ok, err = syntax_check_fol(premises, hyp)
         if not ok:
-            errors.append(f"Syntax error: {err}")
+            errors.append(f"Syntax error: {trim_prover_error(err)}")
             continue
 
         # Step 3: Run Prover9 (entailment)
