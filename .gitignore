@@ -17,7 +17,10 @@ venv/
 phase1_nli_eval/results/
 phase1_nli_eval/fracas_results*.json
 phase1_nli_eval/fracas_summary*.txt
+phase2_fol/results/
 
 # OS
 .DS_Store
 .DS_Store
+
+.claude/*
