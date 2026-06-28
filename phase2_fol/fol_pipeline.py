@@ -25,13 +25,17 @@ import sys
 import tempfile
 from datetime import datetime, timezone
 from pathlib import Path
+from typing import Callable
+
 from dotenv import load_dotenv
+from rich.progress import BarColumn, MofNCompleteColumn, Progress, SpinnerColumn, TextColumn, TimeElapsedColumn
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from clients.azure import get_client, call_llm
+from clients.azure import assert_env, call_llm, get_client
+from clients.models import MODELS
 from data.loaders import load_dataset
 from data.schema import Sample
-from phase2_fol.prompts import build_correction_prompt, build_prompt
+from phase2_fol.prompts import PROMPT_TIER, build_correction_prompt, build_prompt
 
 load_dotenv()
 
@@ -42,6 +46,7 @@ PROVER_TIMEOUT = int(os.environ.get("PROVER_TIMEOUT", "30") or 30)
 MAX_RETRIES = int(os.environ.get("MAX_RETRIES", "3") or 3)
 
 FOL_MAX_TOKENS = 500
+FLUSH_EVERY = 10
 
 RESULTS_DIR = Path(__file__).resolve().parent / "results"
 DATASETS = {"fracas", "fracas-translated", "fracas-extended", "fracas-multilabel", "oyxoy"}
@@ -266,13 +271,17 @@ def run_fol_pipeline(client, model, sample: Sample, dataset, max_retries=None,
                      condition="c1"):
     """Full pipeline with verification loop for one Sample.
 
+    The prompt is chosen by state, not by attempt number: we send the correction
+    prompt (fol_fix) only when a previous translation exists to correct. An LLM
+    transport failure leaves no translation, so the next attempt re-runs nl_to_fol.
+
     Returns the core FOL result dict:
         - fol_premises, fol_hypothesis: final FOL
         - proved, countermodel: prover results
         - label: "entailment" / "non-entailment" / "unknown"
         - attempts: number of attempts used
         - errors: list of error messages from failed attempts
-        - raw_fol: last LLM output (debugging)
+        - raw_fol: last LLM output (debugging); "<LLM call failed: ...>" on API error
     """
     max_retries = max_retries or MAX_RETRIES
     premise, hypothesis = sample.premise, sample.hypothesis
@@ -280,16 +289,22 @@ def run_fol_pipeline(client, model, sample: Sample, dataset, max_retries=None,
     errors = []
     raw = ""
     premises, hyp = [], None
+    have_translation = False  # True once we hold raw FOL text to correct
 
     for attempt in range(1, max_retries + 1):
-        # Step 1: Get FOL translation
-        if attempt == 1:
-            raw = translate_to_fol(client, model, premise, hypothesis,
-                                   condition=condition, gold_label=gold_label,
-                                   item_id=sample.id, dataset=dataset)
-        else:
-            raw = fix_fol(client, model, premise, hypothesis,
-                         raw, errors[-1])
+        # Step 1: translate, or correct a previous translation if we have one.
+        try:
+            if not have_translation:
+                raw = translate_to_fol(client, model, premise, hypothesis,
+                                       condition=condition, gold_label=gold_label,
+                                       item_id=sample.id, dataset=dataset)
+            else:
+                raw = fix_fol(client, model, premise, hypothesis, raw, errors[-1])
+        except Exception as e:
+            errors.append(f"<LLM call failed: {type(e).__name__}: {e}>")
+            have_translation = False  # next attempt re-translates, not corrects
+            continue
+        have_translation = True
 
         premises, hyp = parse_fol_output(raw)
 
@@ -332,7 +347,7 @@ def run_fol_pipeline(client, model, sample: Sample, dataset, max_retries=None,
         "fol_hypothesis": hyp or "",
         "proved": False, "countermodel": False,
         "label": "unknown", "attempts": max_retries,
-        "errors": errors, "raw_fol": raw,
+        "errors": errors, "raw_fol": raw or (errors[-1] if errors else ""),
     }
 
 
@@ -372,11 +387,16 @@ def fol_entry(sample: Sample, fol_result: dict) -> dict:
     }
 
 
+def _is_llm_error(entry: dict) -> bool:
+    return str(entry.get("raw_fol", "")).startswith("<LLM call failed")
+
+
 def summarize_results(results: list[dict]) -> dict:
     total = len(results)
     proved = sum(1 for r in results if r["proved"])
     countermodel = sum(1 for r in results if r["countermodel"])
     unknown = sum(1 for r in results if r["label"] == "unknown")
+    llm_error = sum(1 for r in results if _is_llm_error(r))
     success_count = sum(1 for r in results if r.get("success") == 1)
     avg_attempts = sum(r["attempts"] for r in results) / total if total else 0
     return {
@@ -384,6 +404,7 @@ def summarize_results(results: list[dict]) -> dict:
         "proved": proved,
         "countermodel": countermodel,
         "unknown": unknown,
+        "llm_error": llm_error,
         "success_count": success_count,
         "accuracy": success_count / total if total else None,
         "avg_attempts": avg_attempts,
@@ -408,7 +429,7 @@ def _new_state(dataset: str, model: str, condition: str) -> dict:
             "dataset": dataset,
             "model": model,
             "condition": condition,
-            "prompt_tier": "F1",
+            "prompt_tier": PROMPT_TIER,
             "started_at": _now_iso(),
             "completed_at": None,
         },
@@ -422,60 +443,120 @@ def _flush(path: Path, state: dict) -> None:
     path.write_text(json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
-def run_batch(samples, client, model, dataset, condition="c1", output_file=None):
-    """Run the FOL pipeline over a list of Samples and write a result state file."""
+def _is_complete(entry: dict) -> bool:
+    """An item is done unless it errored at the LLM transport (those get retried on resume)."""
+    return entry.get("label") is not None and not _is_llm_error(entry)
+
+
+def run(
+    dataset: str,
+    model: str,
+    condition: str = "c1",
+    resume: bool = False,
+    limit: int | None = None,
+    on_progress: Callable[[], None] | None = None,
+    output_file: str | None = None,
+) -> int:
+    """Run the FOL pipeline sequentially over one dataset x model x condition.
+
+    Items run one at a time (each completing its full retry loop before the next),
+    so a single model only ever has one in-flight LLM call. Cross-model parallelism
+    lives in run_bulk; there is no per-item rate limiting here.
+    """
+    provider = MODELS[model]["provider"]
+    assert_env(provider)
+    client = get_client(model)
+
+    samples = load_dataset(dataset)
     path = Path(output_file) if output_file else _results_path(dataset, model, condition)
-    state = _new_state(dataset, model, condition)
 
-    for i, sample in enumerate(samples):
-        print(f"[{i+1}/{len(samples)}] {sample.id}: ", end="", flush=True)
+    if resume and path.exists():
+        state = json.loads(path.read_text(encoding="utf-8"))
+        results_by_id = {e["id"]: e for e in state["results"]}
+        completed = {eid for eid, e in results_by_id.items() if _is_complete(e)}
+    else:
+        state = _new_state(dataset, model, condition)
+        results_by_id = {}
+        completed = set()
+
+    pending = [s for s in samples if s.id not in completed]
+    if limit is not None:
+        pending = pending[:limit]
+    total, skipped = len(samples), len(samples) - len(pending)
+    print(
+        f"[run] dataset={dataset} model={model} condition={condition} "
+        f"total={total} skipped(resume)={skipped}"
+    )
+
+    def _process(sample: Sample, progress_cb: Callable[[], None] | None) -> None:
         fol_result = run_fol_pipeline(client, model, sample, dataset, condition=condition)
-        entry = fol_entry(sample, fol_result)
-        state["results"].append(entry)
-        status = "✓" if entry["success"] else "✗"
-        print(f"{entry['label']} (attempt {entry['attempts']}) {status}")
+        results_by_id[sample.id] = fol_entry(sample, fol_result)
+        state["results"] = list(results_by_id.values())
+        if len(state["results"]) % FLUSH_EVERY == 0:
+            _flush(path, state)
+        if progress_cb is not None:
+            progress_cb()
 
+    desc = f"  {dataset} / {model} / {condition}"
+    if on_progress is not None:
+        for sample in pending:
+            _process(sample, on_progress)
+    else:
+        with Progress(
+            SpinnerColumn(),
+            TextColumn("[progress.description]{task.description}"),
+            BarColumn(),
+            MofNCompleteColumn(),
+            TimeElapsedColumn(),
+        ) as progress:
+            task = progress.add_task(desc, total=len(pending))
+            for sample in pending:
+                _process(sample, lambda: progress.advance(task))
+
+    state["results"] = list(results_by_id.values())
     state["metadata"]["completed_at"] = _now_iso()
     _flush(path, state)
-
     s = state["summary"]
-    print(f"\n--- Summary ({dataset} / {model} / {condition}) ---")
-    print(f"Total: {s['total']}")
-    print(f"Proved: {s['proved']}, Countermodel: {s['countermodel']}, Unknown: {s['unknown']}")
     acc = f"{s['accuracy']:.1%}" if s["accuracy"] is not None else "n/a"
-    print(f"Accuracy: {s['success_count']}/{s['total']} ({acc})")
-    print(f"Avg attempts: {s['avg_attempts']:.1f}")
-    print(f"Results saved to {path}")
-    return state
+    print(
+        f"[done] {s['success_count']}/{s['total']} ({acc}) | "
+        f"proved={s['proved']} countermodel={s['countermodel']} unknown={s['unknown']} "
+        f"llm_error={s['llm_error']} -> {path}"
+    )
+    return 0
 
 
 # ============================================================
 # MAIN
 # ============================================================
 
-if __name__ == "__main__":
+def build_parser():
     import argparse
 
-    parser = argparse.ArgumentParser(description="NESTOR FOL Pipeline")
-    parser.add_argument("-d", "--data", required=True, choices=sorted(DATASETS),
-                        help="Dataset key (see data/loaders.py)")
-    parser.add_argument("-m", "--model", default="gpt-4o",
-                        help="Model key (see clients/models.py)")
-    parser.add_argument("--output", default=None,
-                        help="Output JSON file (default: results/{dataset}__{model}__{condition}.json)")
-    parser.add_argument("--limit", type=int, default=None,
-                        help="Max items to process")
-    parser.add_argument("--condition", default="c1", choices=["c1", "c2", "c3", "c4"],
-                        help="Condition: c1 (blind), c2 (phase1 pred), c3 (gold), c4 (phase1+expl)")
-    args = parser.parse_args()
+    p = argparse.ArgumentParser(
+        prog="phase2_fol.fol_pipeline",
+        description="NESTOR FOL pipeline: dataset x model x condition.",
+    )
+    p.add_argument("-d", "--data", required=True, choices=sorted(DATASETS),
+                   help="Dataset key (see data/loaders.py).")
+    p.add_argument("-m", "--model", required=True, choices=sorted(MODELS),
+                   help="Model key from clients.models.MODELS.")
+    p.add_argument("--condition", default="c1", choices=["c1", "c2", "c3", "c4"],
+                   help="c1 (blind), c2 (phase1 pred), c3 (gold), c4 (phase1+expl).")
+    p.add_argument("--resume", action="store_true",
+                   help="Resume an existing results file for this combination.")
+    p.add_argument("--limit", type=int, default=None, metavar="N",
+                   help="Process at most N pending samples.")
+    p.add_argument("--output", default=None,
+                   help="Output JSON file (default: results/{dataset}/{dataset}__{model}__{condition}.json).")
+    return p
 
-    samples = load_dataset(args.data)
-    if args.limit:
-        samples = samples[:args.limit]
 
-    print(f"Loaded {len(samples)} samples from {args.data}")
-    print(f"Model: {args.model}, Condition: {args.condition}\n")
+def main(argv=None) -> int:
+    args = build_parser().parse_args(argv)
+    return run(args.data, args.model, args.condition,
+               resume=args.resume, limit=args.limit, output_file=args.output)
 
-    client = get_client(args.model)
-    run_batch(samples, client, args.model, args.data,
-              condition=args.condition, output_file=args.output)
+
+if __name__ == "__main__":
+    raise SystemExit(main())
