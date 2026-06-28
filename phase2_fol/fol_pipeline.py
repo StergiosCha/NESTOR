@@ -293,19 +293,12 @@ STEPS = ("entailment_proved", "contradiction_proved",
 
 
 def build_fol_result(premises, hyp, label, steps, attempt, errors, raw) -> dict:
-    """Assemble run_fol_pipeline's return dict.
-
-    Carries the three-way label and the 4-boolean steps_detail. Transitional
-    legacy keys (proved/countermodel) mirror entailment_proved/entailment_refuted
-    so the binary fol_entry/summarize keep working until Phase 2 migrates them.
-    """
+    """Assemble run_fol_pipeline's return dict: three-way label + 4-boolean steps_detail."""
     return {
         "fol_premises": premises,
         "fol_hypothesis": hyp,
         "label": label,
         "steps_detail": steps,
-        "proved": steps["entailment_proved"],          # transitional (Phase 2 drops)
-        "countermodel": steps["entailment_refuted"],   # transitional (Phase 2 drops)
         "attempts": attempt,
         "errors": errors,
         "raw_fol": raw,
@@ -404,16 +397,13 @@ def run_fol_pipeline(client, model, sample: Sample, dataset, max_retries=None,
 # ============================================================
 
 def fol_entry(sample: Sample, fol_result: dict) -> dict:
-    """Shape one result-file entry: Sample metadata + FOL result + success.
+    """Shape one result-file entry: Sample metadata + FOL verdict + success.
 
-    Correctness is a collapsed-gold binary projection: FOL distinguishes only
-    entailment vs. not, so success compares "did FOL prove entailment?" against
-    "is Entailment in the gold set?". Contradiction and Unknown both count as
-    non-entailment (see the Phase 2 FOL doc warning).
+    Three-way scoring: success is a direct membership test of the pipeline label
+    against the gold set (multilabel-safe). 'Undecided' is never a gold label, so
+    it always scores as a failure.
     """
     gold = list(sample.labels)
-    gold_entails = "Entailment" in set(gold)
-    fol_entails = fol_result["label"] == "entailment"
     return {
         "id": sample.id,
         "source": sample.source,
@@ -425,13 +415,12 @@ def fol_entry(sample: Sample, fol_result: dict) -> dict:
         "gold": gold,
         "fol_premises": fol_result["fol_premises"],
         "fol_hypothesis": fol_result["fol_hypothesis"],
-        "proved": fol_result["proved"],
-        "countermodel": fol_result["countermodel"],
         "label": fol_result["label"],
+        "steps_detail": fol_result["steps_detail"],
         "attempts": fol_result["attempts"],
         "errors": fol_result["errors"],
         "raw_fol": fol_result["raw_fol"],
-        "success": 1 if fol_entails == gold_entails else 0,
+        "success": 1 if fol_result["label"] in set(gold) else 0,
     }
 
 
@@ -441,21 +430,29 @@ def _is_llm_error(entry: dict) -> bool:
 
 def summarize_results(results: list[dict]) -> dict:
     total = len(results)
-    proved = sum(1 for r in results if r["proved"])
-    countermodel = sum(1 for r in results if r["countermodel"])
-    unknown = sum(1 for r in results if r["label"] == "unknown")
+
+    def label_count(label: str) -> int:
+        return sum(1 for r in results if r["label"] == label)
+
+    def n_step(key: str) -> int:
+        return sum(1 for r in results if r.get("steps_detail", {}).get(key))
+
     llm_error = sum(1 for r in results if _is_llm_error(r))
     success_count = sum(1 for r in results if r.get("success") == 1)
     avg_attempts = sum(r["attempts"] for r in results) / total if total else 0
     return {
         "total": total,
-        "proved": proved,
-        "countermodel": countermodel,
-        "unknown": unknown,
+        "entailment": label_count("Entailment"),
+        "contradiction": label_count("Contradiction"),
+        "unknown": label_count("Unknown"),
+        "undecided": label_count("Undecided"),
         "llm_error": llm_error,
         "success_count": success_count,
         "accuracy": success_count / total if total else None,
         "avg_attempts": avg_attempts,
+        # transitional: keep run()/run_bulk working until Phase 3 swaps these out.
+        "proved": n_step("entailment_proved"),
+        "countermodel": n_step("entailment_refuted"),
     }
 
 
