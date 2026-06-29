@@ -104,7 +104,8 @@ FOL cannot directly express proportional quantifiers like "most", "few",
 
 === CONSISTENCY RULES ===
 
-- Use ONE predicate name per concept across all premises and hypothesis.
+- Reuse predicates across premises and hypothesis. Use ONE predicate name per concept.
+  Avoid using unseen predicates in the hypothesis.
   GOOD: man(x) in premise, man(x) in hypothesis
   BAD:  man(x) in premise, male(x) in hypothesis
 - Predicate arity must be consistent: if love(x,y) in one formula, always love(x,y).
@@ -202,5 +203,5 @@ Use ASCII only. Do NOT use Unicode math symbols.
   BAD:  ∀x (cat(x) → animal(x))
   GOOD: all x (cat(x) -> animal(x))
 
-No commentary, no explanation, no natural language.
+No commentary, explanation, notes.
 """
