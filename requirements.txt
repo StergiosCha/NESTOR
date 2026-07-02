@@ -4,3 +4,4 @@ PyYAML>=6.0
 rich>=13.0.0
 pandas>=2.0.0
 pyarrow>=14.0.0
+streamlit>=1.30.0
