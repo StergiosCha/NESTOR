@@ -1,0 +1,88 @@
+{
+  "metadata": {
+    "dataset": "fracas-multilabel",
+    "model": "deepseek-r1",
+    "condition": "c1",
+    "prompt_tier": "F1",
+    "started_at": "2026-06-29T15:03:09Z",
+    "completed_at": "2026-06-29T15:03:48Z"
+  },
+  "results": [
+    {
+      "id": "fracas-multilabel-0001",
+      "source": "fracas-multilabel",
+      "language": "el",
+      "premise": "Ο Αλέξανδρος ήρθε στην προπόνηση και δεν μίλησε ούτε καν με την Αγκάτα.",
+      "hypothesis": "Ο Αλέξανδρος μίλησε με κάποιον.",
+      "tags": [
+        "Logic:Quantification:Existential",
+        "Lexical Entailment:FAO",
+        "Logic:Negative Concord"
+      ],
+      "fracas_sections": [
+        "Generalized Quantifiers"
+      ],
+      "gold": [
+        "Contradiction"
+      ],
+      "fol_premises": [
+        "came_to_practice(alexander) & -talk(alexander, agata)"
+      ],
+      "fol_hypothesis": "exists x talk(alexander, x)",
+      "label": "Unknown",
+      "steps_detail": {
+        "entailment_proved": false,
+        "contradiction_proved": false,
+        "entailment_refuted": true,
+        "contradiction_refuted": true
+      },
+      "attempts": 1,
+      "errors": [],
+      "raw_fol": "\n\nPremises:\ncame_to_practice(alexander) & -talk(alexander, agata)\nHypothesis:\nexists x talk(alexander, x)",
+      "success": 0
+    },
+    {
+      "id": "fracas-multilabel-0002",
+      "source": "fracas-multilabel",
+      "language": "el",
+      "premise": "Ο Αλέξανδρος ήρθε στην προπόνηση και δεν μίλησε ούτε καν με την Αγκάτα.",
+      "hypothesis": "Ο Αλέξανδρος δεν μίλησε με κανέναν.",
+      "tags": [
+        "Lexical Entailment:FAO",
+        "Logic:Negative Concord"
+      ],
+      "fracas_sections": [
+        "Generalized Quantifiers"
+      ],
+      "gold": [
+        "Entailment"
+      ],
+      "fol_premises": [
+        "came_to_practice(alexander) & -talk(alexander,agata)"
+      ],
+      "fol_hypothesis": "all x (-talk(alexander,x))",
+      "label": "Unknown",
+      "steps_detail": {
+        "entailment_proved": false,
+        "contradiction_proved": false,
+        "entailment_refuted": true,
+        "contradiction_refuted": true
+      },
+      "attempts": 1,
+      "errors": [],
+      "raw_fol": "\n\nPremises:\ncame_to_practice(alexander) & -talk(alexander,agata)\nHypothesis:\nall x (-talk(alexander,x))",
+      "success": 0
+    }
+  ],
+  "summary": {
+    "total": 2,
+    "entailment": 0,
+    "contradiction": 0,
+    "unknown": 2,
+    "undecided": 0,
+    "llm_error": 0,
+    "success_count": 0,
+    "accuracy": 0.0,
+    "avg_attempts": 1.0
+  }
+}
