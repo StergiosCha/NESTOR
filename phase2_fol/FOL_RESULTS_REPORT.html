@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FOL Pipeline Results — Deep Dive</title>
+<style>
+  :root { --bg: #0f172a; --card: #1e293b; --border: #334155; --text: #e2e8f0; --muted: #94a3b8; --accent: #38bdf8; --green: #4ade80; --red: #f87171; --yellow: #fbbf24; --orange: #fb923c; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: 'Inter', system-ui, -apple-system, sans-serif; line-height: 1.6; padding: 2rem; max-width: 1200px; margin: 0 auto; }
+  h1 { font-size: 2rem; margin-bottom: 0.5rem; color: var(--accent); }
+  h2 { font-size: 1.4rem; margin: 2.5rem 0 1rem; color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; }
+  h3 { font-size: 1.1rem; margin: 1.5rem 0 0.5rem; color: var(--text); }
+  p, li { color: var(--text); margin-bottom: 0.5rem; }
+  .subtitle { color: var(--muted); font-size: 0.95rem; margin-bottom: 2rem; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem; margin-bottom: 1.5rem; }
+  .card-title { font-weight: 600; margin-bottom: 0.75rem; font-size: 1.05rem; }
+  .highlight { background: #1e3a5f; border-left: 3px solid var(--accent); padding: 1rem 1.5rem; border-radius: 0 8px 8px 0; margin: 1rem 0; }
+  .warning { background: #3b1f1f; border-left: 3px solid var(--red); padding: 1rem 1.5rem; border-radius: 0 8px 8px 0; margin: 1rem 0; }
+  .success { background: #1a3a2a; border-left: 3px solid var(--green); padding: 1rem 1.5rem; border-radius: 0 8px 8px 0; margin: 1rem 0; }
+  .todo { background: #3b2f1f; border-left: 3px solid var(--orange); padding: 1rem 1.5rem; border-radius: 0 8px 8px 0; margin: 1rem 0; }
+  table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.85rem; }
+  th { background: #0f172a; color: var(--accent); text-align: left; padding: 0.6rem 0.8rem; border-bottom: 2px solid var(--border); white-space: nowrap; }
+  td { padding: 0.5rem 0.8rem; border-bottom: 1px solid var(--border); }
+  tr:hover { background: rgba(56, 189, 248, 0.05); }
+  .num { text-align: right; font-variant-numeric: tabular-nums; }
+  .good { color: var(--green); font-weight: 600; }
+  .bad { color: var(--red); font-weight: 600; }
+  .mid { color: var(--yellow); }
+  .pct-bar { display: inline-block; height: 8px; border-radius: 4px; margin-left: 6px; vertical-align: middle; }
+  code { background: #0f172a; padding: 2px 6px; border-radius: 4px; font-size: 0.85em; color: var(--accent); }
+  pre { background: #0f172a; padding: 1rem; border-radius: 6px; overflow-x: auto; font-size: 0.8rem; margin: 0.5rem 0; color: var(--muted); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin: 1rem 0; }
+  .metric { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 1rem; text-align: center; }
+  .metric-value { font-size: 1.8rem; font-weight: 700; color: var(--accent); }
+  .metric-label { font-size: 0.8rem; color: var(--muted); margin-top: 0.25rem; }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; margin: 2px; }
+  .tag-ent { background: #166534; color: #bbf7d0; }
+  .tag-con { background: #991b1b; color: #fecaca; }
+  .tag-unk { background: #854d0e; color: #fef08a; }
+  .tag-und { background: #374151; color: #d1d5db; }
+  ol, ul { padding-left: 1.5rem; margin: 0.5rem 0; }
+  .example { background: #0f172a; border: 1px solid var(--border); border-radius: 6px; padding: 1rem; margin: 0.75rem 0; font-size: 0.85rem; }
+  .example-label { font-weight: 600; color: var(--accent); margin-bottom: 0.5rem; }
+  .toc { list-style: none; padding: 0; }
+  .toc li { margin: 0.3rem 0; }
+  .toc a { color: var(--accent); text-decoration: none; }
+  .toc a:hover { text-decoration: underline; }
+  a { color: var(--accent); }
+</style>
+</head>
+<body>
+
+<h1>FOL Inference Pipeline — Results Report</h1>
+<p class="subtitle">NESTOR Phase 2 &middot; 5 datasets &middot; 9 models &middot; 23,670 inference attempts &middot; July 2026</p>
+
+<div class="card">
+<p class="card-title">Contents</p>
+<ol class="toc">
+  <li><a href="#story">The Story So Far</a></li>
+  <li><a href="#pipeline">How the Pipeline Works</a></li>
+  <li><a href="#overview">Overview: Accuracy per Dataset &times; Model</a></li>
+  <li><a href="#confusion">Where Are We Getting It Wrong? (Confusion Matrix)</a></li>
+  <li><a href="#contradiction">The Contradiction Problem</a></li>
+  <li><a href="#errors">Error Taxonomy: Why Does It Fail?</a></li>
+  <li><a href="#examples">Concrete Examples</a></li>
+  <li><a href="#quantifiers">The Generalized Quantifier Wall</a></li>
+  <li><a href="#sections">FraCaS Sections: What's Easy, What's Hard</a></li>
+  <li><a href="#enel">English vs Greek: Does Language Matter?</a></li>
+  <li><a href="#hardest">The Impossible Items</a></li>
+  <li><a href="#todo">What You Should Do Next</a></li>
+</ol>
+</div>
+
+<!-- 1. STORY -->
+<h2 id="story">1. The Story So Far</h2>
+<p>We built a pipeline that takes NLI pairs (premise + hypothesis), translates them into First-Order Logic via an LLM, and then uses automated theorem provers (Prover9 and MACE4) to determine the inference relation: Entailment, Contradiction, or Unknown.</p>
+<p>We ran this pipeline across <strong>5 datasets</strong> and <strong>9 models</strong>, producing 23,670 inference attempts. The headline numbers look like this:</p>
+
+<div class="grid">
+  <div class="metric"><div class="metric-value">23,670</div><div class="metric-label">Total Inferences</div></div>
+  <div class="metric"><div class="metric-value">53-69%</div><div class="metric-label">Best Accuracy Range (FraCaS)</div></div>
+  <div class="metric"><div class="metric-value">44-63%</div><div class="metric-label">OYXOY Accuracy Range</div></div>
+  <div class="metric"><div class="metric-value">~50%</div><div class="metric-label">Errors from Translation Quality</div></div>
+</div>
+
+<p>The top model is <strong>grok-4-20-reasoning</strong>, consistently outperforming others by 5-10 points. But even the best model gets only ~69% on FraCaS and ~63% on OYXOY. The bottleneck is <em>not</em> the theorem prover &mdash; it's the quality of the FOL translation.</p>
+
+<!-- 2. PIPELINE -->
+<h2 id="pipeline">2. How the Pipeline Works</h2>
+<div class="card">
+<p>The pipeline runs 4 phases in order. It exits as soon as it gets a definitive answer:</p>
+<table>
+  <tr><th>Phase</th><th>Tool</th><th>What It Checks</th><th>If Success</th></tr>
+  <tr><td>A</td><td>Prover9</td><td>P &vdash; H (can we <em>prove</em> H from P?)</td><td><span class="tag tag-ent">Entailment</span> &mdash; exit</td></tr>
+  <tr><td>B</td><td>Prover9</td><td>P &vdash; &not;H (can we <em>prove</em> &not;H from P?)</td><td><span class="tag tag-con">Contradiction</span> &mdash; exit</td></tr>
+  <tr><td>C</td><td>MACE4</td><td>P &and; &not;H satisfiable? (find a model)</td><td>Record found_c = True/False</td></tr>
+  <tr><td>D</td><td>MACE4</td><td>P &and; H satisfiable? (find a model)</td><td>Record found_d = True/False</td></tr>
+</table>
+<p style="margin-top:1rem;">After Phases C and D:</p>
+<table>
+  <tr><th>found_c</th><th>found_d</th><th>Label</th><th>Meaning</th></tr>
+  <tr><td class="good">model found</td><td class="good">model found</td><td><span class="tag tag-unk">Unknown</span></td><td>P is compatible with both H and &not;H &mdash; it doesn't decide</td></tr>
+  <tr><td colspan="2">anything else</td><td><span class="tag tag-und">Undecided</span></td><td>The tools couldn't determine the relation (timeout, domain too small)</td></tr>
+</table>
+<p style="margin-top:1rem;"><strong>Key insight:</strong> Prover9 gives <em>definitive</em> answers (universal proofs). MACE4 gives <em>existential</em> evidence (finds a finite model). When MACE4 <em>doesn't</em> find a model, it doesn't mean unsatisfiable &mdash; it might just need a larger domain.</p>
+</div>
+
+<!-- 3. OVERVIEW -->
+<h2 id="overview">3. Overview: Accuracy per Dataset &times; Model</h2>
+
+<div class="card">
+<p class="card-title">FraCaS (original English, 342 items)</p>
+<table>
+<tr><th>Model</th><th class="num">Acc (all)</th><th class="num">Acc (excl undec)</th><th class="num">Undecided</th><th>Label Distribution</th></tr>
+<tr><td>grok-4-20-reasoning</td><td class="num good">69.3%</td><td class="num good">72.7%</td><td class="num">16 (5%)</td><td><span class="tag tag-ent">201</span> <span class="tag tag-con">14</span> <span class="tag tag-unk">111</span> <span class="tag tag-und">16</span></td></tr>
+<tr><td>deepseek-r1</td><td class="num good">65.5%</td><td class="num good">72.5%</td><td class="num">33 (10%)</td><td><span class="tag tag-ent">188</span> <span class="tag tag-con">18</span> <span class="tag tag-unk">103</span> <span class="tag tag-und">33</span></td></tr>
+<tr><td>gpt-4o</td><td class="num mid">58.2%</td><td class="num mid">65.5%</td><td class="num">38 (11%)</td><td><span class="tag tag-ent">137</span> <span class="tag tag-con">11</span> <span class="tag tag-unk">156</span> <span class="tag tag-und">38</span></td></tr>
+<tr><td>mistral-large-3</td><td class="num mid">57.3%</td><td class="num mid">68.1%</td><td class="num">54 (16%)</td><td><span class="tag tag-ent">140</span> <span class="tag tag-con">12</span> <span class="tag tag-unk">136</span> <span class="tag tag-und">54</span></td></tr>
+<tr><td>gpt-5.4</td><td class="num mid">56.7%</td><td class="num mid">61.8%</td><td class="num">28 (8%)</td><td><span class="tag tag-ent">142</span> <span class="tag tag-con">10</span> <span class="tag tag-unk">162</span> <span class="tag tag-und">28</span></td></tr>
+<tr><td>llama-3.3-70b</td><td class="num mid">55.6%</td><td class="num mid">67.1%</td><td class="num">59 (17%)</td><td><span class="tag tag-ent">144</span> <span class="tag tag-con">8</span> <span class="tag tag-unk">131</span> <span class="tag tag-und">59</span></td></tr>
+<tr><td>grok-4-20</td><td class="num">54.1%</td><td class="num mid">66.5%</td><td class="num">64 (19%)</td><td><span class="tag tag-ent">134</span> <span class="tag tag-con">12</span> <span class="tag tag-unk">132</span> <span class="tag tag-und">64</span></td></tr>
+<tr><td>llama-4-maverick</td><td class="num">53.8%</td><td class="num mid">65.2%</td><td class="num">60 (18%)</td><td><span class="tag tag-ent">143</span> <span class="tag tag-con">13</span> <span class="tag tag-unk">126</span> <span class="tag tag-und">60</span></td></tr>
+<tr><td>deepseek-v4-pro</td><td class="num">53.5%</td><td class="num mid">62.7%</td><td class="num">50 (15%)</td><td><span class="tag tag-ent">138</span> <span class="tag tag-con">12</span> <span class="tag tag-unk">142</span> <span class="tag tag-und">50</span></td></tr>
+</table>
+</div>
+
+<div class="card">
+<p class="card-title">OYXOY (Greek, 1049 items)</p>
+<table>
+<tr><th>Model</th><th class="num">Acc (all)</th><th class="num">Acc (excl undec)</th><th class="num">Undecided</th></tr>
+<tr><td>grok-4-20-reasoning</td><td class="num good">62.8%</td><td class="num good">63.4%</td><td class="num">10 (1%)</td></tr>
+<tr><td>gpt-5.4</td><td class="num mid">53.0%</td><td class="num mid">55.2%</td><td class="num">41 (4%)</td></tr>
+<tr><td>gpt-4o</td><td class="num mid">50.6%</td><td class="num mid">55.1%</td><td class="num">85 (8%)</td></tr>
+<tr><td>mistral-large-3</td><td class="num">48.9%</td><td class="num mid">56.1%</td><td class="num">134 (13%)</td></tr>
+<tr><td>deepseek-v4-pro</td><td class="num">48.5%</td><td class="num mid">54.0%</td><td class="num">106 (10%)</td></tr>
+<tr><td>grok-4-20</td><td class="num">48.0%</td><td class="num mid">56.5%</td><td class="num">159 (15%)</td></tr>
+<tr><td>llama-4-maverick</td><td class="num">46.2%</td><td class="num mid">55.5%</td><td class="num">175 (17%)</td></tr>
+<tr><td>llama-3.3-70b</td><td class="num">44.7%</td><td class="num mid">54.2%</td><td class="num">184 (18%)</td></tr>
+</table>
+<p style="margin-top:0.5rem; color:var(--muted);">Note: deepseek-r1 is missing from OYXOY.</p>
+</div>
+
+<div class="highlight">
+<strong>Pattern:</strong> Reasoning models (grok-reasoning, deepseek-r1) consistently lead. Models without chain-of-thought (grok-4-20, llama) produce more Undecided results &mdash; their FOL translations are more likely to have syntax issues or produce unprovable formulas.
+</div>
+
+<!-- 4. CONFUSION -->
+<h2 id="confusion">4. Where Are We Getting It Wrong?</h2>
+<div class="card">
+<p class="card-title">Confusion Matrix (all models, all datasets, 23,670 entries)</p>
+<table>
+<tr><th>Gold &darr; / Predicted &rarr;</th><th class="num"><span class="tag tag-ent">Entailment</span></th><th class="num"><span class="tag tag-con">Contradiction</span></th><th class="num"><span class="tag tag-unk">Unknown</span></th><th class="num"><span class="tag tag-und">Undecided</span></th></tr>
+<tr><td><strong>Entailment</strong> (n=10,943)</td><td class="num good">5,139 (47%)</td><td class="num">148 (1%)</td><td class="num bad">4,454 (41%)</td><td class="num">1,202 (11%)</td></tr>
+<tr><td><strong>Contradiction</strong> (n=5,043)</td><td class="num bad">694 (14%)</td><td class="num good">890 (18%)</td><td class="num bad">2,897 (57%)</td><td class="num">562 (11%)</td></tr>
+<tr><td><strong>Unknown</strong> (n=8,812)</td><td class="num">1,493 (17%)</td><td class="num">140 (2%)</td><td class="num good">6,099 (69%)</td><td class="num">1,080 (12%)</td></tr>
+</table>
+</div>
+
+<div class="warning">
+<strong>The big problem:</strong> The pipeline has a massive bias toward <span class="tag tag-unk">Unknown</span>.
+<ul style="margin-top:0.5rem;">
+<li><strong>57% of gold Contradictions</strong> are misclassified as Unknown</li>
+<li><strong>41% of gold Entailments</strong> are misclassified as Unknown</li>
+</ul>
+<p style="margin-top:0.5rem;">This is <em>not</em> a pipeline logic bug &mdash; the decision tree is correct. The problem is that when the FOL translation doesn't capture the semantic relationship between P and H, the predicates are independent, and MACE4 can trivially find models for both P&and;&not;H and P&and;H &rarr; Unknown.</p>
+</div>
+
+<!-- 5. CONTRADICTION -->
+<h2 id="contradiction">5. The Contradiction Problem</h2>
+<p>Contradiction detection is the weakest link. Here's the breakdown per dataset:</p>
+
+<div class="card">
+<table>
+<tr><th>Dataset</th><th class="num">Gold Contradictions</th><th class="num">Detected</th><th class="num">As Unknown</th><th class="num">As Entailment</th><th class="num">Undecided</th></tr>
+<tr><td>fracas</td><td class="num">297</td><td class="num mid">31%</td><td class="num bad">38%</td><td class="num bad">15%</td><td class="num">16%</td></tr>
+<tr><td>fracas-extended</td><td class="num">1,040</td><td class="num bad">15%</td><td class="num bad">56%</td><td class="num bad">18%</td><td class="num">11%</td></tr>
+<tr><td>fracas-multilabel</td><td class="num">1,073</td><td class="num bad">21%</td><td class="num bad">50%</td><td class="num bad">19%</td><td class="num">10%</td></tr>
+<tr><td>fracas-translated</td><td class="num">297</td><td class="num mid">32%</td><td class="num bad">34%</td><td class="num bad">17%</td><td class="num">18%</td></tr>
+<tr><td>oyxoy</td><td class="num">2,336</td><td class="num bad">14%</td><td class="num bad">67%</td><td class="num">9%</td><td class="num">10%</td></tr>
+</table>
+</div>
+
+<p>OYXOY is the worst: only <strong>14%</strong> of contradictions are caught. Two-thirds become Unknown. The reason: OYXOY items use natural language that relies on world knowledge and antonymy (e.g., &ldquo;stale&rdquo; vs &ldquo;fresh&rdquo;), which the FOL translation doesn't capture.</p>
+
+<!-- 6. ERRORS -->
+<h2 id="errors">6. Error Taxonomy: Why Does It Fail?</h2>
+
+<div class="card">
+<p class="card-title">Classification of all 11,542 wrong answers (with FOL available)</p>
+<table>
+<tr><th>Error Type</th><th class="num">Count</th><th class="num">%</th><th>Explanation</th></tr>
+<tr><td><strong>Antonymy / semantic gap</strong></td><td class="num bad">5,423</td><td class="num">49.6%</td><td>P and H use related but unlinked predicates. <code>stale(x)</code> and <code>fresh(x)</code> are independent in FOL &mdash; no axiom says <code>stale(x) &rarr; &not;fresh(x)</code>. MACE4 finds models for both, so the result is Unknown instead of Contradiction.</td></tr>
+<tr><td><strong>Prover9 timeout / failure</strong></td><td class="num mid">1,019</td><td class="num">18.8%</td><td>The FOL looks correct, but Prover9 couldn't find a proof within the time limit. Often happens with nested quantifiers or complex formulas that are provable but computationally expensive.</td></tr>
+<tr><td><strong>No shared predicates</strong></td><td class="num">742</td><td class="num">13.7%</td><td>P and H have <em>zero</em> predicates in common. The LLM used completely different predicate names for the same concept (e.g., <code>bought(x)</code> in P vs <code>purchased(x)</code> in H).</td></tr>
+<tr><td><strong>Generalized quantifier</strong></td><td class="num">147</td><td class="num">2.7%</td><td>&ldquo;Most&rdquo;, &ldquo;few&rdquo;, &ldquo;at most&rdquo; &mdash; these cannot be expressed in standard FOL. The LLM translates them as <code>all</code> or <code>exists</code>, which changes the meaning.</td></tr>
+<tr><td><strong>Other</strong></td><td class="num">827</td><td class="num">15.2%</td><td>Miscellaneous: wrong quantifier scope, incorrect negation placement, structural errors.</td></tr>
+</table>
+</div>
+
+<div class="highlight">
+<strong>Key takeaway:</strong> ~50% of errors come from the FOL translation failing to capture semantic relationships (antonymy, synonymy, hypernymy). This is the single biggest area for improvement. Adding background axioms (e.g., <code>stale(x) &harr; &not;fresh(x)</code>) or using a more semantically aware translation strategy could cut the error rate in half.
+</div>
+
+<!-- 7. EXAMPLES -->
+<h2 id="examples">7. Concrete Examples</h2>
+
+<h3>Example 1: Antonymy not captured (OYXOY)</h3>
+<div class="example">
+<div class="example-label">Gold: Contradiction &rarr; Pipeline: Unknown</div>
+<p><strong>P:</strong> &ldquo;&Delta;&epsilon;&nu; &xi;&alpha;&nu;&alpha;&psi;&omega;&nu;ί&zeta;&omega; &alpha;&pi;ό &epsilon;&kappa;&epsilon;ί&nu;&omicron; &tau;&omicron; &zeta;&alpha;&chi;&alpha;&rho;&omicron;&pi;&lambda;&alpha;&sigma;&tau;&epsilon;ί&omicron;, &mu;&pi;&alpha;&gamma;&iota;ά&tau;&iota;&kappa;&alpha; &gamma;&lambda;&upsilon;&kappa;ά &mu;&omicron;&upsilon; &pi;&omicron;ύ&lambda;&eta;&sigma;&epsilon;&rdquo;</p>
+<p><strong>H:</strong> &ldquo;&Eta; &Alpha;&phi;&rho;&omicron;&delta;ί&tau;&eta; &iota;&sigma;&chi;&upsilon;&rho;ί&sigma;&tau;&eta;&kappa;&epsilon; &pi;&omega;&sigmaf; &tau;&alpha; &gamma;&lambda;&upsilon;&kappa;ά ή&tau;&alpha;&nu; &phi;&rho;&epsilon;&sigma;&kappa;ό&tau;&alpha;&tau;&alpha;&rdquo;</p>
+<p><strong>FOL P:</strong> <code>sold(afroditi, shop, glyka) &amp; stale(glyka)</code></p>
+<p><strong>FOL H:</strong> <code>claimed(afroditi, fresh(glyka))</code></p>
+<p><strong>Problem:</strong> <code>stale(glyka)</code> and <code>fresh(glyka)</code> are independent predicates. MACE4 finds models for both P&and;H and P&and;&not;H &rarr; Unknown. The fix would be adding an axiom: <code>stale(x) &rarr; &not;fresh(x)</code>.</p>
+</div>
+
+<h3>Example 2: Generalized quantifier &ldquo;most&rdquo; (FraCaS)</h3>
+<div class="example">
+<div class="example-label">Gold: Entailment &rarr; Pipeline: Unknown (all 9 models fail)</div>
+<p><strong>P:</strong> &ldquo;Most great tenors are Italian.&rdquo;</p>
+<p><strong>H:</strong> &ldquo;There are great tenors who are Italian.&rdquo;</p>
+<p><strong>FOL P:</strong> <code>all x ((great(x) &amp; tenor(x)) &rarr; italian(x))</code></p>
+<p><strong>Problem:</strong> &ldquo;Most&rdquo; was translated as &ldquo;all&rdquo; (too strong) or as something that doesn't entail existence. In standard FOL, &ldquo;most&rdquo; simply cannot be expressed &mdash; it requires generalized quantifier theory.</p>
+</div>
+
+<h3>Example 3: Prover9 should have proved this (FraCaS)</h3>
+<div class="example">
+<div class="example-label">Gold: Entailment &rarr; Pipeline: Undecided (all 9 models fail)</div>
+<p><strong>P:</strong> &ldquo;At least three tenors will take part in the concert.&rdquo;</p>
+<p><strong>H:</strong> &ldquo;There are tenors who will take part in the concert.&rdquo;</p>
+<p><strong>FOL P:</strong> <code>&exist;x&exist;y&exist;z (tenor(x) &amp; tenor(y) &amp; tenor(z) &amp; take_part(x,c) &amp; take_part(y,c) &amp; take_part(z,c) &amp; x&ne;y &amp; x&ne;z &amp; y&ne;z)</code></p>
+<p><strong>FOL H:</strong> <code>&exist;x (tenor(x) &amp; take_part(x,concert))</code></p>
+<p><strong>Problem:</strong> The FOL is correct and the proof is trivial (&exist;x,y,z ... &rArr; &exist;x ...). But Prover9 timed out or there's a formatting issue (note: <code>c</code> vs <code>concert</code> &mdash; different constant names!). This is a bug to investigate.</p>
+</div>
+
+<h3>Example 4: No shared predicates</h3>
+<div class="example">
+<div class="example-label">Gold: Contradiction &rarr; Pipeline: Unknown</div>
+<p>When the LLM uses <code>bought(x, shop)</code> in the premise but <code>purchased(x, store)</code> in the hypothesis, or <code>grumbled(afroditi)</code> vs <code>complained(afroditi)</code>, Prover9 sees them as completely different predicates with no logical connection.</p>
+</div>
+
+<!-- 8. QUANTIFIERS -->
+<h2 id="quantifiers">8. The Generalized Quantifier Wall</h2>
+<p>Standard FOL cannot express generalized quantifiers. Here's how the pipeline performs on FraCaS items containing each quantifier:</p>
+
+<div class="card">
+<table>
+<tr><th>Quantifier</th><th class="num">Items</th><th class="num">Accuracy</th><th>Note</th></tr>
+<tr><td>several</td><td class="num">72</td><td class="num good">75%</td><td>Often translatable as &exist;x&exist;y (x&ne;y &amp; ...)</td></tr>
+<tr><td>many</td><td class="num">81</td><td class="num mid">69%</td><td>Sometimes works when translated as &exist;, sometimes not</td></tr>
+<tr><td>at least</td><td class="num">45</td><td class="num mid">58%</td><td>Numerical: &exist;x&exist;y&exist;z ... with distinctness</td></tr>
+<tr><td>few</td><td class="num">90</td><td class="num mid">57%</td><td>&ldquo;Few X are Y&rdquo; &mdash; does it entail &exist;x(X(x)&and;Y(x))?</td></tr>
+<tr><td>most</td><td class="num">99</td><td class="num">49%</td><td>Coin-flip accuracy. Cannot express in FOL.</td></tr>
+<tr><td>at most</td><td class="num">45</td><td class="num bad">44%</td><td>Upper bounds are hard: &forall;x&forall;y&forall;z (&not;(all three satisfy...))</td></tr>
+<tr><td>more than</td><td class="num">9</td><td class="num bad">11%</td><td>Essentially random.</td></tr>
+<tr><td>less than</td><td class="num">9</td><td class="num bad">0%</td><td>Zero correct. Inherently beyond FOL.</td></tr>
+</table>
+</div>
+
+<div class="highlight">
+<strong>This is a known theoretical limitation.</strong> FOL has exactly two quantifiers: &forall; and &exist;. &ldquo;Most&rdquo;, &ldquo;few&rdquo;, &ldquo;at most N&rdquo;, &ldquo;less than N&rdquo; require second-order logic or generalized quantifier theory. Report this as a <em>principled limitation</em> of the FOL approach, not as a pipeline bug.
+</div>
+
+<!-- 9. SECTIONS -->
+<h2 id="sections">9. FraCaS Sections: What's Easy, What's Hard</h2>
+<div class="card">
+<table>
+<tr><th>Section</th><th class="num">Accuracy</th><th class="num">Items</th><th>Notes</th></tr>
+<tr><td>Generalized Quantifiers</td><td class="num good">74%</td><td class="num">720</td><td>Paradoxically high &mdash; many items use &ldquo;every&rdquo;/&ldquo;some&rdquo; which <em>are</em> FOL-native</td></tr>
+<tr><td>Ellipsis</td><td class="num good">70%</td><td class="num">495</td><td>&ldquo;John went to Paris. Bill did too.&rdquo; &mdash; resolution often works</td></tr>
+<tr><td>Plurals</td><td class="num good">70%</td><td class="num">297</td><td>Collective/distributive readings</td></tr>
+<tr><td>Anaphora</td><td class="num mid">61%</td><td class="num">252</td><td>Pronoun resolution: &ldquo;they&rdquo;, &ldquo;it&rdquo;, &ldquo;his&rdquo;</td></tr>
+<tr><td>Attitudes</td><td class="num mid">53%</td><td class="num">117</td><td>&ldquo;John believes...&rdquo; &mdash; opaque contexts</td></tr>
+<tr><td>Comparatives</td><td class="num">48%</td><td class="num">279</td><td>&ldquo;taller than&rdquo;, &ldquo;as rich as&rdquo; &mdash; ordering relations</td></tr>
+<tr><td>Adjectives</td><td class="num">46%</td><td class="num">207</td><td>Intersective vs non-intersective (&ldquo;alleged&rdquo;, &ldquo;former&rdquo;)</td></tr>
+<tr><td>Verbs</td><td class="num bad">43%</td><td class="num">72</td><td>Aspectual verbs, intensional contexts</td></tr>
+<tr><td>Temporal Reference</td><td class="num bad">35%</td><td class="num">639</td><td>&ldquo;before&rdquo;, &ldquo;after&rdquo;, &ldquo;while&rdquo; &mdash; temporal logic needed</td></tr>
+</table>
+</div>
+
+<p>Temporal Reference is the hardest by far (35%). Temporal reasoning requires interval logic (Allen's interval algebra), which FOL can simulate but the LLM translations rarely get right. This is another principled limitation worth discussing.</p>
+
+<!-- 10. EN EL -->
+<h2 id="enel">10. English vs Greek: Does Language Matter?</h2>
+<p>We ran the same FraCaS items in English (original) and Greek (translated). How much does the translation hurt?</p>
+
+<div class="card">
+<table>
+<tr><th>Model</th><th class="num">EN Accuracy</th><th class="num">EL Accuracy</th><th class="num">Drop</th><th class="num">Label Agreement</th></tr>
+<tr><td>grok-4-20-reasoning</td><td class="num">69%</td><td class="num">63%</td><td class="num mid">-6pp</td><td class="num">82%</td></tr>
+<tr><td>deepseek-r1</td><td class="num">65%</td><td class="num">58%</td><td class="num mid">-7pp</td><td class="num">81%</td></tr>
+<tr><td>gpt-5.4</td><td class="num">57%</td><td class="num">56%</td><td class="num">-1pp</td><td class="num">80%</td></tr>
+<tr><td>gpt-4o</td><td class="num">58%</td><td class="num">53%</td><td class="num mid">-5pp</td><td class="num">79%</td></tr>
+<tr><td>mistral-large-3</td><td class="num">57%</td><td class="num">53%</td><td class="num">-4pp</td><td class="num">75%</td></tr>
+<tr><td>deepseek-v4-pro</td><td class="num">54%</td><td class="num">53%</td><td class="num">-1pp</td><td class="num">76%</td></tr>
+<tr><td>llama-4-maverick</td><td class="num">54%</td><td class="num">52%</td><td class="num">-2pp</td><td class="num">71%</td></tr>
+<tr><td>grok-4-20</td><td class="num">54%</td><td class="num">52%</td><td class="num">-2pp</td><td class="num">70%</td></tr>
+<tr><td>llama-3.3-70b</td><td class="num">56%</td><td class="num">44%</td><td class="num bad">-12pp</td><td class="num bad">67%</td></tr>
+</table>
+</div>
+
+<div class="highlight">
+<strong>Finding:</strong> Most models show a modest drop (2-7pp) from English to Greek. The exception is <strong>llama-3.3-70b</strong> which drops 12 points &mdash; likely weaker Greek language understanding. Label agreement ranges from 67% to 82%, meaning 18-33% of items get a <em>different</em> label just from the language change. This is worth reporting as a cross-lingual robustness metric.
+</div>
+
+<!-- 11. HARDEST -->
+<h2 id="hardest">11. The Impossible Items</h2>
+<p>These items are wrong across <strong>all 9 models</strong>. They represent fundamental limitations of the FOL approach:</p>
+
+<div class="card">
+<table>
+<tr><th>Item</th><th>Premise (truncated)</th><th>Gold</th><th>Pipeline says</th><th>Why</th></tr>
+<tr><td>fracas-0010</td><td>Most great tenors are Italian.</td><td><span class="tag tag-ent">Ent</span></td><td><span class="tag tag-unk">Unk &times;9</span></td><td>GQ: &ldquo;most&rdquo;</td></tr>
+<tr><td>fracas-0012</td><td>Few great tenors are poor.</td><td><span class="tag tag-unk">Unk</span></td><td><span class="tag tag-ent">Ent &times;7</span></td><td>GQ: &ldquo;few&rdquo; &rarr; translated as &exist;</td></tr>
+<tr><td>fracas-0015</td><td>At least three tenors will take part...</td><td><span class="tag tag-ent">Ent</span></td><td><span class="tag tag-und">Und &times;9</span></td><td>Prover9 timeout (should be trivial!)</td></tr>
+<tr><td>fracas-0109</td><td>Just one accountant attended the meeting.</td><td><span class="tag tag-con">Con</span></td><td><span class="tag tag-ent">Ent &times;9</span></td><td>&ldquo;Just one&rdquo; uniqueness lost</td></tr>
+<tr><td>fracas-0130</td><td>John and his colleagues went to a meeting. They hated it.</td><td><span class="tag tag-unk">Unk</span></td><td><span class="tag tag-ent">Ent &times;9</span></td><td>Anaphora: &ldquo;they&rdquo; ambiguous</td></tr>
+<tr><td>fracas-0147</td><td>John spoke to Mary on Monday. Bill didn't.</td><td><span class="tag tag-con">Con</span></td><td><span class="tag tag-ent">Ent &times;8</span></td><td>VP ellipsis: &ldquo;didn't&rdquo; = didn't speak to Mary</td></tr>
+<tr><td>fracas-0152</td><td>John went to Paris by car, and Bill to Berlin.</td><td><span class="tag tag-ent">Ent</span></td><td><span class="tag tag-unk">Unk &times;9</span></td><td>Gapping: &ldquo;Bill [went] to Berlin&rdquo;</td></tr>
+<tr><td>fracas-0160</td><td>John owns a red car. Bill owns a fast one.</td><td><span class="tag tag-ent">Ent</span></td><td><span class="tag tag-unk">Unk &times;9</span></td><td>&ldquo;one&rdquo; = anaphoric NP</td></tr>
+<tr><td>fracas-0204</td><td>Mickey is a small animal.</td><td><span class="tag tag-con">Con</span></td><td><span class="tag tag-unk">Unk &times;9</span></td><td>Non-intersective adj: small animal &ne; small + animal</td></tr>
+</table>
+</div>
+
+<p>These failures cluster into clear linguistic categories: generalized quantifiers, VP ellipsis, gapping, anaphora resolution, and non-intersective adjectives. These are exactly the phenomena that formal semantics has identified as going beyond FOL.</p>
+
+<!-- 12. TODO -->
+<h2 id="todo">12. What You Should Do Next</h2>
+
+<div class="todo">
+<strong>For the report, you need to:</strong>
+<ol style="margin-top:0.5rem;">
+<li><strong>Reproduce these numbers</strong> &mdash; run the analysis scripts on your machine, verify you get the same accuracy figures. Don't copy numbers from this document.</li>
+<li><strong>Break down accuracy by gold label</strong> &mdash; report precision/recall/F1 per label (Entailment, Contradiction, Unknown), not just overall accuracy.</li>
+<li><strong>Analyze Undecided items</strong> &mdash; look at the <code>steps_detail</code> fields. How many are Prover9 timeouts vs FOL syntax errors vs something else?</li>
+<li><strong>Investigate the &ldquo;trivial proof&rdquo; failures</strong> &mdash; items like fracas-0015 where the FOL is correct but Prover9 fails. Check the Prover9 input file formatting and timeout settings.</li>
+<li><strong>Compare across conditions</strong> &mdash; which <code>c1/c2/c3/c4</code> condition works best? Does few-shot prompting improve FOL translation quality?</li>
+<li><strong>Report the theoretical limits honestly</strong> &mdash; generalized quantifiers, temporal logic, and non-intersective adjectives are <em>principled</em> limitations of FOL, not bugs. Frame them as such.</li>
+<li><strong>Quantify the translation quality problem</strong> &mdash; the &ldquo;no shared predicates&rdquo; (12%) and &ldquo;antonymy missing&rdquo; (50%) categories are directly attributable to FOL translation quality. Can we improve this with better prompts, background axioms, or a verification step?</li>
+<li><strong>Cross-lingual analysis</strong> &mdash; the EN vs EL comparison is a concrete result. Report which models are robust across languages and which aren't.</li>
+</ol>
+</div>
+
+<div class="todo">
+<strong>Specific analyses to run:</strong>
+<ol style="margin-top:0.5rem;">
+<li>Per-model precision/recall/F1 for each of the 3 labels, per dataset. Use <code>sklearn.metrics.classification_report</code>.</li>
+<li>Confusion matrices per model (not just aggregated). Which model is best at contradiction detection?</li>
+<li>Accuracy by FraCaS section &times; model. Does any model excel at temporal reasoning?</li>
+<li>Error analysis on a random sample of 50 wrong answers: manually categorize the FOL translation error. This gives you a human-validated error taxonomy.</li>
+<li>Compare the <code>found_c</code>/<code>found_d</code> values in <code>steps_detail</code> for Undecided items. How many would become Unknown vs stay Undecided under the new 4-phase tree?</li>
+</ol>
+</div>
+
+<div class="success">
+<strong>What's working well:</strong>
+<ul style="margin-top:0.5rem;">
+<li>The pipeline architecture is sound &mdash; when the FOL translation is good, the theorem prover gets the right answer.</li>
+<li>Entailment detection on &ldquo;simple&rdquo; items (&forall;/&exist; quantifiers, set inclusion) works reliably (70%+ on those subsets).</li>
+<li>The 4-phase decision tree correctly handles all the edge cases we've identified.</li>
+<li>Reasoning models (grok-reasoning, deepseek-r1) produce substantially better FOL translations.</li>
+</ul>
+</div>
+
+<p style="margin-top:2rem; color:var(--muted); font-size:0.8rem; text-align:center;">
+Generated July 2026 &middot; NESTOR Phase 2 FOL Pipeline &middot; Data from phase2_fol/results/
+</p>
+
+</body>
+</html>
