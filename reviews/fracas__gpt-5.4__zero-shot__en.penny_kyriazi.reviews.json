@@ -1,0 +1,123 @@
+{
+  "fracas-0006": {
+    "reviewer": "penny_kyriazi",
+    "reviewed_at": "2026-07-17T16:16:11",
+    "general_notes": "",
+    "phenomenon_id": 2,
+    "phenomenon_id_notes": "",
+    "soundness": 2,
+    "soundness_notes": "",
+    "consistency": 1,
+    "consistency_notes": ""
+  },
+  "fracas-0012": {
+    "reviewer": "penny_kyriazi",
+    "reviewed_at": "2026-07-17T16:16:57",
+    "general_notes": "",
+    "phenomenon_id": 1,
+    "phenomenon_id_notes": "",
+    "soundness": 0,
+    "soundness_notes": "",
+    "consistency": 1,
+    "consistency_notes": ""
+  },
+  "fracas-0018": {
+    "reviewer": "penny_kyriazi",
+    "reviewed_at": "2026-07-17T16:17:16",
+    "general_notes": "",
+    "phenomenon_id": 2,
+    "phenomenon_id_notes": "",
+    "soundness": 2,
+    "soundness_notes": "",
+    "consistency": 1,
+    "consistency_notes": ""
+  },
+  "fracas-0020": {
+    "reviewer": "penny_kyriazi",
+    "reviewed_at": "2026-07-17T16:22:19",
+    "general_notes": "",
+    "phenomenon_id": 2,
+    "phenomenon_id_notes": "",
+    "soundness": 2,
+    "soundness_notes": "",
+    "consistency": 1,
+    "consistency_notes": ""
+  },
+  "fracas-0022": {
+    "reviewer": "penny_kyriazi",
+    "reviewed_at": "2026-07-17T16:23:38",
+    "general_notes": "",
+    "phenomenon_id": 2,
+    "phenomenon_id_notes": "",
+    "soundness": 2,
+    "soundness_notes": "",
+    "consistency": 1,
+    "consistency_notes": ""
+  },
+  "fracas-0047": {
+    "reviewer": "penny_kyriazi",
+    "reviewed_at": "2026-07-17T16:24:01",
+    "general_notes": "",
+    "phenomenon_id": 2,
+    "phenomenon_id_notes": "",
+    "soundness": 2,
+    "soundness_notes": "",
+    "consistency": 1,
+    "consistency_notes": ""
+  },
+  "fracas-0050": {
+    "reviewer": "penny_kyriazi",
+    "reviewed_at": "2026-07-17T16:25:34",
+    "general_notes": "",
+    "phenomenon_id": 2,
+    "phenomenon_id_notes": "",
+    "soundness": 2,
+    "soundness_notes": "",
+    "consistency": 0,
+    "consistency_notes": ""
+  },
+  "fracas-0052": {
+    "reviewer": "penny_kyriazi",
+    "reviewed_at": "2026-07-17T16:26:02",
+    "general_notes": "",
+    "phenomenon_id": 2,
+    "phenomenon_id_notes": "",
+    "soundness": 2,
+    "soundness_notes": "",
+    "consistency": 1,
+    "consistency_notes": ""
+  },
+  "fracas-0048": {
+    "reviewer": "penny_kyriazi",
+    "reviewed_at": "2026-07-17T16:28:22",
+    "general_notes": "",
+    "phenomenon_id": 1,
+    "phenomenon_id_notes": "",
+    "soundness": 0,
+    "soundness_notes": "",
+    "consistency": 1,
+    "consistency_notes": ""
+  },
+  "fracas-0053": {
+    "reviewer": "penny_kyriazi",
+    "reviewed_at": "2026-07-17T16:29:07",
+    "general_notes": "",
+    "phenomenon_id": 2,
+    "phenomenon_id_notes": "",
+    "soundness": 2,
+    "soundness_notes": "",
+    "consistency": 1,
+    "consistency_notes": ""
+  },
+  "fracas-0056": {
+    "reviewer": "penny_kyriazi",
+    "reviewed_at": "2026-07-17T16:29:42",
+    "general_notes": "",
+    "phenomenon_id": 1,
+    "phenomenon_id_notes": "",
+    "soundness": 0,
+    "soundness_notes": "",
+    "consistency": 1,
+    "consistency_notes": ""
+  }
+}
