@@ -32,6 +32,79 @@ import pandas as pd
 import streamlit as st
 st.set_page_config(page_title="NLI Explanation Reviewer", layout="wide")
 # --------------------------------------------------------------------------
+# App location & fixed defaults — the app lives in NESTOR/, the data to
+# review lives in NESTOR/phase_1_nli_eval/results/, so both are resolved
+# relative to this file instead of requiring manual navigation.
+# --------------------------------------------------------------------------
+APP_DIR = Path(__file__).resolve().parent
+DEFAULT_RESULTS_ROOT = APP_DIR / "phase1_nli_eval" / "results"
+DEFAULT_REVIEWS_DIR = APP_DIR / "reviews"
+README_PATH = APP_DIR / "REVIEW_APP_README.md"
+# --------------------------------------------------------------------------
+# README viewer — available in the sidebar at all times, including before
+# a reviewer name has been chosen.
+# --------------------------------------------------------------------------
+with st.sidebar.expander("📖 README / instructions"):
+    if README_PATH.exists():
+        try:
+            st.markdown(README_PATH.read_text(encoding="utf-8"))
+        except OSError as e:
+            st.caption(f"Couldn't read the README: {e}")
+    else:
+        st.caption(f"No REVIEW_APP_README.md found at `{README_PATH}`.")
+# --------------------------------------------------------------------------
+# Reviewer login gate — pick an existing username or create a new one
+# before anything else loads. Existing usernames are discovered from the
+# "reviewer" field already stored inside saved review files.
+# --------------------------------------------------------------------------
+def discover_known_usernames(reviews_root: Path):
+    """Existing filenames look like `{stem}.{reviewer_slug}.reviews.json`.
+    `reviewer_slug` can never itself contain a "." (sanitize_for_filename
+    replaces any non alnum/_/- character with "_" before saving), so the
+    segment after the last "." before the ".reviews.json" suffix is always
+    the reviewer slug, even if the dataset stem itself contains dots."""
+    names = set()
+    if not reviews_root.exists():
+        return []
+    suffix = ".reviews.json"
+    for f in reviews_root.rglob(f"*{suffix}"):
+        stem_and_reviewer = f.name[: -len(suffix)]
+        if "." not in stem_and_reviewer:
+            continue
+        _, reviewer_slug = stem_and_reviewer.rsplit(".", 1)
+        if reviewer_slug:
+            names.add(reviewer_slug)
+    return sorted(names, key=str.lower)
+def load_json_dict(path: Path) -> dict:
+    if path.exists():
+        try:
+            with open(path, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except (json.JSONDecodeError, OSError):
+            return {}
+    return {}
+if "reviewer_name" not in st.session_state:
+    st.title("NLI Explanation Reviewer")
+    st.subheader("Who's reviewing?")
+    known_users = discover_known_usernames(DEFAULT_REVIEWS_DIR)
+    st.caption(
+        "Pick your name if you've reviewed before, or add a new one below — "
+        "each reviewer gets their own save file, so nobody's work is ever overwritten."
+    )
+    login_options = (["(select)"] + known_users if known_users else []) + ["+ Add new reviewer..."]
+    picked = st.selectbox("Reviewer", login_options, index=0)
+    typed_name = ""
+    if picked == "+ Add new reviewer...":
+        typed_name = st.text_input("New reviewer name / initials")
+    final_name = typed_name.strip() if picked == "+ Add new reviewer..." else (
+        "" if picked == "(select)" else picked
+    )
+    if st.button("Continue", type="primary", disabled=not final_name.strip()):
+        st.session_state["reviewer_name"] = final_name.strip()
+        st.rerun()
+    st.stop()
+reviewer_name = st.session_state["reviewer_name"]
+# --------------------------------------------------------------------------
 # Rubric definition (matches PHASE1_EVALUATION_PLAN.md judge prompt)
 # --------------------------------------------------------------------------
 CRITERIA = {
@@ -109,14 +182,6 @@ def build_breadcrumbs(root_path: Path, current_path: Path):
         accum = accum / part
         crumbs.append((part, accum))
     return crumbs
-def load_json_dict(path: Path) -> dict:
-    if path.exists():
-        try:
-            with open(path, "r", encoding="utf-8") as f:
-                return json.load(f)
-        except (json.JSONDecodeError, OSError):
-            return {}
-    return {}
 def save_json_dict(path: Path, data: dict):
     path.parent.mkdir(parents=True, exist_ok=True)
     with open(path, "w", encoding="utf-8") as f:
@@ -223,78 +288,67 @@ def cohen_kappa(a, b):
         return 1.0, n
     return (po - pe) / (1 - pe), n
 # --------------------------------------------------------------------------
-# Sidebar: data source (with folder browsing)
+# Sidebar: data source — defaults to phase_1_nli_eval/results next to the
+# app, and requires an explicit subfolder choice (the loose JSON files
+# directly inside results/ are ignored on purpose).
 # --------------------------------------------------------------------------
 st.sidebar.title("Data source")
-default_dir = str(Path.cwd())
-root_dir_input = st.sidebar.text_input("Root folder (where your eval data lives)", value=default_dir)
+st.sidebar.markdown(f"**Reviewer:** {reviewer_name}")
+if st.sidebar.button("Switch reviewer"):
+    del st.session_state["reviewer_name"]
+    st.rerun()
+root_dir_input = st.sidebar.text_input(
+    "Results folder",
+    value=str(DEFAULT_RESULTS_ROOT),
+    help="Defaults to phase_1_nli_eval/results next to the app — override only "
+         "if your data lives somewhere else.",
+)
 try:
     root_path = Path(root_dir_input).expanduser().resolve()
 except OSError:
-    root_path = Path(default_dir).resolve()
+    root_path = DEFAULT_RESULTS_ROOT.resolve()
 if not root_path.exists() or not root_path.is_dir():
-    st.sidebar.error("That root folder doesn't exist.")
+    st.sidebar.error("That results folder doesn't exist.")
     st.title("NLI Explanation Reviewer")
     st.stop()
-# Track which subfolder (under root) we're currently browsing.
-if st.session_state.get("browse_root") != str(root_path):
-    st.session_state["browse_root"] = str(root_path)
-    st.session_state["browse_dir"] = str(root_path)
-browse_path = Path(st.session_state.get("browse_dir", str(root_path)))
-try:
-    browse_path.relative_to(root_path)
-    if not browse_path.exists():
-        raise ValueError
-except ValueError:
-    browse_path = root_path
-    st.session_state["browse_dir"] = str(root_path)
-# Breadcrumb navigation
-st.sidebar.caption("📂 " + " / ".join(label for label, _ in build_breadcrumbs(root_path, browse_path)))
-crumbs = build_breadcrumbs(root_path, browse_path)
-if len(crumbs) > 1:
-    crumb_cols = st.sidebar.columns(len(crumbs))
-    for col, (label, path) in zip(crumb_cols, crumbs):
-        is_current = path == browse_path
-        if col.button(label, key=f"crumb_{path}", disabled=is_current, use_container_width=True):
-            st.session_state["browse_dir"] = str(path)
-            st.rerun()
-subfolders = list_subfolders(str(browse_path))
-recursive = st.sidebar.checkbox(
-    "Include files from all subfolders", value=False,
-    help="Off: only show files directly in the folder above. On: show every "
-         "JSON file nested anywhere below it.",
+subfolders = list_subfolders(str(root_path))
+if not subfolders:
+    st.sidebar.error("No subfolders found inside the results folder to choose from.")
+    st.title("NLI Explanation Reviewer")
+    st.stop()
+subfolder_names = [d.name for d in subfolders]
+chosen_subfolder = st.sidebar.selectbox(
+    "Choose the subfolder to work on",
+    ["(select)"] + subfolder_names,
+    index=0,
+    help="The loose .json files directly inside the results folder are ignored "
+         "on purpose — pick the subfolder that has the files you want to review.",
 )
-if subfolders and not recursive:
-    subfolder_labels = ["(stay here)"] + [f"📁 {d.name}" for d in subfolders]
-    chosen = st.sidebar.selectbox("Open subfolder", subfolder_labels, index=0)
-    if chosen != "(stay here)":
-        target = subfolders[subfolder_labels.index(chosen) - 1]
-        st.session_state["browse_dir"] = str(target)
-        st.rerun()
+if chosen_subfolder == "(select)":
+    st.title("NLI Explanation Reviewer")
+    st.info("Choose a subfolder from the sidebar to begin.")
+    st.stop()
+browse_path = subfolders[subfolder_names.index(chosen_subfolder)]
+recursive = st.sidebar.checkbox(
+    "Include files from nested subfolders", value=False,
+    help="Off: only show files directly inside the chosen subfolder. On: show "
+         "every JSON file nested anywhere below it.",
+)
 json_files = list_json_files(str(browse_path), recursive=recursive)
 if not json_files:
-    st.sidebar.warning("No .json files found here." + (" Try a subfolder or enable recursive search." if subfolders else ""))
-    st.title("NLI Explanation Reviewer")
-    st.info(
-        "Point the app at a folder containing your evaluation JSON files "
-        "using the sidebar. Use the subfolder picker or breadcrumbs to "
-        "navigate, and each file should look like the fracas-style export "
-        "(metadata / results / summary)."
+    st.sidebar.warning(
+        "No .json files found in that subfolder."
+        + ("" if recursive else " Try enabling nested search.")
     )
+    st.title("NLI Explanation Reviewer")
     st.stop()
 # Show relative paths in the picker so files with the same name in different
-# subfolders (e.g. recursive mode) stay distinguishable.
+# nested subfolders (e.g. recursive mode) stay distinguishable.
 file_labels = [str(f.relative_to(browse_path)) for f in json_files]
 selected_label = st.sidebar.selectbox("Choose a file", file_labels)
 selected_path = json_files[file_labels.index(selected_label)]
 reviews_dir = st.sidebar.text_input("Reviews folder (where scores are saved)",
-                                     value=str(root_path / "reviews"))
-reviewer_name = st.sidebar.text_input(
-    "Your name / initials (required to save reviews)", value=""
-)
-if not reviewer_name.strip():
-    st.sidebar.warning("Enter your name to save reviews — each reviewer gets "
-                        "their own file so nobody's work gets overwritten.")
+                                     value=str(DEFAULT_REVIEWS_DIR))
 review_file_path = reviewer_file_path(reviews_dir, selected_path.stem, reviewer_name or "unnamed")
 mtime = selected_path.stat().st_mtime
 metadata, results, summary = load_json_file(str(selected_path), mtime)
@@ -478,178 +532,439 @@ if st.session_state.get("nav_idx", 0) >= len(filtered):
     st.session_state["nav_idx"] = 0
 st.sidebar.markdown(f"**{len(filtered)} / {len(results)} samples match filters**")
 # --------------------------------------------------------------------------
-# Navigation
+# Top-level tabs: blind single-sample review vs. the analysis/library view
 # --------------------------------------------------------------------------
-nav_col1, nav_col2, nav_col3, nav_col4 = st.columns([1, 1, 3, 2])
-with nav_col1:
-    if st.button("Previous", use_container_width=True):
-        st.session_state["nav_idx"] = max(0, st.session_state["nav_idx"] - 1)
-with nav_col2:
-    if st.button("Next", use_container_width=True):
-        st.session_state["nav_idx"] = min(len(filtered) - 1, st.session_state["nav_idx"] + 1)
-with nav_col3:
-    def _status_marker(r):
-        rid = str(r["id"])
-        mine = reviews.get(rid)
-        if is_fully_scored(mine):
-            return " ✅"
-        if is_partially_scored(mine):
-            return " 🟡"
-        if any(is_fully_scored(e) for e in all_reviews.get(rid, {}).values()):
-            return " 👥"
-        return ""
-    idx_labels = [
-        f"{i+1}. [{r['id']}]" + _status_marker(r)
-        for i, r in enumerate(filtered)
-    ]
-    jump_idx = st.selectbox(
-        "Jump to sample",
-        options=list(range(len(filtered))),
-        format_func=lambda i: idx_labels[i],
-        index=st.session_state["nav_idx"],
-        label_visibility="collapsed",
-    )
-    if jump_idx != st.session_state["nav_idx"]:
-        st.session_state["nav_idx"] = jump_idx
-with nav_col4:
-    st.write(f"Sample {st.session_state['nav_idx'] + 1} of {len(filtered)}")
-current = filtered[st.session_state["nav_idx"]]
-sample_id = str(current["id"])
-st.divider()
-# --------------------------------------------------------------------------
-# Sample display
-# --------------------------------------------------------------------------
-left, right = st.columns([3, 2])
-with left:
-    top_badges = []
-    if current.get("language"):
-        top_badges.append(f"`{current.get('language')}`")
-    if current.get("source"):
-        top_badges.append(f"`{current.get('source')}`")
-    if current.get("fracas_sections"):
-        top_badges.append(f"`{flatten(current.get('fracas_sections'))}`")
-    if sample_id in sample_ids_for_dataset:
-        top_badges.append("`human-val sample`")
-    st.markdown(f"### Sample `{sample_id}`")
-    st.markdown("  ".join(top_badges))
-    if current.get("tags"):
-        st.caption("Gold phenomenon tags: " + flatten(current.get("tags")))
-    st.markdown("**Premise**")
-    st.info(current.get("premise", ""))
-    st.markdown("**Hypothesis**")
-    st.info(current.get("hypothesis", ""))
-    st.markdown("**Reasoning (model's explanation — this is what you're scoring)**")
-    st.write(current.get("reasoning", "_none provided_"))
-with right:
-    st.markdown("**Gold label**")
-    st.success(flatten(current.get("gold")) or "—")
-    st.markdown("**Predicted label**")
-    pred_val = current.get("predicted")
-    is_success = current.get("success") == 1
-    if is_success:
-        st.success(str(pred_val))
-    else:
-        st.error(str(pred_val))
-    st.markdown("**Model self-reported result**")
-    if current.get("success") == 1:
-        st.write("Success (predicted matched gold)")
-    elif current.get("success") == 0:
-        st.write("Failure (predicted did not match gold)")
-    else:
-        st.write("— not recorded —")
-    if current.get("partial_success") is not None:
-        st.write(f"Partial success: {current.get('partial_success')}")
-    with st.expander("Raw JSON for this sample"):
-        st.json(current)
-st.divider()
-# --------------------------------------------------------------------------
-# Review widget — one score + one comment box per criterion
-# --------------------------------------------------------------------------
-st.markdown("### Your review")
-my_slug = sanitize_for_filename(reviewer_name or "unnamed")
-others = {k: v for k, v in all_reviews.get(sample_id, {}).items() if k != my_slug}
-if others:
-    with st.expander(f"{len(others)} other reviewer/judge score(s) exist for this sample (click to reveal)"):
-        st.caption("Hidden by default so it doesn't bias your own read — per the plan, "
-                    "annotators shouldn't compare notes until both are done.")
-        for slug, entry in others.items():
-            label = "LLM judge" if slug == "llm_judge" else slug
-            parts = []
-            for ck, cinfo in CRITERIA.items():
-                v = entry.get(ck)
-                parts.append(f"{cinfo['label']}: {'—' if v is None else v}")
-            st.markdown(f"**{label}** — " + " · ".join(parts))
-            for ck, cinfo in CRITERIA.items():
-                note = entry.get(f"{ck}_notes")
-                if note:
-                    st.caption(f"_{cinfo['label']}:_ {note}")
-            if entry.get("general_notes"):
-                st.caption(f"_General:_ {entry['general_notes']}")
-existing = reviews.get(sample_id, {})
-score_values = {}
-note_values = {}
-for ck, cinfo in CRITERIA.items():
-    st.markdown(f"**{cinfo['label']}**")
-    st.caption(cinfo["help"])
-    scol, ncol = st.columns([1, 2])
-    with scol:
-        opt_values = [v for v, _ in cinfo["options"]]
-        opt_labels = {v: lbl for v, lbl in cinfo["options"]}
-        current_val = existing.get(ck)
-        radio_options = ["Not scored"] + opt_values
-        default_idx = 0
-        if current_val in opt_values:
-            default_idx = radio_options.index(current_val)
-        chosen = st.radio(
-            "Score",
-            radio_options,
-            index=default_idx,
-            format_func=lambda v: "Not scored" if v == "Not scored" else opt_labels[v],
-            key=f"score_{selected_path.name}_{sample_id}_{ck}",
+tab_review, tab_library = st.tabs(["📝 Review", "📚 Library"])
+with tab_review:
+    # ----------------------------------------------------------------------
+    # Navigation
+    # ----------------------------------------------------------------------
+    nav_col1, nav_col2, nav_col3, nav_col4 = st.columns([1, 1, 3, 2])
+    with nav_col1:
+        if st.button("Previous", use_container_width=True, key="top_prev_button"):
+            st.session_state["nav_idx"] = max(0, st.session_state["nav_idx"] - 1)
+    with nav_col2:
+        if st.button("Next", use_container_width=True, key="top_next_button"):
+            st.session_state["nav_idx"] = min(len(filtered) - 1, st.session_state["nav_idx"] + 1)
+    with nav_col3:
+        def _status_marker(r):
+            rid = str(r["id"])
+            mine = reviews.get(rid)
+            if is_fully_scored(mine):
+                return " ✅"
+            if is_partially_scored(mine):
+                return " 🟡"
+            if any(is_fully_scored(e) for e in all_reviews.get(rid, {}).values()):
+                return " 👥"
+            return ""
+        idx_labels = [
+            f"{i+1}. [{r['id']}]" + _status_marker(r)
+            for i, r in enumerate(filtered)
+        ]
+        jump_idx = st.selectbox(
+            "Jump to sample",
+            options=list(range(len(filtered))),
+            format_func=lambda i: idx_labels[i],
+            index=st.session_state["nav_idx"],
             label_visibility="collapsed",
         )
-        score_values[ck] = None if chosen == "Not scored" else chosen
-    with ncol:
-        note_values[ck] = st.text_area(
-            f"Notes on {cinfo['label'].lower()} (optional)",
-            value=existing.get(f"{ck}_notes", ""),
-            key=f"notes_{selected_path.name}_{sample_id}_{ck}",
-            height=90,
-        )
-    st.markdown("")
-general_notes = st.text_area(
-    "General notes (optional, anything not tied to a single criterion)",
-    value=existing.get("general_notes", ""),
-    key=f"general_notes_{selected_path.name}_{sample_id}",
-    height=80,
-)
-save_col1, save_col2 = st.columns([1, 4])
-with save_col1:
-    save_disabled = not reviewer_name.strip()
-    if st.button("Save review", type="primary", use_container_width=True,
-                 disabled=save_disabled):
-        entry = {
-            "reviewer": reviewer_name,
-            "reviewed_at": datetime.now().isoformat(timespec="seconds"),
-            "general_notes": general_notes,
-        }
-        for ck in CRITERION_KEYS:
-            entry[ck] = score_values[ck]
-            entry[f"{ck}_notes"] = note_values[ck]
-        reviews[sample_id] = entry
-        st.session_state[reviews_key] = reviews
-        save_json_dict(review_file_path, reviews)
-        st.toast(f"Saved review for {sample_id}", icon="✅")
-with save_col2:
-    if save_disabled:
-        st.caption("Enter your name in the sidebar to enable saving.")
-    elif existing.get("reviewed_at"):
-        t = total_score(existing)
-        t_str = f", total {t}/5" if t is not None else ""
-        st.caption(f"Last saved: {existing['reviewed_at']} by {existing.get('reviewer') or 'unknown'}{t_str}")
+        if jump_idx != st.session_state["nav_idx"]:
+            st.session_state["nav_idx"] = jump_idx
+    with nav_col4:
+        st.write(f"Sample {st.session_state['nav_idx'] + 1} of {len(filtered)}")
+    current = filtered[st.session_state["nav_idx"]]
+    sample_id = str(current["id"])
+    st.divider()
+    # ----------------------------------------------------------------------
+    # Sample display
+    # ----------------------------------------------------------------------
+    left, right = st.columns([3, 2])
+    with left:
+        top_badges = []
+        if current.get("language"):
+            top_badges.append(f"`{current.get('language')}`")
+        if current.get("source"):
+            top_badges.append(f"`{current.get('source')}`")
+        if current.get("fracas_sections"):
+            top_badges.append(f"`{flatten(current.get('fracas_sections'))}`")
+        if sample_id in sample_ids_for_dataset:
+            top_badges.append("`human-val sample`")
+        st.markdown(f"### Sample `{sample_id}`")
+        st.markdown("  ".join(top_badges))
+        if current.get("tags"):
+            st.caption("Gold phenomenon tags: " + flatten(current.get("tags")))
+        st.markdown("**Premise**")
+        st.info(current.get("premise", ""))
+        st.markdown("**Hypothesis**")
+        st.info(current.get("hypothesis", ""))
+        st.markdown("**Reasoning (model's explanation — this is what you're scoring)**")
+        st.write(current.get("reasoning", "_none provided_"))
+    with right:
+        st.markdown("**Gold label**")
+        st.success(flatten(current.get("gold")) or "—")
+        st.markdown("**Predicted label**")
+        pred_val = current.get("predicted")
+        is_success = current.get("success") == 1
+        if is_success:
+            st.success(str(pred_val))
+        else:
+            st.error(str(pred_val))
+        st.markdown("**Model self-reported result**")
+        if current.get("success") == 1:
+            st.write("Success (predicted matched gold)")
+        elif current.get("success") == 0:
+            st.write("Failure (predicted did not match gold)")
+        else:
+            st.write("— not recorded —")
+        if current.get("partial_success") is not None:
+            st.write(f"Partial success: {current.get('partial_success')}")
+        with st.expander("Raw JSON for this sample"):
+            st.json(current)
+    st.divider()
+    # ----------------------------------------------------------------------
+    # Review widget — one score + one comment box per criterion
+    # ----------------------------------------------------------------------
+    st.markdown("### Your review")
+    my_slug = sanitize_for_filename(reviewer_name or "unnamed")
+    others = {k: v for k, v in all_reviews.get(sample_id, {}).items() if k != my_slug}
+    if others:
+        with st.expander(f"{len(others)} other reviewer/judge score(s) exist for this sample (click to reveal)"):
+            st.caption("Hidden by default so it doesn't bias your own read — per the plan, "
+                        "annotators shouldn't compare notes until both are done.")
+            for slug, entry in others.items():
+                label = "LLM judge" if slug == "llm_judge" else slug
+                parts = []
+                for ck, cinfo in CRITERIA.items():
+                    v = entry.get(ck)
+                    parts.append(f"{cinfo['label']}: {'—' if v is None else v}")
+                st.markdown(f"**{label}** — " + " · ".join(parts))
+                for ck, cinfo in CRITERIA.items():
+                    note = entry.get(f"{ck}_notes")
+                    if note:
+                        st.caption(f"_{cinfo['label']}:_ {note}")
+                if entry.get("general_notes"):
+                    st.caption(f"_General:_ {entry['general_notes']}")
+    existing = reviews.get(sample_id, {})
+    score_values = {}
+    note_values = {}
+    for ck, cinfo in CRITERIA.items():
+        st.markdown(f"**{cinfo['label']}**")
+        st.caption(cinfo["help"])
+        scol, ncol = st.columns([1, 2])
+        with scol:
+            opt_values = [v for v, _ in cinfo["options"]]
+            opt_labels = {v: lbl for v, lbl in cinfo["options"]}
+            current_val = existing.get(ck)
+            radio_options = ["Not scored"] + opt_values
+            default_idx = 0
+            if current_val in opt_values:
+                default_idx = radio_options.index(current_val)
+            chosen = st.radio(
+                "Score",
+                radio_options,
+                index=default_idx,
+                format_func=lambda v: "Not scored" if v == "Not scored" else opt_labels[v],
+                key=f"score_{selected_path.name}_{sample_id}_{ck}",
+                label_visibility="collapsed",
+            )
+            score_values[ck] = None if chosen == "Not scored" else chosen
+        with ncol:
+            note_values[ck] = st.text_area(
+                f"Notes on {cinfo['label'].lower()} (optional)",
+                value=existing.get(f"{ck}_notes", ""),
+                key=f"notes_{selected_path.name}_{sample_id}_{ck}",
+                height=90,
+            )
+        st.markdown("")
+    general_notes = st.text_area(
+        "General notes (optional, anything not tied to a single criterion)",
+        value=existing.get("general_notes", ""),
+        key=f"general_notes_{selected_path.name}_{sample_id}",
+        height=80,
+    )
+    save_col1, save_col2 = st.columns([1, 4])
+    with save_col1:
+        save_disabled = not reviewer_name.strip()
+        if st.button("Save review", type="primary", use_container_width=True,
+                     disabled=save_disabled):
+            entry = {
+                "reviewer": reviewer_name,
+                "reviewed_at": datetime.now().isoformat(timespec="seconds"),
+                "general_notes": general_notes,
+            }
+            for ck in CRITERION_KEYS:
+                entry[ck] = score_values[ck]
+                entry[f"{ck}_notes"] = note_values[ck]
+            reviews[sample_id] = entry
+            st.session_state[reviews_key] = reviews
+            save_json_dict(review_file_path, reviews)
+            st.toast(f"Saved review for {sample_id}", icon="✅")
+    with save_col2:
+        if save_disabled:
+            st.caption("Enter your name in the sidebar to enable saving.")
+        elif existing.get("reviewed_at"):
+            t = total_score(existing)
+            t_str = f", total {t}/5" if t is not None else ""
+            st.caption(f"Last saved: {existing['reviewed_at']} by {existing.get('reviewer') or 'unknown'}{t_str}")
+        else:
+            st.caption("Not saved yet.")
+    st.caption(f"Your reviews are stored in: `{review_file_path}` (nobody else writes to this file).")
+    st.divider()
+    # ----------------------------------------------------------------------
+    # Duplicate Next / Previous, right at the bottom — so you can advance to
+    # the next sample immediately after saving, without scrolling back up.
+    # ----------------------------------------------------------------------
+    bottom_col1, bottom_col2, bottom_col3 = st.columns([1, 1, 3])
+    with bottom_col1:
+        if st.button("◀ Previous", use_container_width=True, key="bottom_prev_button"):
+            st.session_state["nav_idx"] = max(0, st.session_state["nav_idx"] - 1)
+    with bottom_col2:
+        if st.button("Next ▶", use_container_width=True, key="bottom_next_button"):
+            st.session_state["nav_idx"] = min(len(filtered) - 1, st.session_state["nav_idx"] + 1)
+    with bottom_col3:
+        st.caption("Same as the buttons at the top — handy for saving and moving on in one place.")
+with tab_library:
+    # ----------------------------------------------------------------------
+    # Digital-library view: statistics + open, side-by-side sample inspection
+    # (unlike the Review tab, nothing here is hidden — this is for analysis,
+    # not blind grading).
+    # ----------------------------------------------------------------------
+    st.markdown("### 📚 Library — statistics & sample inspection")
+    st.caption(
+        "Every reviewer's (and the LLM judge's) scores are shown openly, side by side. "
+        "Use this tab for analysis; use the Review tab for actual blind grading."
+    )
+    with st.expander("🔍 Filters (mirrors the sidebar, plus a few extras)", expanded=True):
+        lib_col1, lib_col2, lib_col3 = st.columns(3)
+        with lib_col1:
+            lib_search = st.text_input(
+                "Search premise / hypothesis / reasoning", value=search_text, key="lib_search"
+            )
+            lib_gold_sel = st.multiselect("Gold label", gold_opts, default=gold_sel, key="lib_gold")
+            lib_pred_sel = st.multiselect("Predicted label", pred_opts, default=pred_sel, key="lib_pred")
+        with lib_col2:
+            lib_tag_sel = st.multiselect("Tags", tag_opts, default=tag_sel, key="lib_tags")
+            lib_section_sel = st.multiselect(
+                "FraCaS section", section_opts, default=section_sel, key="lib_sections"
+            )
+            lib_success = st.radio(
+                "Model result", ["All", "Success only", "Failure only"],
+                index=["All", "Success only", "Failure only"].index(success_choice),
+                key="lib_success", horizontal=True,
+            )
+        with lib_col3:
+            min_reviewers = st.number_input(
+                "Minimum # reviewers (incl. judge)", min_value=0, value=0, step=1, key="lib_min_reviewers"
+            )
+            only_disagreement = st.checkbox(
+                "Only samples where reviewers disagree", value=False, key="lib_disagreement"
+            )
+            lib_comment_search = st.text_input(
+                "Search reviewer comments",
+                value="",
+                key="lib_comment_search",
+                help="Searches every reviewer's and the LLM judge's notes "
+                     "(per-criterion notes + general notes) for this sample.",
+            )
+            only_sample_lib = False
+            if sample_ids_for_dataset:
+                only_sample_lib = st.checkbox(
+                    f"Only human-validation sample ({len(sample_ids_for_dataset)})",
+                    value=False, key="lib_only_sample",
+                )
+
+    def lib_matches(r):
+        rid = str(r["id"])
+        if lib_search:
+            hay = " ".join([
+                str(r.get("premise", "")), str(r.get("hypothesis", "")), str(r.get("reasoning", "")),
+            ]).lower()
+            if lib_search.lower() not in hay:
+                return False
+        if lib_gold_sel:
+            g = r.get("gold") or []
+            g = g if isinstance(g, list) else [g]
+            if not set(str(x) for x in g) & set(lib_gold_sel):
+                return False
+        if lib_pred_sel and str(r.get("predicted")) not in lib_pred_sel:
+            return False
+        if lib_tag_sel:
+            tags = r.get("tags") or []
+            tags = tags if isinstance(tags, list) else [tags]
+            if not set(str(x) for x in tags) & set(lib_tag_sel):
+                return False
+        if lib_section_sel:
+            secs = r.get("fracas_sections") or []
+            secs = secs if isinstance(secs, list) else [secs]
+            if not set(str(x) for x in secs) & set(lib_section_sel):
+                return False
+        if lib_success == "Success only" and r.get("success") != 1:
+            return False
+        if lib_success == "Failure only" and r.get("success") == 1:
+            return False
+        if only_sample_lib and rid not in sample_ids_for_dataset:
+            return False
+        entries = all_reviews.get(rid, {})
+        if lib_comment_search:
+            needle = lib_comment_search.lower()
+            comment_fields = ["general_notes"] + [f"{ck}_notes" for ck in CRITERION_KEYS]
+            hay = " ".join(
+                str(entry.get(f, "")) for entry in entries.values() for f in comment_fields
+            ).lower()
+            if needle not in hay:
+                return False
+        if min_reviewers and len(entries) < min_reviewers:
+            return False
+        if only_disagreement:
+            disagree = False
+            for ck in CRITERION_KEYS:
+                vals = {e.get(ck) for e in entries.values() if e.get(ck) is not None}
+                if len(vals) > 1:
+                    disagree = True
+                    break
+            if not disagree:
+                return False
+        return True
+
+    lib_filtered = [r for r in results if lib_matches(r)]
+    st.caption(f"**{len(lib_filtered)} / {len(results)}** samples match library filters.")
+
+    if not lib_filtered:
+        st.warning("No samples match the current library filters.")
     else:
-        st.caption("Not saved yet.")
-st.caption(f"Your reviews are stored in: `{review_file_path}` (nobody else writes to this file).")
+        # -------------------------------------------------------------
+        # Statistical overview
+        # -------------------------------------------------------------
+        st.markdown("#### 📊 Statistical overview")
+        comp_col1, comp_col2, comp_col3 = st.columns(3)
+        n_total_lib = len(lib_filtered)
+        n_you_lib = sum(1 for r in lib_filtered if is_fully_scored(reviews.get(str(r["id"]))))
+        n_anyone_lib = sum(
+            1 for r in lib_filtered
+            if any(is_fully_scored(e) for e in all_reviews.get(str(r["id"]), {}).values())
+        )
+        comp_col1.metric("Scored by you", f"{n_you_lib}/{n_total_lib}")
+        comp_col2.metric("Scored by anyone", f"{n_anyone_lib}/{n_total_lib}")
+        comp_col3.metric("Not yet scored", n_total_lib - n_anyone_lib)
+
+        stat_col1, stat_col2 = st.columns(2)
+        with stat_col1:
+            st.markdown("**Score distribution per criterion (all reviewers + judge)**")
+            for ck, cinfo in CRITERIA.items():
+                vals = []
+                for r in lib_filtered:
+                    rid = str(r["id"])
+                    for entry in all_reviews.get(rid, {}).values():
+                        v = entry.get(ck)
+                        if v is not None:
+                            vals.append(v)
+                st.caption(cinfo["label"])
+                if vals:
+                    dist = pd.Series(vals).value_counts().sort_index()
+                    dist.index = dist.index.astype(str)
+                    st.bar_chart(dist)
+                else:
+                    st.caption("_No scores yet._")
+        with stat_col2:
+            st.markdown("**Average score per reviewer**")
+            all_slugs = sorted({
+                slug for r in lib_filtered for slug in all_reviews.get(str(r["id"]), {})
+            })
+            per_reviewer_rows = []
+            for slug in all_slugs:
+                row = {"reviewer": "LLM judge" if slug == "llm_judge" else slug}
+                for ck, cinfo in CRITERIA.items():
+                    vals = [
+                        all_reviews[str(r["id"])][slug].get(ck)
+                        for r in lib_filtered
+                        if slug in all_reviews.get(str(r["id"]), {})
+                        and all_reviews[str(r["id"])][slug].get(ck) is not None
+                    ]
+                    row[cinfo["label"]] = round(sum(vals) / len(vals), 2) if vals else None
+                n_scored = sum(
+                    1 for r in lib_filtered
+                    if is_fully_scored(all_reviews.get(str(r["id"]), {}).get(slug))
+                )
+                row["fully scored"] = f"{n_scored}/{len(lib_filtered)}"
+                per_reviewer_rows.append(row)
+            if per_reviewer_rows:
+                st.dataframe(pd.DataFrame(per_reviewer_rows), hide_index=True, width="stretch")
+            else:
+                st.caption("No reviewer data yet for the current filter.")
+
+        st.divider()
+        # -------------------------------------------------------------
+        # Sample browser
+        # -------------------------------------------------------------
+        st.markdown("#### 🗂️ Sample browser")
+        browser_rows = []
+        for r in lib_filtered:
+            rid = str(r["id"])
+            entries = all_reviews.get(rid, {})
+            totals = [total_score(e) for e in entries.values() if total_score(e) is not None]
+            browser_rows.append({
+                "id": rid,
+                "premise": (r.get("premise") or "")[:80],
+                "gold": flatten(r.get("gold")),
+                "predicted": r.get("predicted"),
+                "success": r.get("success"),
+                "# reviewers": len(entries),
+                "avg total (of 5)": round(sum(totals) / len(totals), 2) if totals else None,
+                "your total": total_score(reviews.get(rid)),
+            })
+        browser_df = pd.DataFrame(browser_rows)
+        st.dataframe(browser_df, hide_index=True, width="stretch", height=300)
+
+        st.markdown("#### 🔎 Inspect a sample (all reviewers shown together)")
+        lib_ids = [row["id"] for row in browser_rows]
+        lib_selected_id = st.selectbox("Choose a sample to inspect", lib_ids, key="lib_inspect_select")
+        lib_sample = next(r for r in lib_filtered if str(r["id"]) == lib_selected_id)
+
+        li_left, li_right = st.columns([3, 2])
+        with li_left:
+            st.markdown(f"**Sample `{lib_selected_id}`**")
+            if lib_sample.get("tags"):
+                st.caption("Gold phenomenon tags: " + flatten(lib_sample.get("tags")))
+            st.markdown("**Premise**")
+            st.info(lib_sample.get("premise", ""))
+            st.markdown("**Hypothesis**")
+            st.info(lib_sample.get("hypothesis", ""))
+            st.markdown("**Reasoning**")
+            st.write(lib_sample.get("reasoning", "_none provided_"))
+        with li_right:
+            st.markdown("**Gold label**")
+            st.success(flatten(lib_sample.get("gold")) or "—")
+            st.markdown("**Predicted label**")
+            if lib_sample.get("success") == 1:
+                st.success(str(lib_sample.get("predicted")))
+            else:
+                st.error(str(lib_sample.get("predicted")))
+            with st.expander("Raw JSON for this sample"):
+                st.json(lib_sample)
+
+        st.markdown("**All reviews for this sample**")
+        lib_entries = all_reviews.get(lib_selected_id, {})
+        if not lib_entries:
+            st.caption("No reviews saved yet for this sample.")
+        else:
+            for slug, entry in lib_entries.items():
+                label = "LLM judge" if slug == "llm_judge" else slug
+                with st.container(border=True):
+                    parts = []
+                    for ck, cinfo in CRITERIA.items():
+                        v = entry.get(ck)
+                        parts.append(f"{cinfo['label']}: {'—' if v is None else v}")
+                    t = total_score(entry)
+                    t_str = f" (total {t}/5)" if t is not None else ""
+                    st.markdown(f"**{label}**{t_str} — " + " · ".join(parts))
+                    for ck, cinfo in CRITERIA.items():
+                        note = entry.get(f"{ck}_notes")
+                        if note:
+                            st.caption(f"_{cinfo['label']}:_ {note}")
+                    if entry.get("general_notes"):
+                        st.caption(f"_General:_ {entry['general_notes']}")
+                    if entry.get("reviewed_at"):
+                        st.caption(f"Reviewed at: {entry['reviewed_at']}")
 # --------------------------------------------------------------------------
 # Agreement (Cohen's kappa) — matches the plan's decision rule (kappa >= 0.7)
 # --------------------------------------------------------------------------
