@@ -157,7 +157,7 @@ def list_json_files(folder: str, recursive: bool = False):
     if recursive:
         return sorted(p.rglob("*.json"))
     return sorted([f for f in p.iterdir() if f.is_file() and f.suffix.lower() == ".json"])
-IGNORED_SUBFOLDERS = {"reviews", "judge_scores", "__pycache__"}
+IGNORED_SUBFOLDERS = {"reviews", "__pycache__"}
 def list_subfolders(folder: str):
     p = Path(folder)
     if not p.exists() or not p.is_dir():
@@ -209,9 +209,9 @@ def load_all_reviewers(reviews_dir: str, stem: str) -> dict:
             merged.setdefault(sample_id, {})[reviewer_slug] = entry
     return merged
 def load_judge_scores(path: Path) -> dict:
-    """Load an LLM-judge scored file (results/judge_scores/*.json) into the
-    same per-sample shape as human reviews, so it can be compared like any
-    other reviewer."""
+    """Load an LLM-judge scored file (phase1_nli_eval/judge_scores/{dataset}/*.json)
+    into the same per-sample shape as human reviews, so it can be compared like
+    any other reviewer."""
     if not path.exists():
         return {}
     data = load_json_dict(path)
@@ -361,7 +361,9 @@ reviews = st.session_state[reviews_key]
 all_reviews = load_all_reviewers(reviews_dir, selected_path.stem)
 # Optional LLM-judge scores, treated as just another "reviewer" for comparison
 with st.sidebar.expander("LLM-judge scores (optional)"):
-    default_judge_path = str(root_path / "judge_scores" / f"{selected_path.stem}__scores.json")
+    default_judge_path = str(
+        APP_DIR / "phase1_nli_eval" / "judge_scores" / dataset_name / f"{selected_path.stem}__scores.json"
+    )
     judge_path_str = st.text_input("Path to judge-scored JSON", value=default_judge_path)
     judge_scores = load_judge_scores(Path(judge_path_str))
     if judge_scores:
