@@ -81,6 +81,8 @@ def build_universe(results_root) -> list[dict]:
     """Scan every ``*.json`` under ``results_root`` and return one
     record per eligible explanation.
 
+    Only English zero-shot files are kept matching the LLM judge's scope.
+    
     Records carry only what sampling needs:
     {dataset, model, technique, language, id, section}.
     """
@@ -90,7 +92,7 @@ def build_universe(results_root) -> list[dict]:
         return universe
     for path in sorted(root.rglob("*.json")):
         dataset, model, technique, language = _parse_stem(path.stem)
-        if language != "en":
+        if language != "en" or technique != "zero-shot":
             continue
         try:
             with open(path, "r", encoding="utf-8") as f:
