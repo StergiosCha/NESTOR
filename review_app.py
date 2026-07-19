@@ -381,8 +381,39 @@ if assigned_mode:
         f"Your slice: **{len(my_slice_keys)}** items across **{len(resolved)}** "
         f"files (pool total {len(pool)})."
     )
-    labels = [f"{'__'.join(fk)} · {counts[fk]} item(s)" for fk, _ in resolved]
-    picked_label = st.sidebar.selectbox("Your files", labels, index=0)
+    # Per-file scored progress across the whole slice, and the ordered list of
+    # files that still have unfinished assigned items.
+    ordered_stems = ["__".join(fk) for fk, _ in resolved]
+    keys_by_stem: dict = {}
+    for k in my_slice_keys:
+        keys_by_stem.setdefault("__".join(k[:4]), set()).add(str(k[4]))
+    scored_total, unfinished_stems = 0, []
+    for stem in ordered_stems:
+        rv = load_json_dict(reviewer_file_path(reviews_dir, stem, reviewer_name or "unnamed"))
+        ids = keys_by_stem.get(stem, set())
+        done = sum(1 for i in ids if is_fully_scored(rv.get(i)))
+        scored_total += done
+        if done < len(ids):
+            unfinished_stems.append(stem)
+    labels = [f"{stem} · {counts[fk]} item(s)" for (fk, _), stem in zip(resolved, ordered_stems)]
+    # Keep the selection stable across reruns and targetable by the jump button.
+    if st.session_state.get("assigned_file_pick") not in labels:
+        st.session_state["assigned_file_pick"] = labels[0]
+    picked_label = st.sidebar.selectbox("Your files", labels, key="assigned_file_pick")
+    cur_pos = labels.index(picked_label) + 1
+    st.sidebar.caption(
+        f"File {cur_pos} of {len(labels)} · "
+        f"{scored_total}/{len(my_slice_keys)} assigned items scored."
+    )
+    if unfinished_stems:
+        # First unfinished file strictly after the current one (wrap around).
+        rotation = ordered_stems[cur_pos:] + ordered_stems[:cur_pos]
+        target_stem = next((s for s in rotation if s in set(unfinished_stems)), unfinished_stems[0])
+        if st.sidebar.button("➡️ Next unfinished file"):
+            st.session_state["assigned_file_pick"] = labels[ordered_stems.index(target_stem)]
+            st.rerun()
+    else:
+        st.sidebar.success("All your assigned samples are scored 🎉")
     selected_path = Path(resolved[labels.index(picked_label)][1])
 else:
     # --- Manual browse: original folder → subfolder → file pickers ---------
@@ -524,7 +555,7 @@ with st.sidebar.expander("Human validation sample (10%, seed 42)"):
         st.rerun()
 sample_ids_for_dataset = set(human_val_data.get(dataset_name, []))
 only_sample = False
-if sample_ids_for_dataset:
+if sample_ids_for_dataset and not assigned_mode:
     only_sample = st.sidebar.checkbox(
         f"Only show human-validation sample ({len(sample_ids_for_dataset)} items)",
         value=False,
@@ -548,24 +579,36 @@ gold_opts = unique_flat_values("gold")
 gold_sel = st.sidebar.multiselect("Gold label", gold_opts, default=[])
 pred_opts = unique_flat_values("predicted")
 pred_sel = st.sidebar.multiselect("Predicted label", pred_opts, default=[])
+# In assigned mode the file is already one dataset/model/language/technique, so
+# these dimension filters add clutter without helping — hide them (keeping the
+# search + label + progress filters that still matter).
+# Compute option lists always (the Library tab reuses them); only render the
+# sidebar widgets in manual mode.
 lang_opts = unique_flat_values("language")
-lang_sel = st.sidebar.multiselect("Language", lang_opts, default=[])
 source_opts = unique_flat_values("source")
-source_sel = st.sidebar.multiselect("Source", source_opts, default=[])
 section_opts = unique_flat_values("fracas_sections")
-section_sel = st.sidebar.multiselect("FraCaS section", section_opts, default=[])
 tag_opts = unique_flat_values("tags")
-tag_sel = st.sidebar.multiselect("Tags", tag_opts, default=[])
+if not assigned_mode:
+    lang_sel = st.sidebar.multiselect("Language", lang_opts, default=[])
+    source_sel = st.sidebar.multiselect("Source", source_opts, default=[])
+    section_sel = st.sidebar.multiselect("FraCaS section", section_opts, default=[])
+    tag_sel = st.sidebar.multiselect("Tags", tag_opts, default=[])
+else:
+    lang_sel = source_sel = section_sel = tag_sel = []
 success_choice = st.sidebar.radio(
     "Model result", ["All", "Success only", "Failure only"], index=0
 )
 st.sidebar.markdown("**Your scores**")
 crit_filters = {}
-for ck, cinfo in CRITERIA.items():
-    labels = ["Not scored"] + [str(v) for v, _ in cinfo["options"]]
-    crit_filters[ck] = st.sidebar.multiselect(f"Your {cinfo['label']} score", labels, default=[])
+if not assigned_mode:
+    for ck, cinfo in CRITERIA.items():
+        opt_labels = ["Not scored"] + [str(v) for v, _ in cinfo["options"]]
+        crit_filters[ck] = st.sidebar.multiselect(f"Your {cinfo['label']} score", opt_labels, default=[])
 only_unreviewed = st.sidebar.checkbox("Only show samples not fully scored by you", value=False)
-only_unreviewed_by_anyone = st.sidebar.checkbox("Only show samples not scored by anyone", value=False)
+only_unreviewed_by_anyone = (
+    False if assigned_mode
+    else st.sidebar.checkbox("Only show samples not scored by anyone", value=False)
+)
 def matches_filters(r):
     rid = str(r["id"])
     if search_text:
