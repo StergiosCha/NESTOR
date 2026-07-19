@@ -1,0 +1,4084 @@
+{
+  "metadata": {
+    "judge_model": "gpt-5.4",
+    "source_file": "fracas__gpt-5.4-pro__zero-shot__en.json",
+    "dataset": "fracas",
+    "model": "gpt-5.4-pro",
+    "technique": "zero-shot",
+    "language": "en",
+    "started_at": "2026-07-19T13:56:12Z",
+    "completed_at": "2026-07-19T14:00:56Z",
+    "skipped_count": 3,
+    "judge_failed_count": 0
+  },
+  "scores": [
+    {
+      "id": "fracas-0006",
+      "gold": [
+        "Contradiction"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly captures the contradiction by treating the premise as excluding any overlap between really great tenors and modest people, and the hypothesis as asserting such an overlap. However, it does not specifically identify the conservativity/generalized-quantifier phenomenon; it gives a more general set-overlap explanation instead.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0007",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly gives the existential equivalence between the premise and hypothesis, so the entailment reasoning is sound. However, it does not explicitly identify conservativity of generalized quantifiers; it addresses a related quantifier/existential phenomenon instead.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0011",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly derives existence from 'a few' and supports entailment, so the reasoning is sound. However, it identifies the issue as a general quantifier/existential entailment rather than specifically the conservativity property of generalized quantifiers, so it only partially matches the gold phenomenon.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0004",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation gives a correct entailment argument using existential import from 'some' plus universal instantiation from 'each,' but it does not explicitly identify the gold phenomenon of generalized quantifier conservativity. It addresses quantifier reasoning more generally, so it is related but not exact.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0005",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation does not identify conservativity; instead it appeals to the existence presupposition of the definite plural subject. That is a related semantic phenomenon but not the gold-tagged one. Still, the reasoning is linguistically plausible and correctly supports entailment from the premise to the existential hypothesis.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0003",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly uses existential import from 'some' plus universal application from 'all' to derive the hypothesis, so the reasoning is valid and supports entailment. However, it does not explicitly identify conservativity of generalized quantifiers; it addresses a related quantifier interaction/existential reasoning phenomenon instead.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0008",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly gives the existential entailment from 'many' to 'some,' so the reasoning is sound and supports entailment. However, it does not specifically identify conservativity; it discusses existential import/quantifier strength instead, which is related but not the tagged phenomenon.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0010",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation focuses on the existential import of 'most' rather than explicitly identifying conservativity, so it addresses a related generalized-quantifier issue but not the tagged phenomenon itself. The reasoning is logically sound: if most great tenors are Italian, then there must be at least one great tenor and at least one of them is Italian, which supports entailment.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0001",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly captures the existential inference from 'An Italian' to 'There was an Italian' and thus is logically sound. However, it does not explicitly identify the conservativity property of generalized quantifiers; it only discusses existential paraphrase, which is related but not the specific tagged phenomenon.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0002",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly derives the entailment by combining existential import from 'some' with the universal statement, but it does not explicitly identify the conservativity/generalized quantifier phenomenon; it instead focuses on standard quantifier reasoning. The logic is valid and supports the predicted entailment label.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0009",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly notes existential weakening from 'several' to 'there are some,' which is logically valid and supports entailment. However, it does not specifically identify conservativity, the gold-tagged phenomenon, so it addresses a related quantifier issue rather than the exact one.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0013",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation gives correct compositional reasoning from the premises to the hypothesis, so it is logically sound and supports entailment. However, it does not explicitly identify the conservativity/generalized-quantifier phenomenon; it instead describes straightforward universal instantiation, which is related but not the tagged phenomenon.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0016",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly targets the generalized-quantifier issue behind conservativity/existential import: 'at most two' sets only an upper bound and does not guarantee existence. The reasoning is logically correct, and it directly supports the predicted Unknown label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0014",
+      "gold": [
+        "Contradiction"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly reasons that 'neither leading tenor comes cheap' entails that Pavarotti, being one of the leading tenors, does not come cheap, so the hypothesis is contradicted. However, it does not explicitly identify the conservativity/generalized-quantifier phenomenon; it mainly gives a straightforward negation/set-membership explanation.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0017",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation gives correct entailment reasoning via subtype/generalization from 'Nobel Prize for Literature' to 'Nobel prize,' but it does not explicitly identify the gold phenomenon of upward monotonicity in the second argument of the quantified NP. So it is related but not precisely the tagged phenomenon.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0018",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation gives correct syllogistic chaining of universal premises to derive the hypothesis, so it is logically sound and supports entailment. However, it does not specifically identify the gold phenomenon of generalized quantifier monotonicity; it instead appeals to related compositional reasoning/transitivity.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0021",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation gives a valid chaining of universal statements to derive the hypothesis, so it is logically sound and supports entailment. However, it does not explicitly identify the gold phenomenon of generalized quantifier monotonicity/upward entailment; it instead appeals more generally to transitive universal reasoning.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0015",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly captures the entailment from a stronger quantifier to an existential claim, but it does not specifically identify the gold phenomenon of conservativity; it instead appeals to existential weakening/monotonic reasoning. The reasoning itself is logically sound and supports the predicted entailment label.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0020",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation gives a correct universal-chaining inference from the premises to the hypothesis, so it is logically sound and supports entailment. However, it does not explicitly identify the gold phenomenon of generalized quantifier monotonicity; it instead describes a related compositional syllogistic/universal reasoning pattern.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0019",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation gives correct quantified chaining/universal reasoning from the premises to the hypothesis, so it is logically sound and supports entailment. However, it does not explicitly identify the gold phenomenon of monotonicity/upward entailment in the second argument, instead appealing more generally to syllogistic chaining of universal statements.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0024",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies upward monotonicity in the predicate/second argument of the generalized quantifier 'many' and applies it properly: 'interesting results' entails 'results' by set inclusion, so the entailment follows. It fully supports the predicted label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0029",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly notes lexical entailment from 'leading businessman' to 'businessman', which is relevant, but it does not explicitly identify the gold monotonicity/generalized quantifier phenomenon. The reasoning itself is valid, and it supports the entailment label.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0023",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly argues entailment by noting that 'on time' restricts the set of survey-finishers, so existence in the narrower set entails existence in the broader set. However, it frames this as 'modifier dropping' rather than explicitly identifying the gold phenomenon of upward monotonicity in the second argument of 'some,' so it is related but not an exact match.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0022",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly targets monotonicity/modifier scope on the predicate: 'finished on time' is more specific than 'finished', so from 'no delegate finished on time' one cannot infer 'no delegate finished'. The reasoning is logically sound and directly supports the Unknown label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0025",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly captures upward monotonicity in the VP/complement: from getting the results published in a specific location/context ('in major national newspapers') it follows that they got the results published more generally. The reasoning is logically sound and directly supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0031",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation gives correct entailment reasoning, but it identifies the phenomenon as lexical/scalar entailment rather than the gold monotonicity pattern involving the quantified predicate. The logic is sound: 'spend a lot of time at home' entails 'spend time at home,' so the same at-least-three commissioners satisfy the weaker hypothesis.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0033",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly notes that the hypothesis adds a more specific Nobel category not given in the premise, so the Unknown label is well supported. However, it does not explicitly identify the gold monotonicity/generalized-quantifier phenomenon, instead giving a more generic underspecification explanation.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0030",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly targets the monotonicity issue in the quantified predicate: from 'spends a lot of time at home' one cannot infer the stronger 'spends time at home' under negation/'neither'. It is logically sound that not spending a lot of time does not entail spending no time, and this supports the Unknown prediction.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0026",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly invokes monotonicity/set inclusion on the predicate side of 'most': from most Europeans being in the resident-in-Europe set, and that set being included in those who can travel freely within Europe, it follows that most Europeans can travel freely within Europe. The reasoning is valid and directly supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0027",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation gives correct entailment reasoning by propagating the individuals from Sweden to Scandinavia via the universal premise, but it does not explicitly identify the targeted monotonicity/generalized-quantifier phenomenon; it instead describes chaining universal statements with an existential claim. The logic is valid and supports the predicted entailment label.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0040",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly captures the monotonicity issue: adding the restrictive modifier 'interesting' to the object NP is not licensed under 'many' in this direction, so entailment does not follow. The reasoning is logically sound and supports the predicted Unknown label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0041",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly notes that the hypothesis adds an unsupported locative restriction, yielding non-entailment. However, it does not explicitly identify the monotonicity/generalized-quantifier phenomenon on the VP/object position; it gives a more generic strengthening explanation.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0038",
+      "gold": [
+        "Contradiction"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly captures the monotonicity/generalized-quantifier reasoning: from 'no delegate finished the report' it follows that no delegate finished it on time, since 'on time' is a more specific subset of finishing events. The logic is valid and directly supports the contradiction label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0032",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies monotonicity with the quantifier 'at most ten' as downward-entailing in its restrictor/predicate position, and correctly notes that 'spend a lot of time at home' is narrower than 'spend time at home.' Therefore the inference from the narrower predicate to the broader one is invalid, supporting the Unknown label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0028",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies the monotonicity behavior of the quantifier 'few' with respect to set inclusion on the second argument: Portugal-members are a subset of southern-Europe-members, and inference does not go from 'few Portugal' to 'few southern Europe.' The reasoning is logically sound and directly supports the Unknown label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0043",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly targets the monotonicity/set-inclusion issue: from Sweden being a subset of Scandinavia, one cannot infer the converse for the existential claim about committee members. The reasoning is logically sound and directly supports the Unknown label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0046",
+      "gold": [
+        "Contradiction"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly shows why the premise contradicts the hypothesis, but it does not explicitly identify the gold monotonicity/generalized-quantifier phenomenon; it instead gives a direct semantic contradiction analysis. The reasoning is logically sound, and it supports the predicted Contradiction label.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0037",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly notes that the premises only support right-to-live-anywhere -> can-travel-freely, so the hypothesis is not entailed; this is logically sound and matches the Unknown label. However, it frames the issue as a converse/affirming-the-consequent fallacy rather than the gold monotonicity/generalized-quantifier phenomenon, so it addresses a related but different phenomenon.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0039",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly notes that adding the modifier 'on time' is not entailed by the premise, so the Unknown label is well supported. However, it does not explicitly identify the monotonicity/generalized-quantifier phenomenon; it instead gives a more general missing-information explanation.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0045",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly notes that adding the modifier 'leading' makes the hypothesis stronger and therefore not entailed by the premise, which is sound and supports the Unknown label. However, it does not explicitly identify the monotonicity/generalized quantifier phenomenon; it only addresses a related strengthening issue.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0044",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies downward monotonicity of the quantifier 'few' on the predicate/set argument and applies it to the subset relation: committee members from Portugal are a subset of committee members from southern Europe. The reasoning is logically valid and directly supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0034",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly notes that the inference would require an invalid converse from 'right to live -> can travel freely' to 'can travel freely -> right to live,' which is closely related to the monotonicity issue but does not explicitly identify downward monotonicity in the quantified predicate. The reasoning is logically sound and supports the Unknown label.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0035",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly notes that the hypothesis would require an invalid converse inference from 'right to live -> can travel' to 'can travel -> right to live,' which supports Unknown. However, it does not explicitly identify the gold monotonicity/generalized-quantifier phenomenon, so it only gets partial credit for phenomenon identification.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0051",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly targets the monotonicity/generalization issue: from a property holding of the subset of Canadian residents, one cannot infer it for all North American residents. The reasoning is logically accurate and directly supports the Unknown label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0047",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly notes that 'a lot of time' is stronger than 'time' and therefore not entailed, which matches the Unknown label. However, it does not explicitly identify the gold phenomenon of monotonicity in the second argument of a generalized quantifier, instead describing it more generally as scalar strengthening.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0012",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "The explanation discusses existential import of 'few', which is related to generalized quantifiers but does not identify the conservativity issue in the gold tag. Its core reasoning is unsound: in standard NLI, 'few X are Y' does not entail that any X are Y, since 'few' can be true even when there are none. However, the explanation does support the model's predicted Entailment label.",
+      "total": 2
+    },
+    {
+      "id": "fracas-0036",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly notes that the hypothesis would require an invalid converse inference from 'right to live -> can travel freely' to 'can travel freely -> right to live,' which supports the Unknown label. However, it does not explicitly identify the gold monotonicity/generalized-quantifier phenomenon, so it only gets partial credit for phenomenon identification.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0049",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation gives correct entailment reasoning via subset inclusion (Swede -> Scandinavian) and existential transfer, so it is logically sound and supports the Entailment label. However, it does not explicitly identify the gold phenomenon of upward monotonicity/generalized quantifiers, instead describing the inference in first-order logical terms.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0050",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies the monotonicity/generalization issue: it rejects an upward inference from a subset (Canadian residents) to a superset (North American residents). The reasoning is logically sound and directly supports the predicted Unknown label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0042",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly notes a non-reversible implication/sufficiency-vs-necessity issue, which is related to but not exactly the gold monotonicity phenomenon. Its reasoning is logically sound: from 'most Europeans can travel freely' and 'residents in Europe can travel freely' one cannot infer 'most Europeans are resident in Europe.' It clearly supports the predicted Unknown label.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0048",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies downward monotonicity in the predicate/restrictor position of 'at most ten' and applies the subset relation properly: those who spend a lot of time at home are a subset of those who spend time at home. Therefore, if at most ten are in the larger set, at most ten are in the smaller set. This fully supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0054",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly focuses on quantificational reasoning/monotonicity: denying on-time completion for the subgroup of Scandinavian delegates does not license an existential claim about delegates in general. The logic is sound and directly supports the Unknown prediction.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0057",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies upward monotonicity in the restrictor/first argument of the quantifier: from 'Portuguese delegates' to the superset 'delegates.' The reasoning is logically valid and directly supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0063",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies upward monotonicity on the restrictor/first argument: 'female commissioners' is a subset of 'commissioners'. The reasoning is logically valid: if at least three female commissioners are at home, then at least three commissioners are at home. This directly supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0052",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies the monotonicity/generalization issue: from a property holding of the subset of Canadian residents, one cannot infer it for the superset of all North American residents. The reasoning is logically sound and directly supports the predicted Unknown label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0053",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation notes that the premise concerns a subset ('major western countries') while the hypothesis generalizes to all western countries, which is related to the monotonicity/generalized-quantifier issue, though it does not explicitly identify upward monotonicity. Its reasoning is logically sound: the hypothesis broadens the subject set and also changes 'travel freely' to 'live,' so entailment does not follow. This supports the predicted label Unknown.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0059",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies upward monotonicity on the restrictor/first argument: 'female committee members' is a subset of 'committee members,' so 'a few' is preserved when moving to the broader set. The reasoning is logically sound and directly supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0058",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies the monotonicity issue with the generalized quantifier 'most' in the restrictor/first argument: moving from 'Europeans resident in Europe' to all 'Europeans' is not licensed. The reasoning is logically sound and directly supports the Unknown label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0055",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "It correctly identifies upward monotonicity in the restrictor/first argument of 'some': 'Irish delegates' is a subset of 'delegates', so from some Irish delegates finishing on time it follows that some delegates did. This validly supports entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0060",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly targets monotonicity with the quantifier 'few': it notes that from 'few female committee members are from southern Europe' one cannot infer 'few committee members are from southern Europe' because the restriction set is broadened from females to all committee members. The reasoning is logically sound and directly supports the Unknown label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0067",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly gives a valid subset/class-inclusion inference from Canadians to North American residents, supporting entailment. However, it does not explicitly identify the gold phenomenon of generalized quantifier monotonicity (downward on the first argument), instead describing a related transitive syllogism/class-inclusion pattern.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0070",
+      "gold": [
+        "Contradiction"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly uses subset/set reasoning under negation: from 'no delegate finished on time' it follows that no Scandinavian delegate did, since Scandinavians are a subset of delegates. This matches downward monotonicity on the restrictor and supports the contradiction label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0074",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies the monotonicity issue with 'most': restricting the first argument from all Europeans to the subset resident outside Europe is not licensed. The reasoning is logically sound and directly supports the Unknown label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0072",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly targets monotonicity on the restrictor/first argument of the quantifier 'many': adding 'British' narrows the set of delegates, and 'many delegates' does not entail 'many British delegates.' The reasoning is logically sound and directly supports the Unknown prediction.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0073",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly targets monotonicity on the restrictor/first argument of the generalized quantifier 'several': narrowing 'delegates' to 'Portuguese delegates' is a strengthening that is not entailed. The reasoning is logically sound and directly supports the predicted label Unknown.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0064",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies the monotonicity/set-inclusion issue: 'female commissioners' is a subset of 'commissioners', and an upper bound on the subset does not entail the same upper bound on the superset. The reasoning is logically sound and directly supports the Unknown label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0066",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation gives correct subset-based universal reasoning (a syllogistic inference), which is closely related to the gold monotonicity phenomenon but does not explicitly identify downward monotonicity on the first argument. The logic is valid and directly supports the entailment label.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0061",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly targets monotonicity/generalized quantifier reasoning: removing 'female' widens the restrictor from a subset to all commissioners, which is not upward-entailing in this position. The logic is sound and directly supports the predicted Unknown label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0068",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation gives correct subset/transitive universal reasoning from Canadians being a subset of North American residents to inheriting the travel property. However, it does not explicitly identify the monotonicity/generalized-quantifier phenomenon in the gold tag, so it is related but not exact.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0069",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 1,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "The explanation notices the subset relation between 'major western countries' and 'western countries,' which is related to monotonicity, but it does not explicitly identify downward monotonicity on the first argument. Its core reasoning is unsound because it claims a gap between 'travel freely within Europe' and 'have the right to live in Europe,' whereas the gold label is entailment. Still, it is consistent with the model's predicted label 'Unknown' because it argues non-entailment.",
+      "total": 2
+    },
+    {
+      "id": "fracas-0075",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly says the gender restriction makes the hypothesis not entailed, but it frames this as generic underdetermination from an added modifier rather than explicitly identifying the monotonicity issue with restricting the first argument of 'a few.' The reasoning itself is logically sound and supports the predicted Unknown label.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0079",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly notes that adding the restriction 'male' is not entailed, which is logically sound and supports the Unknown label. However, it frames this as unsupported attribute strengthening rather than explicitly identifying the monotonicity/downward-entailing first-argument quantifier phenomenon in the gold tag.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0080",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies monotonicity/subset reasoning: female commissioners are a subset of commissioners, and 'at most ten' is downward entailing in its restrictor/first argument. The logic is valid, and it directly supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0071",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies the monotonicity/subset issue: existential quantification over a broader set ('delegates') does not entail existence in a narrower subset ('Irish delegates'). The reasoning is logically sound and directly supports the predicted label Unknown.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0065",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly targets monotonicity/generalized-quantifier reasoning: from existence in the superset (Scandinavians) plus subset inclusion (Swedes ⊆ Scandinavians), you cannot infer existence in the subset. The logic is valid and directly supports the Unknown label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0082",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly targets the conjoined noun phrase structure in the premise and accurately reasons that coordination distributes the predicate to each named conjunct, including Jones. This directly supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0081",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies entailment from a conjoined noun phrase/list: if 'Smith, Jones and Anderson signed,' then each named individual, including Jones, signed. The reasoning is logically valid and directly supports the predicted entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0086",
+      "gold": [
+        "Contradiction"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly notes the contradiction due to the number of accountants, but it focuses on exact cardinality rather than the specific gold phenomenon of plural conjoined noun phrases ('two lawyers and three accountants'). The reasoning is logically sound and supports the predicted contradiction label.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0085",
+      "gold": [
+        "Contradiction"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly focuses on the exact cardinality within the conjoined noun phrase ('two lawyers and three accountants') and validly infers that 'six lawyers' is incompatible with 'exactly two lawyers.' It directly supports the predicted contradiction label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0078",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly invokes downward-monotonic reasoning from the universal negative 'neither commissioner' to the subset 'female commissioners': if no commissioner spends much time at home, then no female commissioner does either. Thus an existential claim about a female commissioner spending much time at home is contradicted. The reasoning is logically sound and supports the model's predicted contradiction label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0083",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly focuses on the disjunctive/conjoined noun phrase structure ('Smith, Jones or Anderson') and notes that the premise only guarantees at least one signer, not specifically Jones. This is logically sound and directly supports the predicted Unknown label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0077",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly notes that adding 'female' is unsupported, which is related to the monotonicity issue but does not explicitly identify downward monotonicity/generalized quantifiers. The reasoning is logically sound: the premise does not specify gender, so the hypothesis is not entailed. This supports the predicted label 'Unknown.'",
+      "total": 4
+    },
+    {
+      "id": "fracas-0092",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly notes the equivalence between 'all the people who were at the meeting' and 'everyone at the meeting,' supporting entailment. However, it frames this mainly as paraphrase/universal quantification rather than specifically identifying the definite plural phenomenon.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0084",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly uses elimination over a disjunction to derive the conditional, so the reasoning is logically sound and supports entailment. However, it does not explicitly identify the gold phenomenon of conjoined noun phrases/plurals; it focuses instead on disjunctive reasoning, which is related but not the tagged phenomenon.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0090",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation directly targets the gold phenomenon of definite plurals, noting that 'the items on the agenda' refers to the full contextually relevant set. Its reasoning about distributive predication supports the entailment to 'every item,' and it is fully consistent with the predicted Entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0089",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation directly addresses the conjoined/disjoined noun phrase issue, showing how a universal statement over 'representative or client' entails the two universal conjuncts. The reasoning is logically correct and supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0096",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly focuses on the equivalence between the definite plural subject with 'all' and universal quantification ('every'), which matches the definite plurals phenomenon. Its reasoning is linguistically and logically sound, and it directly supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0097",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly targets the bare plural issue by noting that 'software faults' supports 'one or more software faults.' It also accurately observes the paraphrastic alternation between 'X were blamed for Y' and 'Y was blamed on X.' The reasoning is linguistically sound and directly supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0095",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly targets the definite plural/generic-vs-distributive reading: 'The Ancient Greeks' need not mean every individual Greek. Its reasoning is linguistically and logically sound, and it directly supports the predicted Unknown label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0062",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly notes that the premise only concerns female commissioners while the hypothesis ranges over commissioners generally, which is relevant to why the relation is unknown. However, it does not explicitly identify the gold monotonicity/generalized-quantifier phenomenon, instead describing it more generally as a restriction/scope mismatch. The reasoning itself is logically sound and supports the predicted Unknown label.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0103",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation gives correct entailment reasoning via universal instantiation, but it does not identify the gold-tagged dependent plurals phenomenon; it instead treats the case as a generic categorical syllogism. The logic is valid and supports the predicted entailment label.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0099",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly applies universal quantification from 'all clients' to Smith, so the reasoning is valid and supports entailment. However, it does not specifically identify the gold phenomenon of bare plurals, instead focusing on universal instantiation, which is related but not the tagged phenomenon.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0076",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies downward monotonicity in the first argument of the quantifier 'few': restricting 'committee members' to the subset 'female committee members' preserves truth. The reasoning is logically sound and directly supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0098",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly targets the bare plural/quantificational issue: 'software faults were blamed' does not entail that any particular software fault, including Bug #32-985, was blamed. The reasoning is logically sound and directly supports the Unknown prediction.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0105",
+      "gold": [
+        "Contradiction"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly targets the negated plural/numerical quantifier issue: 'just one accountant' entails at least one accountant attended, which directly contradicts 'no accountants attended.' The reasoning is logically sound and supports the predicted contradiction label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0106",
+      "gold": [
+        "Contradiction"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly focuses on the negated quantity contrast central to negated plurals: 'just one' means exactly one, while 'no' means zero. This reasoning is logically sound and directly supports the contradiction label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0100",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "The explanation correctly targets the bare plural phenomenon in an episodic sentence, matching the gold tag. However, its reasoning is unsound: in this context, the bare plural subject is naturally interpreted generically/all the relevant clients at the demonstration, so the premise entails that most clients were impressed. The explanation does support the model's predicted non-entailment/unknown label.",
+      "total": 3
+    },
+    {
+      "id": "fracas-0093",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly targets the definite plural/universal reading of 'the people who were at the meeting all' and its equivalence to 'everyone at the meeting.' The reasoning is linguistically and logically sound, and it directly supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0110",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly reasons that 'just one' entails existence, so 'some accountant attended' follows. However, it does not specifically identify the gold phenomenon of plurals/negated plurals; it focuses instead on exact quantity and existential entailment, which is related but not the tagged phenomenon.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0094",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly targets the definite plural issue: 'the inhabitants of Cambridge' does not force a distributive reading equivalent to 'every inhabitant.' Its reasoning about the invalid collective-to-universal inference is linguistically and logically sound, and it clearly supports the predicted Unknown label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0056",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies upward monotonicity on the restrictor/first argument of the generalized quantifier 'many': from 'many British delegates' and British delegates ⊆ delegates, it validly follows that 'many delegates' obtained the results. This directly supports the predicted entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0091",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "The explanation discusses quantificational equivalence between a definite plural NP ('the people who were at the meeting') and a universal quantifier ('everyone at the meeting'), which is related to the gold plural phenomenon but misses the key issue: definite plurals do not necessarily imply all members. Its core claim of paraphrase/equivalence is linguistically incorrect, but it does support the model's predicted entailment label.",
+      "total": 2
+    },
+    {
+      "id": "fracas-0102",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies the bare plural/generic reading of 'University graduates' as a statistical generalization rather than a universal statement. Its reasoning is logically sound: from a generic claim plus Smith being a graduate, it does not follow that Smith specifically will be a poor trader. This directly supports the predicted label Unknown.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0108",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly reasons from 'just one' to an existential claim, but it does not explicitly identify the gold phenomenon of negated/plural semantics; it instead focuses on existential weakening. The logic is valid: exactly one accountant entails that some accountant attended, and this supports the entailment label.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0101",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly targets the bare plural/generic reading in 'University graduates make poor stock-market traders' and explains how that generic applies to Smith as an instance. Its reasoning is linguistically accurate, including that the hypothesis's weaker 'likely' is supported by the generic premise, and it directly supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0087",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation directly addresses the conjoined noun phrase under a universal quantifier, matching the PLURALS:Conjoined Noun Phrases tag. Its distributive reasoning is correct: if every representative and every client attended, then every representative attended. This fully supports the predicted entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0088",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "The explanation directly targets the gold phenomenon of conjoined noun phrases under a universal quantifier. However, its semantic analysis is incorrect: 'Every representative and client' does not straightforwardly distribute to 'every representative' and 'every client' in the way claimed, so the entailment reasoning is unsound. It is nevertheless consistent with the model's predicted Entailment label.",
+      "total": 3
+    },
+    {
+      "id": "fracas-0114",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly justifies entailment via active-passive alternation and weakening, but it does not identify the gold phenomenon of intra-sentential nominal anaphora. It addresses a related syntactic inference instead.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0115",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation focuses on possessive reference/presupposition rather than explicitly identifying intra-sentential nominal anaphora, so it is related but not an exact match to the gold phenomenon. The reasoning is linguistically sound: 'her workstation' supports that Mary has/has access to a workstation, which entails the hypothesis in this context. It clearly supports the predicted entailment label.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0104",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly targets dependent plural semantics: 'have company cars' does not force each manager to have multiple cars. Its reasoning is linguistically and logically sound, concluding only that Jones has at least one company car, so 'more than one' is not entailed. This fully supports the predicted label Unknown.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0111",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly targets the collective/distributive plural inference: from each individual signing a contract, it concludes that together they signed two contracts. It is logically sound, and the note that 'another' indicates a distinct contract strengthens the entailment. The explanation clearly supports the predicted entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0113",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation is logically correct and supports entailment: 'them' refers to the two contracts, so both individuals signed those same two contracts. However, it focuses on anaphora/coreference rather than the gold-tagged collective/distributive plural phenomenon, so it only partially matches the targeted phenomenon.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0124",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies plural anaphora/coreference: 'They' refers to the two missing machines. The reasoning is linguistically accurate and valid, and it directly supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0120",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies inter-sentential anaphora by resolving 'She' to Smith and 'it' to the meeting. The reasoning is linguistically and logically sound: if Smith attended a meeting and chaired it, then Smith chaired that meeting, which entails she chaired a meeting. This directly supports the predicted entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0109",
+      "gold": [
+        "Contradiction"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "The explanation discusses quantifier/existential inference from 'exactly one' to 'at least one,' which is related to quantity but misses the key plural phenomenon: 'some accountants' is interpreted here as plural (>1), yielding contradiction with 'just one accountant.' Thus it supports the predicted entailment label, but its reasoning is not sound for this item.",
+      "total": 2
+    },
+    {
+      "id": "fracas-0121",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies the inter-sentential anaphora: 'them' refers to ITEL across sentences. Its reasoning is linguistically accurate and logically valid, since the hypothesis just conjoins the three delivered items to the same recipient. This directly supports the predicted entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0117",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation gives correct entailment reasoning via universal instantiation, but it does not explicitly identify the gold phenomenon of intra-sentential nominal anaphora ('her' referring to each student/Mary). So it addresses a related logical phenomenon rather than the tagged one.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0125",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 2,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "It correctly identifies plural anaphora/coreference ('They' referring to the two missing machines), matching the gold phenomenon. However, the reasoning is unsound: from 'two out of ten machines are missing' and 'they have been removed' it does not follow that only two machines were removed overall, so 'eight machines have been removed' is not contradicted but remains unknown. The explanation does support the model's predicted contradiction label.",
+      "total": 3
+    },
+    {
+      "id": "fracas-0118",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly focuses on the intra-sentential anaphoric/bound possessive 'her workstation' linked to each student. Its reasoning is linguistically appropriate: from Mary being a student, the universal statement yields that Mary used her workstation, which supports that Mary has a workstation. This directly supports the predicted entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0119",
+      "gold": [
+        "Contradiction"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "The explanation directly engages the gold phenomenon by analyzing the possessive/anaphoric phrase \"her workstation\" versus \"a workstation,\" so phenomenon identification is correct. However, its reasoning is unsound: in this sentence, \"her\" is a bound/anaphoric pronoun under the quantifier over students, yielding that no student used that student's workstation; since Mary is a student, it follows Mary did not use Mary's workstation, which is enough to contradict the hypothesis under the intended reading. The explanation does support the model's predicted label Unknown.",
+      "total": 3
+    },
+    {
+      "id": "fracas-0116",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies intra-sentential anaphora/coreference: 'her' refers back to Mary, and the feminine possessive supports that Mary is female. The reasoning is linguistically sound and directly justifies the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0126",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies plural anaphora/coreference: 'they' refers to the full set of ten machines introduced by 'two out of ten machines.' Its reasoning is linguistically and logically sound, since 'they were all here yesterday' entails that all ten machines were here yesterday, supporting the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0122",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies and resolves the inter-sentential anaphora ('He' = chairman, 'its' = committee), matching the gold phenomenon. Its reasoning is sound: with the intended passive reading of the malformed second sentence, the premise entails the hypothesis. The explanation directly supports the predicted entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0107",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 2,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "The explanation directly engages the plural semantics issue in the gold tag by focusing on 'just one accountant' versus 'some accountants.' However, its core claim is linguistically incorrect: in NLI, 'some accountants attended' is satisfied by one or more accountants, so the premise entails the hypothesis. The explanation is nevertheless consistent with the model's predicted contradiction label because it argues incompatibility.",
+      "total": 3
+    },
+    {
+      "id": "fracas-0112",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies the collective/distributive plural ambiguity triggered by the conjoined subject and numeral object, matching the gold phenomenon. Its reasoning is linguistically accurate: the premises guarantee the distributive reading but not the collective-total reading, so treating the hypothesis as ambiguous can motivate an Unknown prediction. Thus it is consistent with the model's predicted label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0132",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies the key anaphora/coreference phenomenon: 'it' refers to the dedicated line associated with the sales department. The reasoning is logically sound: if the sales department rents that dedicated line from BT, then it entails that the sales department rents a line from BT. This directly supports the predicted entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0128",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies plural anaphora: 'they' refers to 'John and his colleagues' and 'it' to 'a meeting.' The distributive inference from the group hating the meeting to the colleagues hating it is linguistically appropriate here, so the reasoning is sound and supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0123",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies plural anaphora: 'They' refers to the reports in the first sentence. Its reasoning is sound: if the reports ITEL sent are on Smith's desk, then at least some reports from ITEL are on her desk, which supports entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0131",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies plural anaphora: 'they' refers to the departments and 'them' to the dedicated lines. Its reasoning is linguistically and logically sound, and it directly supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0139",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies simple reflexive anaphora via 'himself,' showing the director is both awarder and recipient. Its reasoning is linguistically and logically sound, and it directly supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0134",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation gives correct entailment reasoning from the universal rule and MFI's single computer, but it does not explicitly identify the E-type/donkey anaphora phenomenon behind 'it' and 'all its computers.' It addresses quantificational reasoning rather than the specific anaphora tag.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0130",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies the plural anaphora: 'they' refers to John and his colleagues, and 'it' to the meeting. However, its core reasoning is unsound because from a collective statement like 'they hated it' one cannot safely infer that each individual member, including John, hated it; the distributive reading is not guaranteed. The explanation does support the model's predicted entailment label.",
+      "total": 3
+    },
+    {
+      "id": "fracas-0133",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 0,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "The explanation does not identify the relevant E-type/donkey anaphora phenomenon; instead it treats the inference as an existential-vs-universal issue. That reasoning is unsound here, because 'them' refers back to the computers GFI owns, yielding entailment that ITEL maintains all of those computers. The explanation is, however, consistent with the model's predicted label Unknown.",
+      "total": 1
+    },
+    {
+      "id": "fracas-0137",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly reasons that the relevant quantification is over companies, yielding entailment. However, it does not identify the gold phenomenon of E-type/donkey anaphora; instead it focuses on counting/distributivity, which is related but not the tagged phenomenon.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0136",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly argues that the premise does not entail Smith brought all five laptops, so the Unknown label is well supported. However, it does not explicitly identify the key E-type/donkey pronoun issue with 'it' and instead gives a more general quantificational/distributional explanation, so it only partially matches the gold phenomenon.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0143",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies VP ellipsis in 'So did Bill' and accurately explains that only the core predicate 'spoke to Mary' is recovered, not the later time modifier attached to John's event. This soundly supports the Unknown label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0129",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies the plural anaphora: 'they' refers to John and his colleagues, and 'it' to the meeting. Its distributive inference from the plural subject to John individually is linguistically appropriate here, so the reasoning is sound and supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0127",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation explicitly identifies plural anaphora/coreference via 'them' referring to the two machines, which matches the gold phenomenon. Its reasoning is linguistically accurate and correctly supports entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0144",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation explicitly identifies VP ellipsis ('So did Bill') and correctly resolves it to the prior predicate, yielding that Bill spoke to Mary at four o'clock. This is linguistically accurate and directly supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0145",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies VP ellipsis in 'Bill did at five o'clock' and accurately resolves it to 'spoke to Mary,' which validly entails the hypothesis and supports the Entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0142",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation explicitly identifies VP ellipsis/anaphora, matching the gold phenomenon tag, and correctly resolves 'So did Bill' to mean Bill performed the same action as John, yielding entailment of 'Bill spoke to Mary.'",
+      "total": 5
+    },
+    {
+      "id": "fracas-0149",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies VP ellipsis in 'The students have too' and accurately recovers the omitted predicate as 'spoken to Mary.' This reasoning validly supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0148",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies VP ellipsis, matching the gold phenomenon tag, and accurately reconstructs 'Bill has' as 'Bill has spoken to Mary' from the prior question. This reasoning validly supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0147",
+      "gold": [
+        "Contradiction"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies VP ellipsis in 'Bill didn't' and accurately reconstructs the omitted predicate from the first sentence. This yields a direct negation of the hypothesis, so the reasoning is linguistically sound and supports the contradiction label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0146",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies VP ellipsis and accurately explains that 'Bill is going to' recovers the omitted verb phrase from the prior clause as 'speak to Mary,' with future tense interpretation. This directly supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0151",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation explicitly identifies gapping/ellipsis in the coordinated clause and correctly reconstructs 'Bill by train to Berlin' as 'Bill went by train to Berlin.' This is linguistically accurate and directly supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0150",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies gapping/ellipsis in the coordinated clause and accurately reconstructs the omitted material ('went to Paris') from the first clause. This reasoning validly supports the entailment that Bill went to Paris by train.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0155",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies one-anaphora/ellipsis: 'one' refers back to 'a car.' The reasoning is linguistically accurate and valid, and it directly supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0135",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation explicitly treats the premise as a donkey/E-type style generalization over each computer owned by a customer, which matches the gold phenomenon. Its reasoning is logically sound: from the universal rule and MFI owning several computers, it follows that MFI has a service contract for each one. This directly supports the predicted entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0154",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation explicitly identifies gapping/ellipsis, matching the gold phenomenon tag, and correctly reconstructs 'Bill by train' as 'Bill went to Paris by train,' which validly supports entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0153",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies gapping/ellipsis in the second conjunct and accurately reconstructs the omitted material as 'are going to Paris.' This makes the entailment reasoning linguistically and logically sound, and it directly supports the predicted label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0157",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies one-anaphora/ellipsis resolution: 'one' refers to 'car' in the prior sentence. This is linguistically accurate and validly supports the entailment that Bill owns a blue car.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0158",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly handles one-anaphora/ellipsis by interpreting 'one' as 'car' and uses that to reason that Bill owns a blue car. It soundly notes that this does not exclude Bill also owning a red car, so the hypothesis is neither entailed nor contradicted, matching the predicted Unknown label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0159",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies one-anaphora/ellipsis with 'one' referring to 'car,' matching the gold phenomenon. Its reasoning is linguistically accurate: 'fast one' means 'fast car,' and the adjective 'red' does not transfer. This directly supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0138",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies the key phenomenon as bridging/functional nominal anaphora: 'the cover page' is resolved to the cover page associated with the previously mentioned report R-95-103. The reasoning is linguistically appropriate and supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0140",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation mainly discusses the reflexive meaning and the active-to-passive weakening, which is related to the gold reflexive-anaphora phenomenon but does not explicitly identify simple reflexives/anaphora itself. The reasoning is sound: if Bill hurt himself, then Bill had been hurt, and the hypothesis is weaker. It clearly supports the entailment label.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0156",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies one-anaphora/ellipsis in 'one too' and accurately explains that it refers to a car without implying it is the same car John owns. This soundly supports the Unknown label, since shared ownership is possible but not entailed.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0165",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies phrasal ellipsis/sentence fragment behavior: 'On Friday' is an elliptical temporal adjunct attaching to the prior clause. The reasoning is linguistically accurate and directly supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0166",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies phrasal ellipsis in the fragment 'And on Friday' and accurately reconstructs the omitted predicate from the first clause. This supports the entailment label that John spoke to Mary on Friday.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0160",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies one-anaphora/ellipsis with 'one' referring to 'car,' matching the gold phenomenon. However, its reasoning is unsound for this item because in one-anaphora, 'one' can inherit the nominal modifier structure, so 'a fast one' in this context supports 'a fast red car.' The explanation does support the model's predicted label Unknown by arguing that redness cannot be concluded.",
+      "total": 3
+    },
+    {
+      "id": "fracas-0161",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies one-anaphora/ellipsis: 'one' stands in for 'car.' It also accurately reasons that only 'fast car' is licensed for Bill, while 'red' does not transfer from John's car, so the hypothesis is not entailed. This fully supports the predicted label Unknown.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0141",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly focuses on simple reflexive anaphora, noting that 'himself' refers to Bill rather than John. Its reasoning is linguistically accurate and correctly concludes that the premise neither entails nor contradicts the hypothesis, supporting the predicted Unknown label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0167",
+      "gold": [
+        "Contradiction"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies phrasal ellipsis in the second sentence ('But only one woman') as meaning only one woman works in the Sales Department. Its reasoning is logically sound: if only one woman works there, then the hypothesis that two women work there is contradicted. This fully supports the predicted label of Contradiction.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0163",
+      "gold": [
+        "Contradiction"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly captures sluicing/ellipsis by linking the bare 'why' to the antecedent event 'John had his paper accepted.' Its reasoning is linguistically accurate: the premise says Bill does not know the reason, while the hypothesis says he does, yielding contradiction. The explanation fully supports the predicted label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0168",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies phrasal ellipsis in the coordinated clause ('And forty five women') and accurately reconstructs the omitted predicate ('work part time'). This reasoning is linguistically sound and directly supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0173",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation explicitly resolves the ellipsis in 'did' as 'spoke to,' matching the ellipsis/ACD phenomenon, and then correctly applies universal reasoning from John's speaking to Mary to conclude Bill spoke to Mary. This fully supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0174",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly captures the entailment pattern created by the ellipsis: John's addressees are a subset of Bill's, so Bill speaking to Mary does not imply John did. However, it does not explicitly identify the specific phenomenon of antecedent-contained deletion, only the resulting monotonicity/subset relation. The reasoning is logically sound and supports the Unknown label.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0171",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies phrasal ellipsis/gapping in the fragment 'And women' and accurately reconstructs the omitted material from the prior clause. This reasoning validly supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0152",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation explicitly identifies gapping/ellipsis, matching the gold phenomenon tag. Its reasoning is linguistically accurate: the omitted verb phrase in the second conjunct is recovered from the first, yielding 'Bill went to Berlin by car.' This directly supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0179",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation gives correct entailment reasoning via modus ponens, so it is logically sound and supports the predicted label. However, it does not identify the gold phenomenon of ellipsis/configurational effects, instead appealing to general logical inference.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0162",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies one-anaphora/ellipsis with 'one' referring to 'car.' However, its reasoning is unsound for this item: in 'Bill owns a slow one,' 'one' inherits the nominal modifier structure from 'fast red car,' yielding 'slow red car,' so the gold entailment holds. The explanation does support the model's predicted Unknown label by claiming red is not entailed.",
+      "total": 3
+    },
+    {
+      "id": "fracas-0172",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies phrasal ellipsis in the coordinated question ('and which') and accurately reconstructs the omitted material as 'which men work part time.' This makes the entailment reasoning linguistically and logically sound, and it directly supports the predicted label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0178",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies VP ellipsis ('did too') as the relevant ellipsis phenomenon and accurately resolves it to 'wrote a report.' This reasoning validly supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0170",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies phrasal ellipsis/structural ambiguity in 'before Bill' and accurately notes the two readings: 'before John found Bill' vs. an elliptical clause akin to 'before Bill did.' That reasoning is linguistically sound and directly supports the model's Unknown prediction.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0183",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies VP ellipsis/anaphora and the strict/sloppy ambiguity triggered by the possessive. Its reasoning is linguistically accurate: 'so does Jones' can mean Jones represents Smith's company or Jones's own company, so the hypothesis is not guaranteed. This directly supports the model's predicted label Unknown.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0182",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies ellipsis/anaphora with a strict/sloppy ambiguity, matching the gold phenomenon. Its reasoning is linguistically sound: 'so does Jones' can mean Jones represents Smith's company or Jones's own company, so the hypothesis is not entailed. This directly supports the model's predicted label of Unknown.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0169",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies phrasal ellipsis/ellipsis resolution as the key phenomenon. However, its linguistic reasoning is unsound: in this construction, 'before Bill' is naturally resolved as 'before Bill found Mary,' and the alternative 'before John found Bill' is not a valid reading here. The explanation does support the model's predicted label of Unknown by claiming ambiguity prevents entailment.",
+      "total": 3
+    },
+    {
+      "id": "fracas-0175",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies VP ellipsis/configurational effects in 'Bill did too' and resolves it to the prior predicate 'said Mary wrote a report.' This yields the hypothesis that Bill said Mary wrote a report, so the reasoning is linguistically accurate and supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0180",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies VP ellipsis/configurational ellipsis in 'he did' and accurately resolves it to 'buy a car.' This makes the entailment reasoning linguistically sound and directly supports the predicted Entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0176",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies VP ellipsis/configurational ambiguity, matching the gold phenomenon. Its reasoning is linguistically sound: the premise has at least two readings, only one of which entails the hypothesis, so the hypothesis is not guaranteed. This supports the model's predicted label of Unknown.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0190",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "It correctly identifies VP-ellipsis/anaphora and the strict/sloppy ambiguity, matching the gold phenomenon. However, given the premise 'John represents his company and so does Mary,' the strict reading licenses the hypothesis and the gold label is entailment in this dataset, so claiming the hypothesis is not guaranteed is judged unsound here. The explanation does support the model's predicted label 'Unknown.'",
+      "total": 3
+    },
+    {
+      "id": "fracas-0189",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies VP ellipsis/anaphora and the strict/sloppy ambiguity, matching the gold phenomenon. However, its reasoning is unsound for this item: with 'John represents his company and so does Mary,' the natural sloppy reading entails that Mary represents her own company, so the hypothesis is entailed rather than merely possible. The explanation does support the model's predicted label 'Unknown' by arguing non-entailment.",
+      "total": 3
+    },
+    {
+      "id": "fracas-0184",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation explicitly identifies VP ellipsis and the associated strict/sloppy ambiguity, matching the ellipsis/anaphora phenomenon. Its reasoning is linguistically accurate: the premise does not entail that Smith represents Jones's company unless additional identity information is given. This directly supports the predicted Unknown label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0185",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "It correctly identifies VP ellipsis/anaphora, matching the gold phenomenon. However, the reasoning is linguistically wrong here: with 'Smith claimed he had costed his proposal and so did Jones,' the embedded pronouns are interpreted relative to each subject, so the premise entails that Jones claimed he had costed his own proposal. The explanation nevertheless is consistent with the model's predicted Unknown label because it argues the hypothesis is not guaranteed.",
+      "total": 3
+    },
+    {
+      "id": "fracas-0186",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies VP-ellipsis and the strict/sloppy ambiguity of the possessive, which matches the ellipsis/anaphora phenomenon. Its reasoning is linguistically sound: the premise permits both readings, so the hypothesis is not entailed on all interpretations. This directly supports the model's predicted label of Unknown.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0181",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies VP ellipsis/configurational effects and accurately resolves 'Bill did' to the elided predicate 'needed to buy a car,' not 'bought a car.' Since needing to buy a car does not entail buying one, the reasoning is sound and supports the Unknown label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0197",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly targets the adjective phenomenon: 'genuine' is an affirmative adjective that preserves category membership, so 'genuine diamond' entails 'diamond.' The reasoning is linguistically accurate and directly supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0198",
+      "gold": [
+        "Contradiction"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies the key lexical/adjectival phenomenon: 'former' is a non-affirmative adjective indicating past status, which contradicts the current-status claim in the hypothesis. The reasoning is linguistically accurate and directly supports the predicted contradiction label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0188",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies VP-ellipsis/anaphora, matching the gold phenomenon. Its reasoning is linguistically sound: 'so did Jones' creates an elliptical parallel claim, and the pronouns leave multiple possible readings, so the hypothesis is not entailed. This directly supports the predicted label Unknown.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0187",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies VP-ellipsis/anaphora and the strict/sloppy ambiguity, matching the gold phenomenon. However, its semantic analysis is wrong for this sentence: 'Smith claimed he had costed his proposal and so did Jones' means Jones also made the same kind of claim, and the strict reading supports the hypothesis, which is enough for entailment under the gold label. The explanation does support the model's predicted label 'Unknown' by arguing ambiguity blocks entailment.",
+      "total": 3
+    },
+    {
+      "id": "fracas-0200",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly focuses on the non-affirmative adjective 'former,' which shifts the property 'successful university student' to the past and blocks entailment about John's current success. The reasoning is linguistically accurate and directly supports the Unknown label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0204",
+      "gold": [
+        "Contradiction"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation explicitly identifies opposite adjectives ('small' vs. 'large') as the source of contradiction, matching the gold phenomenon tag. Its reasoning is logically and linguistically correct, and it directly supports the predicted label of Contradiction.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0199",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly targets adjective interaction, especially how non-affirmative 'former' affects only 'student' while affirmative 'successful' still predicates of John. The reasoning is linguistically accurate and directly supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0202",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies intersective adjectival modification ('four-legged mammal' = four-legged ∩ mammal), which matches the adjective phenomenon, and validly applies subset reasoning from mammal ⊆ animal to derive four-legged mammal ⊆ four-legged animal. It directly supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0203",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly targets adjectival modification without invoking any comparison class, matching the gold phenomenon. It is logically sound: 'four-legged animal' entails both being an animal and being four-legged via intersective modification. This directly supports the predicted entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0205",
+      "gold": [
+        "Contradiction"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies adjective opposites/lexical antonymy between 'large' and 'small,' which matches the gold phenomenon. Its reasoning is logically sound: the hypothesis contradicts the premise because the adjectives are incompatible in the same respect. This directly supports the predicted label of Contradiction.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0206",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "It correctly identifies the adjective/opposites issue: 'not small' does not entail the antonym 'large'. The reasoning is logically and linguistically sound, noting possible intermediate sizes, and it directly supports the predicted Unknown label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0207",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies the opposites/gradable antonyms phenomenon: 'not large' does not entail 'small' because intermediate sizes are possible. The reasoning is linguistically and logically sound and directly supports the predicted Unknown label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0194",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies the key ellipsis/gapping issue in the second conjunct and resolves it appropriately. Its reasoning is linguistically accurate: 'Carl to Alan's wife' parallels the first clause and implies Carl suggested that Carl and Alan's wife go together, not Carl and Alan. That supports the Unknown label, since the hypothesis's consequent is not entailed but also not contradicted.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0209",
+      "gold": [
+        "Contradiction"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies opposite adjectives on the size scale ('small' vs. 'large'), matching the gold phenomenon. Its reasoning is logically sound: if Mickey is small and Dumbo is large, the claim that Mickey is larger than Dumbo is contradicted. The explanation clearly supports the predicted label of Contradiction.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0201",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies the key adjective phenomenon: 'former' is a non-affirmative/privative modifier that blocks inference to the current noun phrase. Its reasoning is sound: from 'former successful university student' we cannot conclude John is currently a university student, though it remains possible. This directly supports the predicted Unknown label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0208",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies scalar reasoning with opposite gradable adjectives ('small' vs. 'large') over the same comparison class, which matches the gold phenomenon. Its reasoning is linguistically and logically sound for deriving that Mickey is smaller than Dumbo, and it directly supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0210",
+      "gold": [
+        "Contradiction"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies the extensional/comparison-class behavior of the adjective 'large' (large for a mouse vs. large for an animal). Its reasoning is linguistically accurate and supports the contradiction label: from the premises Mickey is a mouse and thus a small animal, so 'Mickey is a large animal' is incompatible with the premise.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0196",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies VP-ellipsis with quantification, matching the gold phenomenon. Its reasoning is linguistically and logically sound: 'so did an auditor' recovers 'signed every report,' and on the intended reading entails that there exists an auditor who signed all the reports. This directly supports the predicted entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0177",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly focuses on configurational VP-ellipsis attachment under 'John said,' matching the ellipsis/configurational-effects phenomenon. Its parse is linguistically accurate: 'Bill did too' is interpreted as another clause under John's saying, yielding that John said Bill wrote a report, not that Bill said Mary wrote a report. That reasoning supports the model's predicted contradiction label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0214",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly targets the adjective phenomenon by noting that 'fat' is intersective, so membership in 'fat legal authorities' entails membership in 'fat law lecturers' given that all legal authorities are law lecturers. The reasoning is logically valid and directly supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0213",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies the relevant phenomenon: extensional comparison classes for adjectives, noting that 'large mouse' is compatible with being a 'small animal' overall. Its reasoning is linguistically sound and directly supports the model's predicted entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0218",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly states that 'a clever person' entails 'clever' and is logically sound. However, it does not explicitly identify the specific phenomenon of default comparison classes for adjectives, instead giving a more general compositional paraphrase.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0220",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly targets the phrasal comparative inference: from 'A is faster than B' and 'B is fast,' infer 'A is fast.' Its reasoning about the scalar property and threshold is logically appropriate, and it directly supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0222",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation directly addresses the phrasal comparative inference: being faster than another item does not imply that the slower item is not fast. Its reasoning is logically correct and accurately supports the Unknown label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0216",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly targets the comparison-class issue in adjectival comparatives: 'fatter politician than Bill' compares John and Bill on fatness while 'politician' restricts the noun phrase. The reasoning is linguistically sound here and supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0211",
+      "gold": [
+        "Contradiction"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies the adjective/comparison-class issue: 'small elephant' is interpreted relative to elephants, not animals generally. Its reasoning is linguistically and logically sound given the premises, and it directly supports the contradiction label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0221",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies the comparative construction and explains that a phrasal comparative ('faster than') does not entail the absolute adjective ('fast'). This is logically sound and directly supports the predicted Unknown label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0212",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies the relevant phenomenon: adjective interpretation relative to comparison classes ('large mouse' vs. 'small elephant'), which matches extensional comparison classes. Its reasoning is sound: Mickey is a mouse and thus a small animal despite being a large mouse; Dumbo is an elephant and thus a large animal despite being a small elephant, supporting that Dumbo is larger than Mickey. This directly supports the predicted entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0219",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 1,
+      "consistency": 1,
+      "justification": "The explanation discusses adjectival modification and intersective vs. non-entailing adjectives, which is related to the gold adjective phenomenon but misses the specific issue of default comparison classes. Its reasoning supports entailment from 'clever politician' to 'clever,' which is broadly plausible, though it overlooks why the gold label is Unknown under comparison-class sensitivity. It is consistent with the model's predicted Entailment label.",
+      "total": 3
+    },
+    {
+      "id": "fracas-0225",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies the phrasal comparative construction 'as fast as' and explains that it expresses equality, not absolute fastness. The reasoning is logically sound: two items can be equally fast while both failing to satisfy the absolute predicate 'fast,' which supports the Unknown label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0227",
+      "gold": [
+        "Contradiction"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies phrasal comparative/equality reasoning ('as fast as') and validly infers equal speed. Given PC-6082 is slow, ITEL-XZ must also be slow, which contradicts the hypothesis that ITEL-XZ is fast.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0224",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly targets the phrasal comparative construction 'as fast as' and uses it appropriately: equal speed plus ITEL-XZ being fast entails PC-6082 is fast. It is logically sound and directly supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0228",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies the comparative phenomenon: an equative phrasal comparative ('as fast as') versus a strict comparative ('faster than'). Its reasoning is linguistically and logically sound, since equality is incompatible with strict greater-than. It also directly supports the model's predicted label of Contradiction.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0229",
+      "gold": [
+        "Contradiction"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly focuses on the comparative relation: 'as fast as' expresses equality, which conflicts with the ordered comparative 'slower than.' The reasoning is logically and linguistically accurate, and it directly supports the predicted contradiction label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0230",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly focuses on the phrasal comparative 'more orders than APCOM' and derives the existential inference from a comparison over nonnegative counts. The reasoning is logically sound and directly supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0232",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies comparative reasoning over counts, matching phrasal comparatives. It validly infers that if APCOM won 10 orders and ITEL won more, then ITEL must have won at least 11, given discrete countable items. This directly supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0223",
+      "gold": [
+        "Contradiction"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly focuses on phrasal comparative reasoning ('faster than' implies the other item is slower) and connects it to the antonym pair fast/slow. The inference is logically sound: if PC-6082 is slow and still faster than ITEL-XZ, then ITEL-XZ cannot be fast. This directly supports the predicted contradiction label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0233",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies a phrasal comparative over a countable noun phrase ('more orders than APCOM'). Its reasoning is sound: if ITEL won more orders than APCOM, ITEL's number of orders must exceed APCOM's and therefore be at least one, which entails 'won some orders.' It directly supports the predicted entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0238",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies the phrasal comparative 'twice as many' and applies the arithmetic inference accurately: APCOM has 10 orders, so ITEL has 20. This fully supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0234",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies a phrasal comparative quantity construction ('more orders than') and explains the key inference: the comparison does not guarantee APCOM won any orders, since APCOM could have won zero. This reasoning is logically sound and supports the predicted Unknown label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0231",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies the phrasal comparative issue: 'more orders than' only establishes an ordering, not that APCOM's count is positive. The reasoning is logically sound, and it directly supports the predicted Unknown label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0235",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies comparative reasoning with a phrasal comparative ('more orders than APCOM') and validly infers that if APCOM won 10, ITEL won more than 10, hence at least 11 given discrete countable orders. This directly supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0217",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "The explanation directly engages the comparison-class issue signaled by 'cleverer politician,' matching the adjective/comparison-class phenomenon. However, its reasoning is linguistically incorrect: 'John is a cleverer politician than Bill' compares John-as-politician to Bill, not necessarily John and Bill simpliciter on cleverness, so entailment does not follow. The explanation is nevertheless consistent with the model's predicted entailment label.",
+      "total": 3
+    },
+    {
+      "id": "fracas-0215",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation directly targets the adjective issue in the gold tag: 'competent' can be comparison-class/role dependent and need not transfer across coextensive nouns. Its reasoning is linguistically and logically appropriate, and it clearly supports the Unknown prediction by denying entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0241",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly handles the comparative clausal complement: ITEL won more orders than APCOM lost, and APCOM lost ten, so ITEL won more than 10. It also validly infers at least 11 from whole-number counting. This fully supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0239",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation directly engages the comparative clausal-complement structure ('won more orders than APCOM lost') and correctly reasons that since losses cannot be negative, ITEL's wins must be greater than 0, which entails 'some orders.' It fully supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0243",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies a differential comparative with exact numerical reasoning ('3000 more than') and applies valid arithmetic: 2500 + 3000 = 5500. This fully supports the predicted entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0226",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "The explanation correctly focuses on the phrasal comparative 'as fast as' and interprets it as equality of speed. However, its inference is unsound: from PC-6082 being as fast as ITEL-XZ and PC-6082 being fast, it does not validly follow that ITEL-XZ is fast, since 'fast' is context-dependent/vague and equality in speed alone does not guarantee preservation of the predicate. The explanation does support the model's predicted entailment label.",
+      "total": 3
+    },
+    {
+      "id": "fracas-0240",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly focuses on the comparative construction and its clausal complement ('won more orders than APCOM lost'). It validly notes that this does not entail APCOM lost any orders, since APCOM could have lost zero and ITEL still could have won more than zero. This supports the predicted Unknown label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0246",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies the comparative-plus-quantifier structure ('faster than every ITEL computer') and applies universal instantiation to the named ITEL computer. The reasoning is logically valid and directly supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0242",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly focuses on comparative reasoning with a shared measure threshold (500 MIPS), matching the measure-phrase comparative phenomenon. Its logic is valid: being above 500 MIPS while the other is below 500 MIPS entails the first is faster. This directly supports the predicted entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0248",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly targets the comparative-with-universal-quantification phenomenon: 'faster than any ITEL computer' plus membership of ITEL-ZX in that set entails the comparison. The reasoning is logically valid and directly supports the Entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0247",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly focuses on the existential quantifier/comparative structure: 'some ITEL computer' does not specify the ITEL-ZX. Its reasoning is logically sound, and it directly supports the predicted label Unknown.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0193",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation explicitly identifies gapping/ellipsis and resolves the anaphoric 'they' correctly in both conjuncts, matching the gold ellipsis/anaphora phenomenon. Its reasoning is linguistically accurate and shows why the conditional is entailed, so it supports the predicted Entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0249",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation focuses on conjunction elimination rather than explicitly identifying the comparative phenomenon, so it is related but not a direct match to the gold tag. However, the reasoning is logically valid: from being faster than both ITEL-ZX and ITEL-ZY, it follows that PC-6082 is faster than ITEL-ZX. This fully supports the predicted entailment label.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0251",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies the temporal-reference issue: the present-tense verb 'has' normally implies a current state, so adding 'currently' preserves the meaning. The reasoning is linguistically accurate and directly supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0236",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "The explanation correctly focuses on the comparative construction ('more orders than'), matching the phrasal comparative phenomenon. However, its reasoning is unsound: 'won more orders than the APCOM contract' implies the APCOM contract is among the orders ITEL won, so the hypothesis is entailed. The explanation is nevertheless consistent with the model's predicted label 'Unknown' because it argues the hypothesis is not supported.",
+      "total": 3
+    },
+    {
+      "id": "fracas-0252",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies the temporal-reference issue: 'since 1992' with present perfect indicates a state holding continuously up to 1996. From that, concluding ITEL was in Birmingham in 1993 is linguistically and logically valid, and it directly supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0245",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "The explanation correctly focuses on an attributive comparative and the possibility of an elliptical reading, matching the gold phenomenon. However, its core claim is linguistically wrong here: the premise naturally entails the hypothesis, and the alleged ambiguity does not block entailment in this case. The explanation does support the model's predicted label of Unknown by arguing the hypothesis is not guaranteed.",
+      "total": 3
+    },
+    {
+      "id": "fracas-0260",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies temporal reference resolution via the deictic adverbial 'yesterday' relative to 'today is Saturday, July 14th.' The inference to Friday, July 13th is logically valid, and it directly supports the Entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0250",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 1,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "The explanation focuses on disjunction ('or') rather than the comparative/quantifier phenomenon in the gold tag, so it is only related. Its logic is unsound here because in natural language/comparative semantics, 'faster than X or Y' entails being faster than X (and also than Y), so the explanation incorrectly denies entailment. It is nevertheless consistent with the model's predicted label 'Unknown'.",
+      "total": 2
+    },
+    {
+      "id": "fracas-0257",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly focuses on temporal reference and the meaning of present perfect with 'since 1992' extending through 1996. It validly infers that 1993 is included in that interval, so the hypothesis is entailed, matching the predicted label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0261",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies temporal ordering via the adverbial relation 'before' and applies valid transitive reasoning: if Smith left before Jones and Jones before Anderson, then Smith before Anderson. This fully supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0259",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly uses temporal reasoning about the start date and duration, matching the temporal adverbials phenomenon. Its logic is sound: a conference starting July 4 and lasting 2 days would end before July 8, so it supports entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0262",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly focuses on temporal ordering via the adverbial relation 'after,' matching the temporal reference phenomenon. Its transitive reasoning is logically valid: if Smith left after Jones and Jones left after Anderson, then Smith left after Anderson. This directly supports the predicted entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0258",
+      "gold": [
+        "Contradiction"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly uses temporal reasoning tied to the founding event in March 1993, matching the temporal reference phenomenon. It is logically sound that if ITEL was founded in 1993, it did not already exist in 1992, and this directly supports the contradiction label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0256",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly focuses on the temporal meaning of the present perfect with 'since 1992' and interprets it as continuing through 1996, which matches the gold temporal-reference phenomenon. Given that reading, concluding that 1993 is included is linguistically and logically sound. The explanation directly supports the model's predicted entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0244",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "The explanation directly discusses comparative structure and ellipsis ambiguity, which matches attributive comparatives. However, its linguistic claim is incorrect for this item: the premise naturally supports the hypothesis's comparative-ellipsis reading, so treating the hypothesis as fixing only a non-entailed reading is unsound. It does, however, support the model's predicted label of Unknown by arguing non-entailment due to ambiguity.",
+      "total": 3
+    },
+    {
+      "id": "fracas-0253",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies the temporal-reference issue: 'since 1992' establishes a time interval up to 1996, not a specific year such as 1993. The reasoning is logically sound and accurately supports the Unknown label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0237",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly focuses on the phrasal comparative structure ('more orders than the APCOM contract') and interprets the singular NP as denoting one order/contract. The inference to 'more than one order' is logically valid, so it supports the Entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0264",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies the temporal relation between 'before' and 'after,' matching the temporal adverbial phenomenon. Its reasoning is logically valid: 'Smith left before Jones left' entails 'Jones left after Smith left.' It directly supports the predicted entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0266",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies the temporal adverbial relation between 'before' and 'after,' matching the gold temporal-reference phenomenon. Its reasoning is logically valid: 'Jones left before Smith left' entails 'Smith left after Jones left.' It directly supports the predicted Entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0268",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly focuses on the temporal adverbials 'after' and 'before,' matching the gold phenomenon. Its reasoning is logically valid: 'Jones revised the contract after Smith did' entails 'Smith revised the contract before Jones did.' This directly supports the predicted entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0265",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies the temporal adverbial relation between 'after' and 'before' and accurately states the equivalence obtained by swapping the arguments. This is logically sound and directly supports the Entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0267",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies the temporal ordering phenomenon involving the adverbials 'before' and 'after'. Its reasoning is logically valid: 'Jones before Smith' entails 'Smith after Jones'. It directly supports the predicted entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0269",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly focuses on the temporal adverbial relation between 'before' and 'after,' matching the gold phenomenon tag. Its reasoning is logically valid: 'Smith swam before Jones swam' is equivalent to 'Jones swam after Smith swam.' It directly supports the model's predicted label of Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0271",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly focuses on the temporal relation between 'after' and 'before,' matching the temporal adverbial phenomenon. Its reasoning is logically valid: 'Smith was present after Jones was present' entails 'Jones was present before Smith was present.' The explanation directly supports the model's predicted entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0263",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly focuses on temporal ordering and adverbial relations ('after'/'before'), matching the gold phenomenon. Its reasoning is logically valid: from Anderson being present before Jones left and Smith being present after Jones left, it follows that Smith was present after Anderson was present. The explanation directly supports the model's predicted entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0255",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies the temporal-reference phenomenon: interpreting 'since 1992' as a state continuing up to the reference time established as 1996. The reasoning is linguistically and logically sound, and it directly supports the entailment label by placing 1993 within that interval.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0270",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies the temporal relation between 'before' and 'after,' matching the temporal adverbials phenomenon. Its reasoning is logically valid: 'Smith before Jones' entails 'Jones after Smith.' It directly supports the predicted entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0272",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly focuses on the temporal relation between 'before' and 'after,' matching the temporal adverbials phenomenon. Its reasoning is logically valid: 'Smith before Jones' entails 'Jones after Smith.' The explanation directly supports the model's predicted entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0254",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly focuses on temporal interpretation of the present perfect with 'since 1992' and the reference time 'now 1996.' It soundly explains that this only guarantees expansion at some point in the interval up to 1996, not specifically in 1993, which supports the Unknown label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0274",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly focuses on the temporal adverbial relation between 'after' and 'before,' matching the gold temporal-reference phenomenon. Its reasoning is logically valid: 'Smith after Jones' entails 'Jones before Smith.' It also directly supports the model's predicted Entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0277",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies the temporal adverbial issue: living somewhere in 1991 does not entail living there in 1992. The reasoning is logically sound and directly supports the Unknown label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0273",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly focuses on the temporal adverbial relation between 'before' and 'after,' matching the gold phenomenon. Its reasoning is logically valid: 'Smith before Jones' is equivalent to 'Jones after Smith.' It directly supports the model's predicted Entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0284",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation directly addresses temporal adverbials and time arithmetic: starting at 8 am and taking two hours implies finishing at 10 am, which entails being finished by 11 am. The reasoning is logically and linguistically correct and supports the Entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0280",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies the temporal adverbial contrast between 1991 and 1992, which matches the gold temporal reference phenomenon. Its reasoning is logically sound: writing a novel in 1991 neither entails nor contradicts writing one in 1992, so Unknown is justified. The explanation fully supports the predicted label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0281",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly focuses on temporal reference/persistence across years, matching the gold temporal adverbial phenomenon. Its reasoning is sound: being in business in 1991 does not entail still being in business in 1992. This directly supports the predicted Unknown label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0282",
+      "gold": [
+        "Contradiction"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies a temporal adverbial mismatch between 1991 and 1992, which matches the gold phenomenon. Its reasoning is logically sound, and it directly supports the predicted contradiction label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0288",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly targets the temporal adverbial/duration phrase 'in two hours' and explains that removing this modifier preserves the core event 'wrote a report.' The reasoning is linguistically sound and directly supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0275",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly targets the temporal adverbial/connective 'before,' which matches the gold temporal-reference phenomenon. Its reasoning is linguistically accurate: 'before' does not entail that the subordinate event occurred, so the premise does not entail that Smith lost his temper. This directly supports the predicted label Unknown.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0286",
+      "gold": [
+        "Contradiction"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly focuses on the temporal adverbial 'in two hours' and its durational meaning, matching the gold temporal-reference phenomenon. Its reasoning is linguistically appropriate here: completing the report in two hours contradicts spending more than two hours writing it. This directly supports the predicted contradiction label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0290",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly focuses on the temporal adverbial 'in two hours' and explains that it adds duration/timing information without changing the truth of the core event. The reasoning is linguistically appropriate and directly supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0278",
+      "gold": [
+        "Contradiction"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies a temporal mismatch in the date of the same event, matching the temporal adverbial phenomenon. Its reasoning is logically sound: 'first novel' written in 1991 cannot also have been written in 1992. This directly supports the predicted contradiction label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0283",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies the temporal adverbial mismatch between 1991 and 1992, matching the gold phenomenon. Its reasoning is logically sound: a discovery in 1991 neither entails nor contradicts a discovery in 1992. This directly supports the predicted Unknown label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0296",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly focuses on the temporal adverbial 'in two years' and distinguishes completion time from duration. Its reasoning is linguistically accurate: the premise does not specify ownership lasting more than two years, so Unknown is supported.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0279",
+      "gold": [
+        "Contradiction"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly focuses on temporal reference via differing year adverbials (1991 vs. 1992), matching the gold phenomenon. Its reasoning is sound: if 'it' refers to the same novel-writing event, the two years are incompatible, yielding contradiction. This directly supports the predicted label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0293",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly focuses on the temporal adverbial 'in two years' and distinguishes it from duration. Its reasoning is linguistically accurate: the premise does not specify how long Smith ran the business, so 'Unknown' is supported.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0285",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "The explanation directly addresses the temporal adverbial 'in two hours' and its interpretation, matching the gold phenomenon. However, its semantics are wrong: 'wrote a report in two hours' can mean completion within two hours, not necessarily that Smith spent the full two hours writing, so entailment does not follow. The explanation does support the model's predicted entailment label.",
+      "total": 3
+    },
+    {
+      "id": "fracas-0299",
+      "gold": [
+        "Contradiction"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly focuses on the temporal duration expressions ('two years' vs. 'exactly a year'), which matches the temporal adverbial phenomenon. Its reasoning is logically sound: two years contradicts exactly one year. It directly supports the predicted contradiction label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0291",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies the temporal adverbial 'in two hours' as expressing event duration/completion time, which matches the gold temporal-reference phenomenon. Its reasoning is linguistically sound: the premise entails that the discovering event lasted two hours, supporting the paraphrase in the hypothesis. This directly supports the predicted entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0295",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly focuses on the temporal adverbial contrast between 'in two years' and 'for two years,' which matches the gold temporal-reference phenomenon. Its reasoning is linguistically sound: 'in two years' does not entail a two-year duration of ownership, while 'for two years' does. This directly supports the predicted Unknown label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0300",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly focuses on the temporal adverbial 'for two years' and explains that it adds duration without changing the truth of the simpler statement. The reasoning is linguistically and logically sound, and it directly supports the predicted entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0292",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly focuses on the temporal adverbial contrast between 'in two years' and a two-year duration reading, matching the gold temporal-reference phenomenon. Its reasoning is linguistically sound: 'in two years' does not entail 'for two years,' so the hypothesis is neither entailed nor contradicted. This directly supports the predicted label Unknown.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0287",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly focuses on the temporal adverbial difference ('in two hours' vs. 'in one hour') and accurately notes that the premise does not entail the hypothesis. It also reasonably explains why this is not a contradiction under an indefinite reading of 'a report,' which supports the predicted Unknown label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0306",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly focuses on the temporal adverbial 'for two years' and its entailment to a simpler past event statement. The reasoning is logically sound: a two-year period of discovering new species entails that Smith did discover new species. It directly supports the predicted entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0307",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly focuses on temporal adverbials and the inference from 'every month in 1994' to a specific month, July 1994. The reasoning is logically sound, and it directly supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0298",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies temporal duration entailment involving temporal adverbials ('for two years' entails 'for a year'). Its reasoning is logically valid: a two-year residence includes at least one year of residence, which supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0311",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies the temporal sequencing/anaphoric cues ('Then' and past perfect 'had left') that establish event order. Its reasoning is linguistically accurate and directly supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0302",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies the temporal adverbial/duration phrase 'for two years' as adding temporal detail without altering the core event, which matches the gold temporal reference phenomenon. The reasoning is linguistically and logically sound, and it directly supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0294",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 1,
+      "consistency": 1,
+      "justification": "The explanation focuses on aspectual weakening from past progressive to simple past, which is related but does not identify the gold temporal-adverbial phenomenon ('in two years'). Its reasoning supports entailment, but it inaccurately paraphrases the premise as referring to 'some past time' and ignores the temporal adverbial, so it is only partially sound.",
+      "total": 3
+    },
+    {
+      "id": "fracas-0303",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly targets temporal duration/adverbial reasoning, specifically subinterval entailment from 'for two hours' to 'for an hour.' The logic is valid and linguistically appropriate, and it directly supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0314",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly focuses on temporal continuity over an interval: arriving in Paris on May 5 and still being there on May 15 supports being there on May 7. The reasoning is logically sound for the entailment label and directly supports the model's prediction.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0316",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly focuses on temporal reasoning: 'employed ever since' graduation means any past unemployment must precede graduation. This is logically sound and directly supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0317",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly handles the temporal-duration reasoning: 16 representatives, each taking at least half a day, with no overlap, implies a minimum of 8 days total, which is more than a week. This is logically valid and directly supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0315",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly focuses on temporal reference and interval inclusion: 'had been travelling for three days' entails travel during the period immediately before arrival, including the previous day. The reasoning is linguistically and logically sound and directly supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0289",
+      "gold": [
+        "Contradiction"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly targets the temporal adverbial/aspect distinction between 'in two hours' (time to completion) and 'spent two hours' (duration of activity), which matches the gold phenomenon. Its reasoning is linguistically sound and explains why the hypothesis does not follow from the premise. This supports the model's predicted label of Unknown.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0297",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 0,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "The gold phenomenon is temporal adverbials ('In two years'), but the explanation ignores time and instead focuses on a supposed lexical/number mismatch. That reasoning is not linguistically sound here: 'a chain of businesses' and 'a chain of business' do not create a contradiction, so the explanation is incorrect, though it does at least support the model's predicted contradiction label.",
+      "total": 1
+    },
+    {
+      "id": "fracas-0308",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly analyzes the non-entailment via quantifier scope: the premise allows possibly different representatives each week, while the hypothesis requires one fixed representative across all weeks. This is sound and supports the Unknown label. However, the gold phenomenon is temporal adverbials, and the explanation focuses primarily on quantifier scope rather than temporal reference itself, so it is related but not a direct match.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0304",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly focuses on the temporal adverbial 'for two hours' and its effect on event interpretation. It is linguistically sound: the durative phrase does not entail completion of the telic event, so the Unknown label is supported.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0320",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly targets the temporal inference in 'would never be allowed,' matching the gold temporal-reference phenomenon, and also appropriately notes the factive contribution of 'knew.' Its reasoning is linguistically and logically sound: from the premise, it follows that Jones is not allowed now and will not be allowed in the future. This directly supports the predicted entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0301",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly targets temporal duration/adverbial reasoning: 'for two years' entails 'for a year' via duration inclusion. The logic is valid and directly supports the Entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0318",
+      "gold": [
+        "Contradiction"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies temporal reasoning about overlapping events and relative finishing times, matching the temporal reference phenomenon. Its logic is sound: overlap does not imply equal duration, and Mary finishing before Jones rules out her story lasting as long as his updating. This directly supports the predicted contradiction label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0321",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly handles the temporal-reference reasoning: past visits plus two future visits imply at least four total by next year, and that remains true two years from now. The logic is valid and directly supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0312",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly handles the adverb of quantification 'always' as a universal temporal generalization and applies it to the 1993 event. The reasoning is logically valid: if ITEL always delivers reports late and it delivered reports in 1993, then those 1993 deliveries were late. This directly supports the predicted entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0323",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly focuses on the temporal semantics of 'not... until' and combines it with the impossibility of gambling while broke to infer the stopping time. The reasoning is logically sound and directly supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0328",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation is logically correct: winning 'the contract' entails winning 'a contract' in 1993. However, it focuses on existential generalization/NP specificity rather than the gold phenomenon of verbal aspectual class, so it addresses a related but different phenomenon.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0327",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly targets aspectual meaning: the progressive 'was building' describes an ongoing event and does not entail completion, which matches the gold phenomenon tag about aspectual classes. The reasoning is linguistically accurate and supports the Unknown label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0329",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly targets aspectual meaning, specifically the progressive 'was winning' versus completed 'won,' which matches the gold verb/aspect phenomenon. Its reasoning is linguistically sound: progressive aspect does not entail completion, so the hypothesis is not guaranteed. This directly supports the predicted label Unknown.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0313",
+      "gold": [
+        "Contradiction"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly focuses on the adverb of quantification 'never' and its temporal implication for the 1993 deliveries. The reasoning is logically valid: if ITEL never delivers reports late and did deliver reports in 1993, then those deliveries were not late, contradicting the hypothesis. This fully supports the predicted contradiction label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0319",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly focuses on temporal sequencing and duration aggregation, matching the temporal reference phenomenon. Its reasoning is valid: 8 years before plus more than 10 years since implies more than 18 years total, which entails at least 15 years. It directly supports the predicted entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0331",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly treats the subject conjunction distributively: from 'Smith and Jones left the meeting' it follows that Smith left. This matches the distributive/collective predication phenomenon, is logically valid, and supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0330",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly reasons that a state holding from 1988 to 1992 includes 1990, so the entailment is sound and supports the predicted label. However, it frames this mainly as temporal interval reasoning rather than explicitly identifying the gold phenomenon of aspectual class/state verb behavior.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0332",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly treats the premise as a conjunction with distributive predication over the coordinated subject, matching the gold phenomenon. The reasoning via conjunction elimination is logically valid: from 'Smith and Jones left the meeting,' it follows that Jones left the meeting. This directly supports the predicted entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0336",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies the implicative/attitude-related phenomenon: 'managed to' entails the truth of the embedded event. The reasoning is linguistically accurate and valid, and it directly supports the Entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0333",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly captures the collective/distributive predication issue: from named individuals meeting, it follows that a group consisting of them met. The reasoning is logically sound and directly supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0338",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly targets the epistemic/reportive attitude construction 'It is true that p' and notes that it entails p. The reasoning is logically and linguistically sound, and it directly supports the predicted Entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0324",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly paraphrases the premise as universal continuation until being broke and supports entailment. However, it does not explicitly identify the temporal-reference phenomenon; it focuses more on paraphrase/quantificational equivalence, which is related but not the tagged phenomenon.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0339",
+      "gold": [
+        "Contradiction"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly notes direct contradiction via negation and is logically sound. However, it identifies the phenomenon as sentential negation rather than the gold-tagged attitudes-related construction ('It is false that ...'), so it addresses a related but not exact phenomenon.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0335",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies an attitude verb/belief context, matching the epistemic/reportive attitudes phenomenon. It is linguistically accurate that 'believed' is non-factive and does not entail the truth of the embedded proposition, which supports the Unknown label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0322",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies the key temporal-reference shift: 'in a month's time' relative to 'last week' aligns with 'in a few weeks' now. It also soundly notes that 'knew' is factive, supporting the truth of the embedded proposition. This reasoning directly supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0337",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly targets the intentional-attitude phenomenon triggered by 'tried': attempting an action does not entail completing it. The reasoning is linguistically accurate and logically supports the Unknown label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0342",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies the relevant veridical/perceptive attitude phenomenon for 'see' with a bare infinitive complement and accurately states that seeing the signing entails that the signing occurred. This fully supports the Entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0325",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly focuses on the temporal shift between being asleep and later knowing one had been asleep, which matches the temporal reference phenomenon. Its reasoning is sound: 'know that they have been asleep after they have been asleep' supports 'discover that they have been asleep.' It also clearly supports the predicted entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0345",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly targets the relevant construction: a perceptive verb ('saw') taking coordinated bare infinitive complements. Its reasoning is sound: from 'Smith saw [Jones sign the contract and his secretary make a copy],' one can infer 'Smith saw Jones sign the contract' by coordination/conjunction elimination. This directly supports the predicted entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0340",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies the relevant perceptual-attitude/scope phenomenon with 'see' plus bare infinitive: seeing Jones sign does not entail seeing every consequence of that event. The reasoning is logically sound and directly supports the predicted Unknown label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0344",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation gives correct entailment reasoning via existential generalization from 'Helen saw the chairman answer the phone' to 'Helen saw someone answer the phone.' However, it does not explicitly identify the targeted phenomenon of perceptive attitude 'see' with a bare infinitive complement; it focuses instead on existential inference from an individual to 'someone.'",
+      "total": 4
+    },
+    {
+      "id": "fracas-0343",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly targets substitution of co-referring terms within a perceptual 'see' + bare infinitive construction, which matches the gold phenomenon. Its reasoning is linguistically and logically sound here: in this extensional perception context, replacing 'Jones' with 'the chairman of ITEL' preserves truth. It directly supports the Entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0334",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies the relevant attitude/factivity phenomenon: 'know' is a factive verb, which entails the truth of its complement. The reasoning is linguistically accurate and directly supports the predicted entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0346",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies the relevant construction: a perception verb ('saw') taking coordinated bare infinitival complements. Its reasoning that the shared perception verb distributes over the coordinated predicates is linguistically accurate here, and it directly supports the Entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0326",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation directly targets aspectual class semantics: 'build' is an accomplishment verb whose use typically entails completion, matching the gold phenomenon. The reasoning is linguistically appropriate here and correctly supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0164",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "It correctly identifies phrasal ellipsis in the fragment 'And to Sue' and accurately reconstructs the omitted material as 'John spoke,' which validly yields the entailment that John spoke to Sue.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0341",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly targets the perceptual-attitude issue with 'see' plus a bare infinitive: seeing Jones sign does not entail seeing all concurrent subevents or internal processes like his heartbeat. The reasoning is linguistically and logically sound and directly supports the Unknown prediction.",
+      "total": 5
+    }
+  ]
+}
