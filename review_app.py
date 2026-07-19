@@ -409,9 +409,12 @@ if assigned_mode:
         # First unfinished file strictly after the current one (wrap around).
         rotation = ordered_stems[cur_pos:] + ordered_stems[:cur_pos]
         target_stem = next((s for s in rotation if s in set(unfinished_stems)), unfinished_stems[0])
-        if st.sidebar.button("➡️ Next unfinished file"):
-            st.session_state["assigned_file_pick"] = labels[ordered_stems.index(target_stem)]
-            st.rerun()
+        target_label = labels[ordered_stems.index(target_stem)]
+        def _jump_to_assigned_file(label):
+            st.session_state["assigned_file_pick"] = label
+        st.sidebar.button(
+            "➡️ Next unfinished file", on_click=_jump_to_assigned_file, args=(target_label,)
+        )
     else:
         st.sidebar.success("All your assigned samples are scored 🎉")
     selected_path = Path(resolved[labels.index(picked_label)][1])
