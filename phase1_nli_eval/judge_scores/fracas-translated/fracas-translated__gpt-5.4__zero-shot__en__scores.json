@@ -1,0 +1,4120 @@
+{
+  "metadata": {
+    "judge_model": "gpt-5.4",
+    "source_file": "fracas-translated__gpt-5.4__zero-shot__en.json",
+    "dataset": "fracas-translated",
+    "model": "gpt-5.4",
+    "technique": "zero-shot",
+    "language": "en",
+    "started_at": "2026-07-19T20:33:48Z",
+    "completed_at": "2026-07-19T20:35:30Z",
+    "skipped_count": 0,
+    "judge_failed_count": 0
+  },
+  "scores": [
+    {
+      "id": "fracas-0008",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση είναι λογικά σωστή: το «πολλοί» συνεπάγεται ύπαρξη, άρα ακολουθεί το υπαρξιακό συμπέρασμα. Ωστόσο, δεν αναγνωρίζει ειδικά το φαινόμενο της conservativity των γενικευμένων ποσοδεικτών, αλλά ένα συναφές υπαρξιακό γνώρισμα του «πολλοί».",
+      "total": 4
+    },
+    {
+      "id": "fracas-0003",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση δεν κατονομάζει ρητά τη συντηρητικότητα των γενικευμένων ποσοδεικτών, αλλά χειρίζεται σωστά την ποσοδεικτική συλλογιστική με ύπαρξη και καθολική εξειδίκευση. Το επιχείρημα είναι λογικά έγκυρο: από το ότι κάποιοι Ιταλοί υπάρχουν και όλοι οι Ιταλοί θέλουν να γίνουν σπουδαίοι τενόροι, έπεται ότι υπάρχουν Ιταλοί που το θέλουν. Υποστηρίζει καθαρά την ετικέτα Entailment.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0006",
+      "gold": [
+        "Contradiction"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση δίνει σωστά τη λογική της αντίφασης: το προκείμενο αρνείται την ύπαρξη οποιουδήποτε που να είναι και πραγματικά σπουδαίος τενόρος και ταπεινός, ενώ η υπόθεση την επιβεβαιώνει. Ωστόσο, δεν αναγνωρίζει ειδικά το φαινόμενο της conservativity των γενικευμένων ποσοδεικτών· παραμένει σε γενική ποσοδεικτική/υπαρξιακή αντίθεση.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0009",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση σωστά βασίζεται στην υπαρξιακή συνεπαγωγή από το «αρκετοί» προς το «υπάρχουν», άρα είναι λογικά ορθή και στηρίζει το Entailment. Ωστόσο δεν αναγνωρίζει ρητά το φαινόμενο της conservativity των γενικευμένων ποσοδεικτών, αλλά ένα συναφές φαινόμενο ποσοδεικτικής ισχύος/υπαρξιακής συνεπαγωγής.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0002",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση είναι λογικά ορθή: από το «κάθε Ιταλός...» και το «ορισμένοι Ιταλοί...» συνάγεται ότι υπάρχουν Ιταλοί που θέλουν να γίνουν σπουδαίοι τενόροι. Ωστόσο, δεν κατονομάζει ειδικά τη συντηρητικότητα των γενικευμένων ποσοδεικτών· αναφέρεται γενικότερα σε καθολική ποσοτικοποίηση και υπαρξιακή εισαγωγή, άρα αγγίζει σχετικό αλλά όχι ακριβώς το gold phenomenon. Υποστηρίζει πλήρως την ετικέτα Entailment.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0007",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση είναι λογικά σωστή: η υπόθεση παραφράζει την προκείμενη και πράγματι συνεπάγεται entailment. Όμως δεν αναγνωρίζει ειδικά το φαινόμενο της conservativity των generalized quantifiers· το αποδίδει γενικά σε παραφραστική/συνωνυμική ισοδυναμία («Ορισμένοι» = «Υπάρχουν»), που είναι σχετικό αλλά όχι το ακριβές gold phenomenon.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0001",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά την υπαρξιακή συνεπαγωγή του αόριστου ποσοδείκτη «ένας», που σχετίζεται άμεσα με το φαινόμενο των generalized quantifiers/conservativity. Η συλλογιστική είναι λογικά ορθή: από το «Ένας Ιταλός...» έπεται ότι υπήρχε τουλάχιστον ένας Ιταλός με αυτή την ιδιότητα. Υποστηρίζει πλήρως την ετικέτα entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0004",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση δίνει σωστό συλλογισμό: από το 'κάθε Ιταλός τενόρος θέλει να γίνει σπουδαίος' και το 'ορισμένοι Ιταλοί τενόροι υπάρχουν' έπεται ότι κάποιοι θέλουν να γίνουν σπουδαίοι. Ωστόσο δεν κατονομάζει ειδικά το φαινόμενο της conservativity των generalized quantifiers· μιλά γενικότερα για καθολική ποσοτικοποίηση και υπαρξιακή εισαγωγή.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0005",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 1,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "Η εξήγηση εστιάζει στη διάκριση καθολικής πρότασης vs υπαρξιακής δέσμευσης, που είναι σχετική αλλά όχι ακριβώς το φαινόμενο conservativity των generalized quantifiers. Επιπλέον, η συλλογιστική είναι λανθασμένη εδώ: το οριστικό υποκείμενο «Οι πραγματικά φιλόδοξοι τενόροι» φέρει υπαρξιακή προϋπόθεση, άρα συνεπάγεται ότι υπάρχουν τέτοιοι τενόροι και ότι είναι Ιταλοί. Ωστόσο, η εξήγηση είναι συνεπής με την προβλεπόμενη ετικέτα Unknown.",
+      "total": 2
+    },
+    {
+      "id": "fracas-0013",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation gives a correct compositional inference: from both lead tenors being excellent and all excellent lead tenors being necessary, it follows that both are necessary. However, it does not explicitly identify the conservativity/generalized-quantifier phenomenon; it instead appeals generically to universal application.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0010",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση είναι λογικά σωστή: από το «οι περισσότεροι Α είναι Β» πράγματι έπεται ότι υπάρχει τουλάχιστον ένα στοιχείο στην τομή Α∩Β, άρα η υπόθεση συνεπάγεται. Ωστόσο, δεν κατονομάζει ειδικά τη συντηρητικότητα του ποσοδείκτη· εστιάζει περισσότερο στην υπαρξιακή συνεπαγωγή/μη κενότητα, που είναι συναφές αλλά όχι το ακριβές φαινόμενο του gold tag.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0011",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly notes that the first premise directly entails the hypothesis and that the second premise is irrelevant. However, it does not explicitly identify the conservativity/generalized quantifier phenomenon; it gives a more generic entailment-based justification. The reasoning itself is logically sound and supports the predicted entailment label.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0015",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά το φαινόμενο των γενικευμένων ποσοδεικτών/υπαρξιακής συνεπαγωγής: από το «τουλάχιστον τρεις τενόροι» έπεται ότι υπάρχει τουλάχιστον ένας τενόρος. Ο συλλογισμός είναι λογικά έγκυρος και στηρίζει άμεσα την ετικέτα Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0018",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση δίνει σωστή αλυσιδωτή καθολική συνεπαγωγή από τις προκείμενες προς το συμπέρασμα, άρα είναι λογικά ορθή και στηρίζει το Entailment. Ωστόσο δεν αναγνωρίζει ρητά το φαινόμενο της μονοτονικότητας στους γενικευμένους ποσοδείκτες, αλλά ένα συναφές φαινόμενο συλλογιστικής αλυσίδας.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0012",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "Η εξήγηση εστιάζει στην υπαρξιακή συνεπαγωγή του «λίγοι» (σχέση ποσοδείκτη με ύπαρξη), που είναι σχετικό αλλά όχι το φαινόμενο conservativity του gold tag. Επιπλέον, το επιχείρημα ότι το «λίγοι» προϋποθέτει μη κενό σύνολο και άρα συνεπάγεται «υπάρχουν» δεν είναι γενικά έγκυρο εδώ, οπότε η λογική είναι λανθασμένη. Ωστόσο, η εξήγηση πράγματι στηρίζει την προβλεπόμενη ετικέτα Entailment.",
+      "total": 2
+    },
+    {
+      "id": "fracas-0020",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση δίνει σωστή αλυσιδωτή καθολική συνεπαγωγή από τις προκείμενες προς την υπόθεση, άρα είναι λογικά ορθή και στηρίζει το Entailment. Ωστόσο, δεν αναγνωρίζει ρητά το φαινόμενο της μονοτονικότητας στους γενικευμένους ποσοδείκτες· αναφέρεται γενικότερα σε συλλογιστική μεταβατικότητα.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0014",
+      "gold": [
+        "Contradiction"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 1,
+      "soundness": 1,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει γενικά την καθολική άρνηση/ποσοδείκτες, αλλά δεν εντοπίζει σωστά το ειδικό φαινόμενο της conservativity και επιπλέον βασίζεται αδικαιολόγητα στην ταύτιση του 'κορυφαίος τενόρος' με 'κύριος τενόρος'. Παρ’ όλα αυτά, η συλλογιστική κατευθύνεται προς αντίφαση και υποστηρίζει την προβλεπόμενη ετικέτα.",
+      "total": 3
+    },
+    {
+      "id": "fracas-0016",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά το κρίσιμο σημείο ότι το «το πολύ δυο» δεν συνεπάγεται ύπαρξη, άρα στηρίζει ορθά το Unknown. Ωστόσο δεν αναφέρεται ειδικά στη συντηρητικότητα των γενικευμένων ποσοδεικτών, αλλά γενικότερα στη διάκριση μεταξύ ανώτατου ορίου και υπαρξιακού ποσοδείκτη.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0017",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση δίνει σωστό συλλογισμό από το ειδικό στο γενικό (Νόμπελ Λογοτεχνίας -> βραβείο Νόμπελ), αλλά δεν κατονομάζει το φαινόμενο της μονοτονικότητας/γενικευμένων ποσοδεικτών· το προσεγγίζει ως υπαγωγή ή hyponymy. Ο συλλογισμός είναι λογικά έγκυρος και στηρίζει το label Entailment.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0019",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση δίνει σωστή αλυσιδωτή καθολική συνεπαγωγή από τις προκείμενες προς την υπόθεση, άρα είναι λογικά ορθή και στηρίζει το Entailment. Ωστόσο δεν κατονομάζει ειδικά το φαινόμενο της μονοτονικότητας στους γενικευμένους ποσοδείκτες· αναφέρεται γενικά σε καθολική συνεπαγωγή, που είναι σχετικό αλλά όχι ακριβής ταύτιση με το gold tag.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0021",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση δίνει σωστή αλυσιδωτή συνεπαγωγή από τις προκείμενες προς την υπόθεση, άρα είναι λογικά ορθή και στηρίζει το Entailment. Ωστόσο, δεν αναγνωρίζει ρητά το φαινόμενο της μονοτονικότητας σε γενικευμένους ποσοδείκτες· αναφέρεται πιο γενικά σε καθολική εξειδίκευση/συνεπαγωγή, που είναι σχετικό αλλά όχι το ακριβές gold tag.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0024",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά την ανοδική μονοτονικότητα στο δεύτερο όρισμα/υπαγωγή από «ενδιαφέροντα αποτελέσματα» σε «αποτελέσματα». Ο συλλογισμός είναι λογικά έγκυρος και στηρίζει άμεσα την πρόβλεψη Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0022",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση σωστά επισημαίνει ότι το «έγκαιρα» είναι χρονικός περιορισμός και ότι από το «δεν τελείωσε έγκαιρα» δεν συνεπάγεται «δεν τελείωσε». Αυτό είναι λογικά ορθό και στηρίζει το label Unknown. Ωστόσο, δεν αναγνωρίζει ρητά το φαινόμενο της μονοτονικότητας/γενικευμένων ποσοδεικτών, αλλά ένα συναφές ζήτημα ενίσχυσης με επιρρηματικό περιορισμό.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0026",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά τη μονοτονικότητα/ποσοδεικτική κληροδότηση: από το ότι οι περισσότεροι Ευρωπαίοι ανήκουν σε ένα σύνολο (κάτοικοι της Ευρώπης) και ότι αυτό το σύνολο περιλαμβάνεται σε όσους μπορούν να ταξιδεύουν ελεύθερα, συμπεραίνεται ότι οι περισσότεροι Ευρωπαίοι έχουν την ιδιότητα του ταξιδιού. Η συλλογιστική είναι λογικά ορθή και στηρίζει το label Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0027",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση δίνει σωστό συλλογισμό: από το 'μερικά ... από τη Σουηδία' και το 'όλοι οι Σουηδοί είναι από τη Σκανδιναβία' προκύπτει ότι μερικά μέλη είναι από τη Σκανδιναβία. Ωστόσο δεν κατονομάζει ειδικά το φαινόμενο της μονοτονικότητας προς τα πάνω στο δεύτερο όρισμα των γενικευμένων ποσοδεικτών, αλλά ένα συναφές γενικότερο συλλογιστικό σχήμα.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0028",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά το φαινόμενο της μονοτονικότητας προς τα πάνω στο δεύτερο όρισμα μέσω της υπαγωγής Portugal ⊆ Southern Europe. Όμως ο συλλογισμός είναι λανθασμένος: από το «λίγα μέλη είναι από την Πορτογαλία» δεν συνεπάγεται ότι «λίγα μέλη είναι από τη νότια Ευρώπη», γιατί μπορεί να υπάρχουν πολλά επιπλέον μέλη από άλλες χώρες της νότιας Ευρώπης. Παρ' όλα αυτά, η εξήγηση υποστηρίζει το προβλεπόμενο label Entailment.",
+      "total": 3
+    },
+    {
+      "id": "fracas-0025",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά ανοδική μονοτονικότητα στο δεύτερο όρισμα/απαλοιφή πιο συγκεκριμένου συμπληρώματος («σε μεγάλες εθνικές εφημερίδες» → «δημοσίευσαν τα αποτελέσματα»). Ο συλλογισμός είναι λογικά έγκυρος και στηρίζει άμεσα την ετικέτα Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0033",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση σωστά λέει ότι η υπόθεση είναι πιο συγκεκριμένη και δεν συνεπάγεται από την πρόταση, άρα στηρίζει το Unknown. Όμως δεν αναγνωρίζει ρητά το φαινόμενο της μονοτονικότητας/γενικευμένων ποσοδεικτών του gold tag· αναφέρεται γενικά σε εξειδίκευση και έλλειψη πληροφορίας.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0029",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση δίνει σωστή λογική υπαγωγής/τροποποίησης: από «κορυφαίοι επιχειρηματίες» έπεται «επιχειρηματίες». Ωστόσο δεν κατονομάζει ρητά το φαινόμενο της ανοδικής μονοτονικότητας στο δεύτερο όρισμα του ποσοδείκτη «και οι δυο», αλλά ένα συναφές φαινόμενο υποκατηγορίας.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0023",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αποδίδει σωστά ότι το «έγκαιρα» είναι πρόσθετος τροποποιητής και ότι από το ισχυρότερο κατηγόρημα («τελείωσαν έγκαιρα») συνεπάγεται το ασθενέστερο («τελείωσαν»). Ωστόσο δεν κατονομάζει ρητά το φαινόμενο της ανοδικής μονοτονικότητας στο δεύτερο όρισμα του ποσοδείκτη «ορισμένοι», άρα αγγίζει σχετικό αλλά όχι ακριβώς το gold phenomenon. Η λογική είναι έγκυρη και στηρίζει την πρόβλεψη Entailment.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0032",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "Η εξήγηση πράγματι συζητά μονοτονικότητα/ενίσχυση-αποδυνάμωση του κατηγορήματος, άρα αγγίζει σχετικό φαινόμενο. Όμως το «το πολύ δέκα» είναι καθοδικά μονότονο στο δεύτερο όρισμα, οπότε από το ισχυρότερο «περνάνε πολύ χρόνο στο σπίτι» δεν έπεται το ασθενέστερο «περνάνε χρόνο στο σπίτι». Η λογική της εξήγησης είναι επομένως λανθασμένη, αν και υποστηρίζει το προβλεπόμενο label Entailment.",
+      "total": 2
+    },
+    {
+      "id": "fracas-0035",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση σωστά εντοπίζει ότι δεν επιτρέπεται η αντιστροφή της συνεπαγωγής από το 'δικαίωμα διαμονής -> ελεύθερο ταξίδι' στο αντίστροφο, άρα υποστηρίζει ορθά το Unknown. Ωστόσο, δεν αναγνωρίζει ειδικά το φαινόμενο της μονοτονικότητας/γενικευμένων ποσοδεικτών του gold tag, αλλά ένα συναφές λογικό σφάλμα.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0030",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά το φαινόμενο της μονοτονικότητας/ποσοτικής συνεπαγωγής στο δεύτερο όρισμα: από το «όχι πολύ χρόνο» δεν έπεται «καθόλου χρόνο». Η λογική είναι ορθή και στηρίζει το label Unknown, αφού η υπόθεση είναι ισχυρότερη από την προκείμενη.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0034",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση σωστά εντοπίζει ότι δεν επιτρέπεται αντιστροφή της συνεπαγωγής από το «δικαίωμα διαμονής -> ελεύθερο ταξίδι» στο αντίστροφο, άρα υποστηρίζει ορθά το Unknown. Ωστόσο, δεν αναγνωρίζει ρητά το φαινόμενο της μονοτονικότητας/γενικευμένων ποσοδεικτών του gold tag, αλλά ένα συναφές λογικό σφάλμα.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0037",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά ότι υπάρχει μόνο μονόδρομη συνεπαγωγή και απορρίπτει την αντιστροφή της, κάτι συναφές με τη μονοτονικότητα/λογική κατεύθυνση της συνεπαγωγής, αλλά δεν αναγνωρίζει ρητά το φαινόμενο των generalized quantifiers με downward monotonicity στο δεύτερο όρισμα. Η λογική της είναι ορθή και στηρίζει το label Unknown.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0031",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 1,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά ότι από το ισχυρότερο «πολύ χρόνο» έπεται το ασθενέστερο «χρόνο», αλλά ονομάζει το φαινόμενο λανθασμένα ως «μονοτονικότητα προς τα κάτω/αποδυνάμωση του κατηγορήματος», ενώ το gold tag είναι ανοδική μονοτονικότητα στο δεύτερο όρισμα του ποσοδείκτη. Η λογική κατεύθυνση προς entailment είναι πάντως σωστή.",
+      "total": 3
+    },
+    {
+      "id": "fracas-0038",
+      "gold": [
+        "Contradiction"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αποδίδει σωστά την αντίφαση μεταξύ καθολικής άρνησης («κανένας») και υπαρξιακού ισχυρισμού («κάποιος»), και σωστά σημειώνει ότι το «έγκαιρα» συνεπάγεται ολοκλήρωση. Ωστόσο δεν αναγνωρίζει ρητά το φαινόμενο της μονοτονικότητας προς τα κάτω στο δεύτερο όρισμα του ποσοδείκτη, άρα είναι σχετική αλλά όχι ακριβής ταύτιση του gold tag.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0040",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση σωστά λέει ότι η προσθήκη του «ενδιαφέροντα» δεν συνεπάγεται από την πρόταση και άρα το συμπέρασμα είναι Unknown. Ωστόσο, δεν αναγνωρίζει ρητά το φαινόμενο της μονοτονικότητας/γενικευμένων ποσοδεικτών, αλλά το χειρίζεται πιο γενικά ως προσθήκη μη εγγυημένης πληροφορίας.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0041",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση σωστά λέει ότι η υπόθεση προσθέτει μη εγγυημένη πληροφορία για τον τόπο/μέσο δημοσίευσης, άρα υποστηρίζει το Unknown. Ωστόσο δεν αναγνωρίζει ρητά το ειδικό φαινόμενο της μονοτονικότητας με γενικευμένους ποσοδείκτες στο δεύτερο όρισμα, αλλά μόνο μια γενική μη αδειοδοτημένη εξειδίκευση.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0039",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση σωστά λέει ότι το «έγκαιρα» προσθέτει μη εγγυημένη πληροφορία, άρα υποστηρίζει το Unknown. Όμως δεν αναγνωρίζει ρητά το φαινόμενο της μονοτονικότητας/γενικευμένων ποσοδεικτών στο δεύτερο όρισμα του «ορισμένοι», αλλά ένα συναφές γενικό μοτίβο προσθήκης πληροφορίας.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0036",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση σωστά λέει ότι δεν προκύπτει το αντίστροφο της συνεπαγωγής από τις προκείμενες, άρα υποστηρίζει ορθά το Unknown. Ωστόσο, δεν κατονομάζει ειδικά το φαινόμενο της μονοτονικότητας/γενικευμένων ποσοδεικτών του gold tag· αναφέρεται σε συναφές λογικό σφάλμα αντιστροφής συνεπαγωγής.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0042",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly argues that the hypothesis does not follow from the premises and identifies a sufficient-vs-necessary/affirming-the-consequent style error. However, it does not explicitly capture the gold monotonicity phenomenon with generalized quantifiers, so it is related but not exact.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0046",
+      "gold": [
+        "Contradiction"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αποδίδει σωστά την αντίφαση μεταξύ του «κανένας» και του υπαρξιακού «ένας ... περνάει πολύ χρόνο», άρα είναι λογικά ορθή και στηρίζει την ετικέτα Contradiction. Ωστόσο δεν αναγνωρίζει ρητά το ειδικό φαινόμενο της μονοτονικότητας/γενικευμένων ποσοδεικτών, αλλά πιο γενικά την καθολική άρνηση έναντι ύπαρξης.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0045",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση σωστά λέει ότι το «κορυφαίοι επιχειρηματίες» είναι ισχυρότερη πληροφορία από το «επιχειρηματίες» και άρα δεν συνεπάγεται η υπόθεση. Ωστόσο δεν κατονομάζει ειδικά το φαινόμενο της μονοτονικότητας/γενικευμένων ποσοδεικτών, αλλά το προσεγγίζει ως γενική ενίσχυση πληροφορίας. Η λογική είναι ορθή και στηρίζει την ετικέτα Unknown.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0047",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση σωστά εντοπίζει ότι η υπόθεση είναι ισχυρότερη λόγω του «πολύ» και ότι δεν υπάρχει συνεπαγωγή από την πρόταση της βάσης. Ωστόσο, δεν αναγνωρίζει ρητά το φαινόμενο της μονοτονικότητας/γενικευμένων ποσοδεικτών στο δεύτερο όρισμα, αλλά ένα συναφές φαινόμενο βαθμιδικής ενίσχυσης. Η συλλογιστική είναι ορθή και στηρίζει την ετικέτα Unknown.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0049",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση δίνει σωστή λογική υπαγωγής: από το ότι κάποιος Σουηδός κέρδισε Νόμπελ και ότι κάθε Σουηδός είναι Σκανδιναβός, έπεται ότι κάποιος Σκανδιναβός κέρδισε Νόμπελ. Ωστόσο δεν κατονομάζει ειδικά το φαινόμενο της ανοδικής μονοτονικότητας στο πρώτο όρισμα, αλλά ένα συναφές φαινόμενο κατηγορικής υπαγωγής/υπαρξιακής συνεπαγωγής.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0048",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 1,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σχετικό φαινόμενο ενίσχυσης του κατηγορήματος/τροποποιητή, αλλά χάνει το κρίσιμο μονοτονικό περιβάλλον του «το πολύ δέκα», που είναι καθοδικό στο δεύτερο όρισμα. Λογικά είναι λανθασμένη: από το σύνολο όσων περνούν πολύ χρόνο στο σπίτι ως υποσύνολο όσων περνούν χρόνο στο σπίτι, το «το πολύ 10» πράγματι συνεπάγεται την υπόθεση. Ωστόσο, η εξήγηση είναι συνεπής με την προβλεπόμενη ετικέτα Unknown.",
+      "total": 2
+    },
+    {
+      "id": "fracas-0044",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "The explanation directly discusses subset reasoning and quantity transfer, which matches monotonicity with generalized quantifiers. However, it gets the logic wrong: from 'few committee members are from Southern Europe' and 'Portuguese people are a subset of Southern Europeans,' downward monotonicity on the second argument licenses 'few committee members are from Portugal.' The explanation is nevertheless consistent with the model's predicted label Unknown.",
+      "total": 3
+    },
+    {
+      "id": "fracas-0051",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά το φαινόμενο της μονοτονικότητας/αδικαιολόγητης γενίκευσης από υποσύνολο (Καναδοί κάτοικοι) σε υπερσύνολο (κάτοικοι Βόρειας Αμερικής). Η λογική είναι ορθή: από το ότι όλοι οι Καναδοί κάτοικοι ταξιδεύουν ελεύθερα δεν έπεται ότι το ίδιο ισχύει για όλους τους Βορειοαμερικανούς κατοίκους. Αυτό στηρίζει σωστά την ετικέτα Unknown.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0050",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά το φαινόμενο της μη έγκυρης ανοδικής μονοτονικότητας στο πρώτο όρισμα: από το υποσύνολο «Καναδοί κάτοικοι» δεν μπορούμε να γενικεύσουμε στο υπερσύνολο «κάθε κάτοικος της Βόρειας Αμερικής». Η λογική είναι ορθή και στηρίζει πλήρως την ετικέτα Unknown.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0043",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά το μονοτονικό/συνεπαγωγικό σφάλμα: από το σύνολο «Σουηδοί» ως υποσύνολο των «Σκανδιναβών» δεν μπορούμε να κατέβουμε σε πιο στενό σύνολο στο δεύτερο όρισμα του ποσοδείκτη «μερικά». Η λογική είναι ορθή και στηρίζει πλήρως την ετικέτα Unknown.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0054",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά το φαινόμενο της μονοτονικότητας/περιορισμού του ποσοδείκτη στο υποσύνολο «Σκανδιναβός αντιπρόσωπος» και εξηγεί ότι η άρνηση δεν γενικεύεται σε όλους τους αντιπροσώπους. Η συλλογιστική είναι λογικά ορθή και στηρίζει το label Unknown.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0057",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά την ανοδική μονοτονικότητα στο πρώτο όρισμα του ποσοδείκτη «αρκετοί»: από το υποσύνολο «Πορτογάλοι αντιπρόσωποι» στο υπερσύνολο «αντιπρόσωποι». Η συλλογιστική είναι λογικά έγκυρη και στηρίζει άμεσα την πρόβλεψη Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0052",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά το σφάλμα μονοτονικότητας/αθέμιτης γενίκευσης από υποσύνολο (Καναδοί κάτοικοι) σε υπερσύνολο (κάτοικοι Βόρειας Αμερικής). Η λογική είναι ορθή: οι προκείμενες δεν συνεπάγονται ότι όλοι οι Βορειοαμερικανοί μπορούν να ταξιδεύουν ελεύθερα στην Ευρώπη. Αυτό στηρίζει πλήρως την ετικέτα Unknown.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0058",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά το ζήτημα μονοτονικότητας/διεύρυνσης του πρώτου ορίσματος του ποσοδότη: από το υποσύνολο «Ευρωπαίοι που είναι κάτοικοι της Ευρώπης» δεν συνεπάγεται το ευρύτερο «Ευρωπαίοι». Η λογική είναι ορθή και στηρίζει πλήρως την ετικέτα Unknown.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0053",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά ότι γίνεται μη επιτρεπτή γενίκευση από «κάτοικοι μεγάλων δυτικών χωρών» σε «κάτοικοι δυτικών χωρών», δηλαδή θέμα μονοτονικότητας στο πρώτο όρισμα, και επιπλέον σωστά σημειώνει την αλλαγή κατηγορήματος από «ταξιδεύουν ελεύθερα» σε «έχουν το δικαίωμα να ζουν». Η συλλογιστική είναι λογικά ορθή και στηρίζει την πρόβλεψη Unknown.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0061",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά το ζήτημα μονοτονικότητας/γενίκευσης από το στενότερο σύνολο «γυναίκες επίτροποι» στο ευρύτερο «επίτροποι». Η λογική είναι ορθή: από το ότι δύο γυναίκες επίτροποι ήταν στο χώρο των επιχειρήσεων δεν συνεπάγεται ότι οι δύο επίτροποι γενικά ήταν εκεί, αφού μπορεί να υπάρχουν και άλλοι επίτροποι ή να μην εξαντλείται το σύνολο. Υποστηρίζει συνεπώς σωστά την ετικέτα Unknown.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0055",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά την ανοδική μονοτονικότητα/γενίκευση στο πρώτο όρισμα του υπαρξιακού ποσοδείκτη: από «Ιρλανδοί αντιπρόσωποι» σε «αντιπρόσωποι». Η συλλογιστική είναι λογικά έγκυρη και υποστηρίζει άμεσα την ετικέτα Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0060",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "The explanation discusses monotonicity/subset inference, which is related to the gold phenomenon, but it gets the direction wrong. From 'few women committee members are from southern Europe' one cannot infer 'few committee members are from southern Europe'; adding non-women can increase the set, so the entailment fails. Still, the explanation is aimed at justifying the predicted Entailment label, so it is consistent with that label.",
+      "total": 2
+    },
+    {
+      "id": "fracas-0056",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά τη μονοτονικότητα προς τα πάνω στο πρώτο όρισμα του ποσοδείκτη «πολλοί»: από το υποσύνολο «Βρετανοί αντιπρόσωποι» στο υπερσύνολο «αντιπρόσωποι». Ο συλλογισμός είναι λογικά έγκυρος και στηρίζει άμεσα την προβλεπόμενη ετικέτα Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0065",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά ότι δεν μπορούμε να περάσουμε από την ύπαρξη ενός Σκανδιναβού νικητή στην ύπαρξη ενός Σουηδού νικητή, κάτι που αντιστοιχεί στη μονοτονικότητα προς τα κάτω στο πρώτο όρισμα των υπαρξιακών. Η λογική είναι ορθή και στηρίζει το label Unknown.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0066",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αποδίδει σωστά τη λογική υπαγωγή από το υποσύνολο (Καναδοί κάτοικοι) στο υπερσύνολο (κάτοικοι Βόρειας Αμερικής) και άρα είναι έγκυρη για entailment. Ωστόσο δεν κατονομάζει ειδικά το φαινόμενο της μονοτονικότητας/γενικευμένων ποσοδεικτών, αλλά πιο γενικά καθολική υπαγωγή ή μεταβίβαση.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0071",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά ότι από το «ορισμένοι αντιπρόσωποι» δεν μπορούμε να συμπεράνουμε το πιο ειδικό «κάποιοι Ιρλανδοί αντιπρόσωποι», δηλαδή την αποτυχία καθοδικής μονοτονικότητας στο πρώτο όρισμα του υπαρξιακού ποσοδείκτη. Η συλλογιστική είναι λογικά ορθή και στηρίζει πλήρως την ετικέτα Unknown.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0070",
+      "gold": [
+        "Contradiction"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά τη λογική του καθολικού αρνητικού ποσοδείκτη «κανένας» και τη συνεπαγωγή προς το υποσύνολο «Σκανδιναβός αντιπρόσωπος», που ταιριάζει με monotonicity προς τα κάτω στο πρώτο όρισμα. Ο συλλογισμός είναι έγκυρος και στηρίζει καθαρά την ετικέτα Contradiction.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0063",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά την ανοδική μονοτονικότητα στο πρώτο όρισμα του ποσοδείκτη «τουλάχιστον τρεις»: από το υποσύνολο «γυναίκες επίτροποι» στο υπερσύνολο «επίτροποι». Είναι επίσης λογικά ορθή, και σωστά σημειώνει ότι το «πολύ χρόνο» συνεπάγεται «χρόνο». Υποστηρίζει πλήρως την ετικέτα Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0062",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά το ζήτημα μονοτονικότητας/ποσοδεικτών: από το «καμία από τις γυναίκες επιτρόπους δεν περνάει πολύ χρόνο στο σπίτι» δεν συνεπάγεται ούτε αναιρείται το «ένας από τους επιτρόπους περνάει χρόνο στο σπίτι». Επιπλέον, σωστά επισημαίνει τόσο τη διαφορά μεταξύ «πολύ χρόνο» και «χρόνο» όσο και το ότι η υπόθεση αφορά ευρύτερη κλάση επιτρόπων, άρα στηρίζει το label Unknown.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0064",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά το φαινόμενο μονοτονικότητας/ποσοδεικτών: από άνω φράγμα σε υποσύνολο ('γυναίκες επίτροποι') δεν έπεται άνω φράγμα για το υπερσύνολο ('επίτροποι'). Η συλλογιστική είναι λογικά ορθή και στηρίζει πλήρως την ετικέτα Unknown.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0080",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies downward monotonicity/restriction on the first argument of 'at most ten': restricting commissioners to women commissioners yields a subset, so the upper bound is preserved. The reasoning is logically sound and directly supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0067",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά τη λογική υπαγωγή από το υπερσύνολο (κάτοικοι Βόρειας Αμερικής) στο υποσύνολο (Καναδοί κάτοικοι), δηλαδή τη μονοτονικότητα/καθοδική ενίσχυση στο πρώτο όρισμα του καθολικού ποσοδότη. Ο συλλογισμός είναι έγκυρος και στηρίζει άμεσα την πρόβλεψη Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0076",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 0,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "Η εξήγηση δεν αναγνωρίζει το φαινόμενο της καθοδικής μονοτονικότητας του «λίγα» ως προς το πρώτο όρισμα· αντίθετα ισχυρίζεται λανθασμένα ότι δεν μπορούμε να περάσουμε από τα μέλη της επιτροπής στο υποσύνολο των γυναικών μελών. Αυτό είναι λογικά εσφαλμένο, αλλά είναι συνεπές με την προβλεπόμενη ετικέτα Unknown.",
+      "total": 1
+    },
+    {
+      "id": "fracas-0059",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση είναι λογικά σωστή: από το ότι μερικές γυναίκες-μέλη είναι από τη Σουηδία και ότι η Σουηδία ανήκει στη Σκανδιναβία, συνεπάγεται ότι μερικά μέλη είναι από τη Σκανδιναβία. Όμως δεν εντοπίζει ρητά το φαινόμενο της μονοτονικότητας/γενικευμένων ποσοδεικτών στο πρώτο όρισμα, αλλά περισσότερο μια σχετική σχέση υπαγωγής κατηγορίας.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0068",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση δίνει σωστό συλλογισμό καθολικής υπαγωγής/συλλογισμού από υποσύνολο σε σύνολο, που είναι συναφές με τη μονοτονικότητα αλλά δεν κατονομάζει ρητά το φαινόμενο της downward monotonicity στο πρώτο όρισμα. Ο λογικός συλλογισμός είναι έγκυρος και στηρίζει σωστά την ετικέτα Entailment.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0073",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά ότι η υπόθεση ενισχύει το πρώτο όρισμα του ποσοδείκτη («αντιπρόσωποι» -> «Πορτογάλοι αντιπρόσωποι»), κάτι που δεν ακολουθεί από το premise· αυτό αντιστοιχεί στη μονοτονικότητα στο πρώτο όρισμα. Η λογική είναι ορθή και στηρίζει πλήρως την ετικέτα Unknown.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0079",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση σωστά λέει ότι από το «τουλάχιστον τρεις επίτροποι» δεν έπεται το πιο συγκεκριμένο «τουλάχιστον τρεις άνδρες επίτροποι», άρα στηρίζει σωστά το Unknown. Ωστόσο δεν κατονομάζει ρητά το φαινόμενο της καθοδικής/μη μονοτονικότητας στο πρώτο όρισμα των generalized quantifiers· απλώς περιγράφει τη στένωση του συνόλου.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0072",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά ότι η υπόθεση στενεύει το πρώτο όρισμα του ποσοδείκτη («αντιπρόσωποι» → «Βρετανοί αντιπρόσωποι»), κάτι που δεν αδειοδοτείται από το «πολλοί», άρα ταιριάζει με τη μονοτονικότητα στο πρώτο όρισμα. Η συλλογιστική είναι λογικά ορθή και στηρίζει το label Unknown.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0078",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 1,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "Η εξήγηση ασχολείται με ποσοδείκτες/καθολική άρνηση, άρα είναι σχετική με το φαινόμενο, αλλά δεν αναγνωρίζει σωστά το κρίσιμο θέμα της μονοτονικότητας και της μη εγγυημένης ύπαρξης γυναικών επιτρόπων. Λογικά είναι λανθασμένη: από το ότι κανένας επίτροπος δεν περνά πολύ χρόνο στο σπίτι δεν προκύπτει αντίφαση με την ύπαρξη γυναίκας επιτρόπου που το κάνει, επειδή η υπόθεση προϋποθέτει ύπαρξη τέτοιου ατόμου που δεν δίνεται στο premise· γι’ αυτό το gold είναι Unknown. Παρ’ όλα αυτά, η εξήγηση στηρίζει καθαρά το προβλεπόμενο label Contradiction.",
+      "total": 2
+    },
+    {
+      "id": "fracas-0075",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά ότι δεν μπορούμε να περάσουμε από το ευρύτερο σύνολο «μερικά μέλη της επιτροπής» στο υποσύνολο «μερικές γυναίκες μέλη», που αντιστοιχεί στη μονοτονικότητα προς τα κάτω στο πρώτο όρισμα. Η συλλογιστική είναι λογικά ορθή: το premise δεν δίνει πληροφορία για το φύλο των μελών από τη Σκανδιναβία, άρα το συμπέρασμα παραμένει άγνωστο. Η εξήγηση στηρίζει πλήρως την ετικέτα Unknown.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0069",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 1,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά τη σχέση υποσυνόλου μεταξύ «κατοίκων μεγάλων δυτικών χωρών» και «κατοίκων δυτικών χωρών», άρα αγγίζει σχετικό φαινόμενο μονοτονικότητας, αλλά δεν το συνδέει σωστά με το gold tag. Είναι λογικά μη ορθή επειδή απορρίπτει την entailment με βάση διάκριση μεταξύ ταξιδιού και διαμονής, ενώ το gold label είναι Entailment. Ωστόσο, η εξήγηση είναι συνεπής με την προβλεπόμενη ετικέτα Unknown.",
+      "total": 2
+    },
+    {
+      "id": "fracas-0081",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά το φαινόμενο της συντονισμένης ονοματικής φράσης/απαρίθμησης υποκειμένων και εξάγει ορθά ότι αφού ο Τζόουνς περιλαμβάνεται στα πρόσωπα που υπέγραψαν, η υπόθεση συνεπάγεται. Είναι πλήρως συνεπής με την ετικέτα Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0088",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 0,
+      "justification": "Η εξήγηση εντοπίζει σωστά το φαινόμενο της συζευγμένης ονοματικής φράσης («εκπρόσωπος και πελάτης») και εξηγεί ορθά ότι αφορά άτομα που είναι και τα δύο, άρα δεν συνεπάγεται το υποσύνολο «κάθε εκπρόσωπος». Ωστόσο αυτό υποστηρίζει το gold label Unknown και όχι την προβλεπόμενη ετικέτα Entailment.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0077",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση σωστά λέει ότι η υπόθεση προσθέτει μη δοσμένη πληροφορία ('γυναίκες'), άρα δεν συνεπάγεται από το premise. Ωστόσο δεν αναγνωρίζει ρητά το φαινόμενο της μονοτονικότητας/καθοδικότητας στο πρώτο όρισμα του ποσοδείκτη, αλλά ένα συναφές φαινόμενο προσθήκης χαρακτηριστικού.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0086",
+      "gold": [
+        "Contradiction"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση εστιάζει σωστά στην ποσοτική αντίθεση μέσα στη συζευγμένη ονοματική φράση («δυο δικηγόροι και τρεις λογιστές»), ειδικά στο «ακριβώς τρεις λογιστές» έναντι «έξι λογιστές». Ο συλλογισμός είναι λογικά ορθός και στηρίζει καθαρά την ετικέτα Contradiction.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0084",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση χρησιμοποιεί σωστά διαζευκτικό συλλογισμό πάνω στη συντονισμένη ονοματική φράση της προκείμενης, άρα η λογική είναι έγκυρη και στηρίζει το Entailment. Ωστόσο δεν κατονομάζει ειδικά το φαινόμενο των conjoined noun phrases/plurals, αλλά ένα συναφές λογικό φαινόμενο (διάζευξη).",
+      "total": 4
+    },
+    {
+      "id": "fracas-0074",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά το φαινόμενο της μονοτονικότητας/μη κληρονομικότητας του «οι περισσότεροι» ως προς τον πρώτο όρο: από ισχυρισμό για το σύνολο των Ευρωπαίων δεν έπεται ο ίδιος ισχυρισμός για υποσύνολο. Η συλλογιστική είναι λογικά ορθή και στηρίζει άμεσα την ετικέτα Unknown.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0085",
+      "gold": [
+        "Contradiction"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά την ακριβή πληθικότητα μέσα στη συζευγμένη ονοματική φράση («ακριβώς δυο δικηγόροι και τρεις λογιστές») και βασίζεται ορθά στο ότι οι δικηγόροι είναι ακριβώς δύο, άρα όχι έξι. Υποστηρίζει πλήρως την πρόβλεψη Contradiction.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0082",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά το φαινόμενο της συντονισμένης ονοματικής φράσης/συζευγμένων ονομάτων και εξάγει έγκυρα ότι αφού ο Τζόουνς αναφέρεται ρητά μεταξύ όσων υπέγραψαν, η υπόθεση συνεπάγεται. Υποστηρίζει πλήρως την ετικέτα Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0083",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά τη διαζευκτική/συνδεδεμένη ονοματική φράση ('Σμιθ, Τζόουνς ή Άντερσον') και εξηγεί ότι από το ότι ένας από αυτούς υπέγραψε δεν συνεπάγεται ειδικά ότι ήταν ο Τζόουνς. Η λογική είναι ορθή και στηρίζει πλήρως την ετικέτα Unknown.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0096",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly targets the definite plural/universal quantification phenomenon, noting the equivalence between «όλοι» and «κάθε» in this context. The reasoning is linguistically and logically sound, and it directly supports the predicted entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0090",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά το φαινόμενο των οριστικών πληθυντικών και τη σχέση τους με καθολική/συλλογική ερμηνεία. Ωστόσο, είναι γλωσσολογικά λανθασμένη για το συγκεκριμένο παράδειγμα: από το «διάβασε δυνατά τα θέματα της ημερήσιας διάταξης» προκύπτει κανονικά ότι διάβασε όλα τα θέματα, άρα η υπόθεση ενάγεται. Η εξήγηση πάντως στηρίζει την προβλεπόμενη ετικέτα Unknown.",
+      "total": 3
+    },
+    {
+      "id": "fracas-0093",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά την ισοδυναμία μέσω καθολικής ποσοτικοποίησης και παραφράζει ορθά γιατί η υπόθεση συνεπάγεται από την προκείμενη. Ωστόσο, δεν επισημαίνει ειδικά το φαινόμενο των οριστικών πληθυντικών, αλλά ένα συναφές ποσοδεικτικό/παραφραστικό φαινόμενο.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0089",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά το φαινόμενο της αλληλεπίδρασης καθολικής ποσοδότησης με διαζευγμένη ονοματική φράση και εξηγεί ορθά ότι το σύνολο «εκπρόσωπος ή πελάτης» περιλαμβάνει και τις δύο κατηγορίες, άρα συνεπάγεται ότι κάθε εκπρόσωπος και κάθε πελάτης ήταν παρόντες. Αυτό στηρίζει πλήρως την ετικέτα Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0094",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά το φαινόμενο των οριστικών πληθυντικών και τη μη συνεπαγωγή από συλλογική/γενική αναφορά σε καθολική ποσοτικοποίηση («κάθε»). Ο συλλογισμός είναι γλωσσολογικά και λογικά ορθός και στηρίζει το label Unknown.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0092",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση δεν κατονομάζει ρητά το φαινόμενο των οριστικών πληθυντικών, αλλά αγγίζει σχετικό ζήτημα παραφραστικής ισοδυναμίας μεταξύ των δύο ονοματικών φράσεων. Η λογική είναι σωστή: αν όλοι οι άνθρωποι που ήταν στη συνεδρίαση ψήφισαν, τότε όλοι όσοι ήταν εκεί ψήφισαν. Η εξήγηση στηρίζει καθαρά την πρόβλεψη Entailment.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0097",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά το φαινόμενο των bare plurals, εξηγώντας ότι το «σφάλματα λογισμικού» συνεπάγεται «ένα ή περισσότερα σφάλματα λογισμικού». Επιπλέον, η παραφραστική αντιστοιχία «κατηγορήθηκαν για» → «αποδόθηκε σε» είναι εύστοχη, άρα η συλλογιστική είναι ορθή και στηρίζει το label Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0100",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "Η εξήγηση εστιάζει σωστά στην ποσοτικοποίηση/ερμηνεία του γυμνού πληθυντικού («οι πελάτες» vs «οι περισσότεροι πελάτες»), άρα αναγνωρίζει το σχετικό φαινόμενο. Όμως η συλλογιστική είναι λανθασμένη για το συγκεκριμένο NLI, γιατί από το γενικό πληθυντικό στο premise προκύπτει κανονικά ότι τουλάχιστον οι περισσότεροι πελάτες εντυπωσιάστηκαν. Η εξήγηση πάντως υποστηρίζει συνεκτικά την προβλεπόμενη ετικέτα Unknown.",
+      "total": 3
+    },
+    {
+      "id": "fracas-0087",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά το φαινόμενο της συζευγμένης ονοματικής φράσης υπό καθολικό ποσοδείκτη («κάθε εκπρόσωπος και πελάτης») και εφαρμόζει ορθά ότι από το σύνολο ‘εκπρόσωποι και πελάτες’ έπεται το υποσύνολο ‘εκπρόσωποι’. Αυτό στηρίζει άμεσα την ετικέτα Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0101",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση δίνει σωστή λογική ανάλυση από το γενικό στο ειδικό και σωστά καταλήγει σε entailment. Ωστόσο δεν αναγνωρίζει ρητά το φαινόμενο των bare plurals· αναφέρεται γενικά σε καθολική εξειδίκευση, που είναι συναφές αλλά όχι ακριβής ταύτιση με το gold tag.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0095",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά το φαινόμενο των οριστικών πληθυντικών και τη διαφορά ανάμεσα σε γενική/συλλογική ανάγνωση και καθολική ποσοδότηση. Το σκεπτικό είναι γλωσσολογικά και λογικά ορθό: το «Οι αρχαίοι Έλληνες» δεν συνεπάγεται αναγκαστικά «Κάθε αρχαίος Έλληνας». Αυτό στηρίζει άμεσα την ετικέτα Unknown.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0103",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση δίνει σωστό λογικό συμπέρασμα μέσω καθολικής ποσοδότησης και εξειδίκευσης, άρα είναι ορθή και στηρίζει το Entailment. Ωστόσο δεν αναγνωρίζει ρητά το φαινόμενο των bare plurals· αναφέρεται γενικά σε καθολική δήλωση, που είναι σχετικό αλλά όχι ακριβής ταύτιση με το gold tag.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0091",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά το φαινόμενο των οριστικών πληθυντικών και την αμφισημία τους μεταξύ καθολικής και μη καθολικής ανάγνωσης. Το σκεπτικό είναι γλωσσολογικά και λογικά ορθό: η υπόθεση με το «Όλοι» δεν συνεπάγεται βέβαια από την πρόταση. Υποστηρίζει συνεπώς σωστά την ετικέτα Unknown.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0098",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly targets the bare plural/set-membership issue: from 'software bugs were blamed' plus '#32-985 is a software bug,' it does not follow that this particular bug was blamed. The reasoning is logically sound and directly supports the Unknown label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0102",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "Η εξήγηση πραγματεύεται καθολική υπαγωγή από γενική πρόταση σε άτομο, που σχετίζεται με το bare plural αλλά χάνει το κρίσιμο σημείο ότι τέτοιες γενικεύσεις δεν συνεπάγονται αυστηρά κάθε μεμονωμένη περίπτωση. Άρα η λογική της είναι λανθασμένη για το συγκεκριμένο φαινόμενο, αλλά παραμένει συνεπής με την προβλεπόμενη ετικέτα Entailment.",
+      "total": 2
+    },
+    {
+      "id": "fracas-0099",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση βασίζεται σωστά στην καθολική ποσοτικοποίηση/εξειδίκευση από το «όλοι οι πελάτες» προς τον Σμιθ, άρα είναι λογικά έγκυρη και στηρίζει το Entailment. Ωστόσο δεν κατονομάζει ειδικά το φαινόμενο των bare plurals, αλλά ένα συναφές ποσοδεικτικό φαινόμενο.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0108",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση είναι λογικά σωστή: από το «μόνο ένας λογιστής» πράγματι συνεπάγεται ότι τουλάχιστον ένας λογιστής παρέστη, άρα το entailment είναι ορθό. Ωστόσο, δεν ταυτοποιεί το gold phenomenon «Bare Plurals», αλλά ένα συναφές φαινόμενο ποσοδότησης/υπαρξιακής συνεπαγωγής.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0111",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly captures the collective/distributive plural inference: two separate signing events by Smith and Jones aggregate to the truth of 'Smith and Jones signed two contracts.' The reasoning is logically sound and directly supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0106",
+      "gold": [
+        "Contradiction"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση είναι λογικά σωστή και στηρίζει καθαρά την αντίφαση: το «μόνο ένας» συνεπάγεται παρουσία ενός λογιστή, ενώ το «κανένας» μηδενική παρουσία. Ωστόσο, δεν αναγνωρίζει ειδικά το φαινόμενο των bare plurals· εστιάζει γενικά στην ποσοτική αντίθεση/μοναδικότητα.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0115",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά την ενδοπροτασιακή αναφορά μέσω της κτητικής αντωνυμίας «της», που συνδέει το «γραφείο» με τη Μαίρη. Ο συλλογισμός είναι γλωσσικά και λογικά ορθός και στηρίζει καθαρά την ετικέτα Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0104",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά το ζήτημα του bare plural/ποσοτικής ασάφειας: από το «έχουν εταιρικά αυτοκίνητα» δεν προκύπτει «πάνω από ένα» για τον Τζόουνς. Η συλλογιστική είναι λογικά ορθή και στηρίζει πλήρως την ετικέτα Unknown.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0114",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση εστιάζει κυρίως στη μετατροπή ενεργητικής/παθητικής φωνής, που είναι σχετικό αλλά όχι το χρυσό φαινόμενο της ενδοπροτασιακής αναφοράς στο «της». Ωστόσο, ο συλλογισμός είναι λογικά σωστός: αν η Μαίρη χρησιμοποίησε το γραφείο της, τότε το γραφείο της Μαίρης χρησιμοποιήθηκε. Η εξήγηση υποστηρίζει καθαρά την πρόβλεψη Entailment.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0113",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση είναι λογικά σωστή: από το ότι ο Σμιθ υπέγραψε δύο συμβόλαια και ο Τζόουνς επίσης τα ίδια, έπεται ότι και οι δύο υπέγραψαν δύο συμβόλαια. Ωστόσο, δεν αναγνωρίζει ρητά το φαινόμενο των συλλογικών/διανεμητικών πληθυντικών, αλλά εστιάζει κυρίως σε αντωνυμική αναφορά και σύζευξη, που είναι σχετικό αλλά όχι το ακριβές gold tag.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0109",
+      "gold": [
+        "Contradiction"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "Η εξήγηση αγγίζει ποσοδείκτες/αριθμητικότητα ('μόνο ένας', 'υπάρχει τουλάχιστον ένας'), άρα σχετίζεται με το φαινόμενο των bare plurals αλλά δεν αναγνωρίζει το κρίσιμο σημείο ότι το «ορισμένοι λογιστές» απαιτεί πληθυντικό (>1), οπότε συγκρούεται με το «μόνο ένας». Η συλλογιστική είναι λανθασμένη, αλλά υποστηρίζει συνεκτικά την προβλεπόμενη ετικέτα Entailment.",
+      "total": 2
+    },
+    {
+      "id": "fracas-0107",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση είναι λογικά σωστή: από το «μόνο ένας λογιστής» έπεται ότι τουλάχιστον ένας λογιστής παρέστη, άρα υποστηρίζεται το entailment προς το «ορισμένοι λογιστές». Ωστόσο, δεν εστιάζει ειδικά στο φαινόμενο των bare plurals, αλλά σε ποσοδεικτική/υπαρξιακή συνεπαγωγή, που είναι σχετικό αλλά όχι ακριβώς το gold tag.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0110",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση είναι λογικά σωστή: το «μόνο ένας λογιστής» συνεπάγεται ύπαρξη λογιστή που παρέστη, άρα το συμπέρασμα ακολουθεί. Ωστόσο, δεν εντοπίζει το φαινόμενο του gold tag (bare plurals), αλλά εστιάζει σε ποσοδεικτική/μοναδικότητα με το «μόνο ένας», άρα σχετικό αλλά όχι το σωστό φαινόμενο.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0105",
+      "gold": [
+        "Contradiction"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση εστιάζει σωστά στην ποσοτικοποίηση/άρνηση («μόνο ένας» vs «κανένας») και δείχνει έγκυρα γιατί υπάρχει αντίφαση. Ωστόσο, δεν αναγνωρίζει ειδικά το φαινόμενο των bare plurals του gold tag, αλλά ένα συναφές ποσοδεικτικό φαινόμενο.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0116",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά την ενδοπροτασιακή αναφορά μέσω του κτητικού «της» που παραπέμπει στη Μαίρη, και επιπλέον αξιοποιεί σωστά τη γλωσσική ένδειξη θηλυκού γένους από το όνομα και την αντωνυμία. Η συλλογιστική είναι έγκυρη και στηρίζει το Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0117",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση δίνει σωστή λογική καθολικής εξειδίκευσης από το «κάθε μαθητής» και το «Η Μαίρη είναι μαθήτρια», άρα στηρίζει ορθά το Entailment. Ωστόσο δεν αναγνωρίζει ρητά το φαινόμενο της ενδοπροτασιακής ονοματικής αναφοράς/αντωνυμίας στο «της», αλλά εστιάζει κυρίως στην ποσοδεικτική συλλογιστική.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0112",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 2,
+      "soundness": 1,
+      "consistency": 0,
+      "justification": "Η εξήγηση εντοπίζει σωστά το φαινόμενο της συλλογικής/κατανεμητικής ανάγνωσης των πληθυντικών. Όμως το συμπέρασμα δεν στηρίζει αντίφαση: η συλλογική ανάγνωση της υπόθεσης την κάνει το πολύ μη συνεπαγόμενη από τις προκείμενες, όχι ψευδή, αφού από το ότι υπέγραψαν δύο ο καθένας δεν αποκλείεται να υπέγραψαν και δύο μαζί. Άρα η αιτιολόγηση δεν είναι λογικά επαρκής για Contradiction.",
+      "total": 3
+    },
+    {
+      "id": "fracas-0121",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά τη διαπροτασιακή αναφορά του «τους» στην ΙΤΕΛ, που είναι ακριβώς το φαινόμενο της αντωνυμικής αναφοράς μεταξύ προτάσεων. Η συλλογιστική είναι ορθή: οι τρεις προτάσεις συνδυάζονται και συνεπάγονται ότι η Σμιθ παρέδωσε και τα τρία αντικείμενα στην ΙΤΕΛ. Αυτό υποστηρίζει πλήρως την πρόβλεψη Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0120",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies inter-sentential anaphora: «Αυτή» refers to Smith and «την» to the meeting across sentences. The reasoning is linguistically accurate and valid, and it directly supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0119",
+      "gold": [
+        "Contradiction"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση χειρίζεται σωστά την ενδοπροτασιακή αντωνυμική αναφορά του «της» και τη συνδυάζει με την καθολική άρνηση πάνω στους μαθητές. Το συμπέρασμα ότι, αφού η Μαίρη είναι μαθήτρια, δεν χρησιμοποίησε το γραφείο της είναι λογικά έγκυρο, άρα η υπόθεση αντιφάσκει με τις προκείμενες.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0118",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 0,
+      "justification": "Η εξήγηση εστιάζει σωστά στην ενδοπροτασιακή αντωνυμική αναφορά του «της» στο «κάθε μαθητής» και συλλογίζεται ορθά ότι, αφού η Μαίρη είναι μαθήτρια, προκύπτει ότι χρησιμοποίησε το γραφείο της και άρα έχει γραφείο. Όμως αυτό υποστηρίζει Entailment, όχι την προβλεφθείσα ετικέτα Contradiction.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0125",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies plural anaphora/coreference: 'these' refers to the two missing machines. Its numerical reasoning is coherent: if two of the ten machines are the ones removed, the hypothesis that eight machines were removed is contradicted. The explanation clearly supports the model's predicted Contradiction label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0127",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά την πληθυντική αναφορά της αντωνυμίας «τις» στις δύο μηχανές και χρησιμοποιεί αυτό το στοιχείο για να δείξει ότι η υπόθεση συνεπάγεται από τις προκείμενες. Η συλλογιστική είναι γλωσσικά και λογικά ορθή και υποστηρίζει το label Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0126",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά την πληθυντική αναφορά του «όλες» στις δέκα μηχανές και χρησιμοποιεί ορθή λογική: αν δύο από τις δέκα λείπουν τώρα και όλες ήταν εδώ χθες, τότε και οι δέκα ήταν εδώ χθες. Υποστηρίζει πλήρως την ετικέτα Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0128",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά την πληθυντική αναφορά/αντωνυμία: το «μίσησαν» αναφέρεται στο συλλογικό υποκείμενο «ο Γιάννης και οι συνάδελφοί του», και από αυτό έπεται ότι οι συνάδελφοι μίσησαν τη σύσκεψη. Η συλλογιστική είναι γλωσσικά και λογικά ορθή και στηρίζει την ετικέτα Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0123",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά την πληθυντική αναφορά της αντωνυμίας «αυτές» στις αναφορές και συνδέει ορθά το «οι περισσότερες» με την ύπαρξη κάποιων αναφορών από την ΙΤΕΛ στο γραφείο της Σμιθ. Υποστηρίζει συνεπώς σωστά το Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0122",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies inter-sentential anaphora/coreference: «Αυτός» refers to the president introduced in the previous sentence. The reasoning validly combines the two premises to derive that each committee has a president appointed by its members, which supports the entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0124",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies plural anaphora/coreference: 'Αυτές' refers to the two missing machines. The reasoning is logically sound and directly supports the entailment that two machines have been removed.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0131",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation gives correct entailment reasoning by linking 'these' to the lines and concluding each department rents a BT line, but it does not explicitly identify the gold phenomenon of plural nominal anaphora; it instead frames the inference more generally in quantificational terms.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0129",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά την πληθυντική αναφορά του «Τη μίσησαν» στο υποκείμενο «Ο Γιάννης και οι συνάδελφοί του», δηλαδή το φαινόμενο της πληθυντικής αντωνυμικής/συλλογικής αναφοράς. Η συλλογιστική ότι ο Γιάννης, ως μέλος της ομάδας, μίσησε τη σύσκεψη είναι γλωσσικά και λογικά εύλογη εδώ και στηρίζει άμεσα την ετικέτα Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0135",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά το φαινόμενο της αναφορικής αντωνυμίας τύπου donkey/E-type («για αυτόν») και το συνδέει με καθολική ερμηνεία πάνω σε κάθε υπολογιστή. Η συλλογιστική είναι λογικά ορθή: από το ότι κάθε πελάτης που έχει υπολογιστή έχει συμβόλαιο για αυτόν, και ότι η ΜΦΙ έχει αρκετούς υπολογιστές, έπεται ότι έχει συμβόλαιο για καθέναν. Η εξήγηση στηρίζει άμεσα την πρόβλεψη Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0130",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "Η εξήγηση αγγίζει έμμεσα την πληθυντική αναφορά ('μίσησαν' για την ομάδα), αλλά δεν αναγνωρίζει σωστά το κρίσιμο φαινόμενο της πληθυντικής αντωνυμικής/συλλογικής αναφοράς και αντ' αυτού βασίζεται σε αδικαιολόγητη διανομή από την ομάδα στο άτομο. Από το ότι η ομάδα μίσησε τη σύσκεψη δεν συνεπάγεται λογικά ότι ο Γιάννης ατομικά τη μίσησε, άρα η συλλογιστική είναι μη έγκυρη. Ωστόσο, η εξήγηση υποστηρίζει το προβλεπόμενο label Entailment.",
+      "total": 2
+    },
+    {
+      "id": "fracas-0134",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αποδίδει σωστά το συμπέρασμα από την καθολική πρόταση και το γεγονός ότι η ΜΦΙ έχει ακριβώς έναν υπολογιστή, άρα είναι λογικά ορθή και στηρίζει το Entailment. Ωστόσο δεν κατονομάζει ρητά το φαινόμενο της E-type/Donkey αντωνυμίας· απλώς το χειρίζεται έμμεσα μέσω της αναφοράς του «για αυτόν τον υπολογιστή».",
+      "total": 4
+    },
+    {
+      "id": "fracas-0141",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 0,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση δεν αναγνωρίζει το χρυσό φαινόμενο (απλή αντωνυμική/αναφορική σχέση), αλλά δίνει γενική υπαρξιακή γενίκευση από «ο Γιάννης» σε «κάποιος». Η λογική της είναι έγκυρη για το συγκεκριμένο ζεύγος και στηρίζει άμεσα την προβλεπόμενη ετικέτα Entailment.",
+      "total": 3
+    },
+    {
+      "id": "fracas-0138",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "The explanation directly discusses the definite-reference/anaphoric link between 'the cover' and the cover of R-95-103, matching the gold nominal anaphora phenomenon. However, its reasoning is unsound: in the premises, 'the cover' is naturally resolved as the unique cover introduced for the report R-95-103, so the hypothesis is entailed. The explanation does consistently support the model's predicted label Unknown.",
+      "total": 3
+    },
+    {
+      "id": "fracas-0132",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση είναι λογικά σωστή και στηρίζει το Entailment: η αντωνυμία «τη» αναφέρεται στη «γραμμή», άρα το τμήμα πωλήσεων νοικιάζει μια γραμμή από τη ΒΤ. Ωστόσο, το gold tag είναι πιο συγκεκριμένα plural anaphora, ενώ εδώ η εξήγηση αναγνωρίζει γενικά αναφορική αντωνυμία/συναναφορά και όχι το συγκεκριμένο υποφαινόμενο.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0137",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 0,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation gives correct quantitative reasoning for entailment, but it does not identify or discuss the targeted phenomenon of E-type/donkey anaphora; it treats the case as straightforward counting plus reference of 'for it' to the single computer. The reasoning itself is logically sound and supports the predicted entailment label.",
+      "total": 3
+    },
+    {
+      "id": "fracas-0133",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά την αντωνυμική αναφορά του «τους» στους υπολογιστές της πρώτης πρότασης, που αντιστοιχεί στο φαινόμενο E-type/donkey anaphora. Η συλλογιστική είναι ορθή: αν η ΓΦΙ έχει αυτούς τους υπολογιστές και η ΙΤΕΛ «τους» συντηρεί, τότε συντηρεί όλους τους υπολογιστές που διαθέτει η ΓΦΙ. Αυτό στηρίζει άμεσα την ετικέτα Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0142",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά την ελλειπτική δομή τύπου VP ellipsis στο «Το ίδιο έκανε ο Βασίλης» και αποκαθιστά ορθά το παραλειπόμενο περιεχόμενο από την προηγούμενη πρόταση. Ο συλλογισμός είναι γλωσσικά και λογικά σωστός και στηρίζει άμεσα την πρόβλεψη Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0140",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά το φαινόμενο της απλής αυτοπάθειας/αναφοράς στον εαυτό («τον εαυτό του») και τη σωστή παραφραστική ισοδυναμία με το «τραυματίστηκε». Η γλωσσική ανάλυση είναι ορθή και στηρίζει άμεσα την ετικέτα Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0136",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly argues why the hypothesis is not entailed: the premise supports only that Smith brought some laptop(s), not all five. However, it identifies the issue as quantifier/scope rather than the gold phenomenon of E-type/donkey anaphora, so it is related but not exact.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0144",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά το VP ellipsis στην πρόταση «Το ίδιο έκανε ο Βασίλης» και αποκαθιστά ορθά το ελλειπτικό περιεχόμενο ως «μίλησε στη Μαίρη στις τέσσερις η ώρα». Η συλλογιστική είναι γλωσσικά και λογικά σωστή και στηρίζει πλήρως την πρόβλεψη Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0139",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά το απλό αυτοπαθές/αναφορικό φαινόμενο στο «τον εαυτό του» και εξηγεί ορθά ότι ο διευθυντής είναι ταυτόχρονα δράστης και αποδέκτης της επιβράβευσης. Η παρατήρηση ότι η παράλειψη του «μεγάλη» δεν αναιρεί την ενailment είναι επίσης σωστή. Υποστηρίζει πλήρως την προβλεπόμενη ετικέτα Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0143",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά την ελλειπτική δομή VP στο «Το ίδιο έκανε ο Βασίλης» και εξηγεί ορθά ότι μόνο το γεγονός πως μίλησε στη Μαίρη μεταφέρεται, όχι αναγκαστικά και η χρονική πληροφορία των 4. Αυτό στηρίζει συνεκτικά την ετικέτα Unknown.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0148",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 0,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "Η εξήγηση δεν αναγνωρίζει το φαινόμενο της VP ellipsis, αλλά αντιμετωπίζει την πρόταση γενικά ως έλλειψη πληροφορίας για το αντικείμενο. Αυτό είναι λανθασμένο εδώ, γιατί το «Ο Βασίλης έχει μιλήσει» ανακτά φυσικά το ελλειπτικό συμπλήρωμα «στη Μαίρη» από την προηγούμενη πρόταση. Ωστόσο, η εξήγηση είναι συνεπής με την προβλεπόμενη ετικέτα Unknown.",
+      "total": 1
+    },
+    {
+      "id": "fracas-0145",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά το φαινόμενο της ελλειπτικής αναφοράς/VP ellipsis στο «το έκανε», το οποίο ανακτά το «μίλησε στη Μαίρη». Η συλλογιστική είναι γλωσσικά και λογικά ορθή και στηρίζει άμεσα την πρόβλεψη Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0147",
+      "gold": [
+        "Contradiction"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά ότι το «δεν το έκανε» αναφέρεται στο ίδιο γεγονός μέσω ελλειπτικής/αντωνυμικής αναφοράς στο ρηματικό σύνολο, που ταιριάζει με VP ellipsis. Η συλλογιστική είναι γλωσσικά και λογικά ορθή: οι προκείμενες δηλώνουν ότι ο Βασίλης δεν μίλησε στη Μαίρη τη Δευτέρα, άρα η υπόθεση αντιφάσκει. Η εξήγηση υποστηρίζει πλήρως την ετικέτα Contradiction.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0146",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά το VP ellipsis στο «θα το κάνει», δηλαδή ότι ο Βασίλης θα κάνει την ίδια πράξη που μόλις αναφέρθηκε. Παρότι μιλά και για αναφορά του «το», η βασική ανάλυση είναι σωστή και στηρίζει έγκυρα το entailment προς «Ο Βασίλης θα μιλήσει στη Μαίρη».",
+      "total": 5
+    },
+    {
+      "id": "fracas-0150",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά την έλλειψη/gapping στη συντονισμένη δομή («ο Βασίλης με τρένο») και εξηγεί ορθά ότι το ρήμα και ο προορισμός ανακτώνται από το πρώτο σκέλος. Η συλλογιστική είναι γλωσσικά και λογικά σωστή και στηρίζει πλήρως την πρόβλεψη Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0149",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 1,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "The explanation focuses on missing argument information rather than recognizing VP ellipsis resolution, so it addresses a related but incorrect phenomenon. Its reasoning is unsound because in Greek 'επίσης' here supports an ellipsis reading where the students also spoke to Mary, making the hypothesis entailed. It is nevertheless consistent with the model's predicted label 'Unknown'.",
+      "total": 2
+    },
+    {
+      "id": "fracas-0152",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 1,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "Η εξήγηση αγγίζει σχετικό συντακτικό θέμα (εύρος του «με αυτοκίνητο»), αλλά δεν αναγνωρίζει σωστά το gapping/ellipsis, όπου το μέσο μεταφέρεται και στο δεύτερο μέλος. Η συλλογιστική είναι γλωσσολογικά λανθασμένη για τη δοθείσα πρόταση, αφού το σωστό είναι entailment. Ωστόσο, η εξήγηση είναι συνεπής με την προβλεπόμενη ετικέτα Unknown, επειδή υποστηρίζει ότι δεν γνωρίζουμε το μέσο του Βασίλη.",
+      "total": 2
+    },
+    {
+      "id": "fracas-0154",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά την έλλειψη τύπου gapping/σύζευξη: από το «Ο Γιάννης πήγε στο Παρίσι με αυτοκίνητο» ανακτάται ελλειπτικά για το «Ο Βασίλης με τρένο» το «πήγε στο Παρίσι». Η συλλογιστική είναι γλωσσολογικά ορθή και στηρίζει καθαρά την πρόβλεψη Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0153",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά το gapping/έλλειψη του ρήματος στο δεύτερο συντονισμένο σκέλος («οι μαθητές [πηγαίνουν] με τρένο») και δείχνει ότι η υπόθεση συνεπάγεται άμεσα από αυτό. Η συλλογιστική είναι γλωσσικά και λογικά ορθή και στηρίζει πλήρως την πρόβλεψη Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0157",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά την έλλειψη/one-anaphora στο «ένα μπλε», όπου το παραλειπόμενο ουσιαστικό «αυτοκίνητο» ανακτάται από την προηγούμενη πρόταση. Η συλλογιστική είναι γλωσσικά και λογικά ορθή και στηρίζει άμεσα την πρόβλεψη Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0156",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά το φαινόμενο της ελλειπτικής/αναφορικής χρήσης του «επίσης» με το αόριστο «ένα αυτοκίνητο» και εξηγεί ότι δεν επιβάλλεται ταυτοαναφορά στο ίδιο αυτοκίνητο. Η συλλογιστική είναι γλωσσικά και λογικά ορθή και στηρίζει πλήρως την ετικέτα Unknown.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0161",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly reasons that 'red' does not transfer from Giannis's car to Vasilis's, supporting Unknown. However, it does not explicitly identify the ellipsis/one-anaphora phenomenon ('γρήγορο [αυτοκίνητο]') and instead frames it more generally as property transfer, so it is related but not exact.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0163",
+      "gold": [
+        "Contradiction"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά την αντίφαση μέσω του «δεν ξέρει» vs «ξέρει», αλλά δεν αναφέρεται ρητά στο φαινόμενο της sluicing/έλλειψης που είναι το gold tag. Η λογική είναι σωστή και στηρίζει πλήρως την πρόβλεψη Contradiction.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0159",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά την ελλειπτική δομή/one-anaphora («ένα γρήγορο» με παραλειπόμενο ουσιαστικό), άρα το φαινόμενο ταυτοποιείται σωστά. Όμως η συλλογιστική είναι λανθασμένη: στο δεδομένο συμφραζόμενο το παραλειπόμενο ουσιαστικό ανακτάται φυσικά ως «αυτοκίνητο», οπότε η υπόθεση συνεπάγεται. Παρ’ όλα αυτά, η εξήγηση είναι συνεπής με την προβλεπόμενη ετικέτα Unknown, αφού ακριβώς υποστηρίζει ότι δεν υπάρχει βέβαιη συνεπαγωγή.",
+      "total": 3
+    },
+    {
+      "id": "fracas-0164",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά φραστική έλλειψη/συντονισμό στη δεύτερη πρόταση («Και στη Σου») και ορθά ανακτά το ρήμα «μίλησε» και το υποκείμενο «Ο Γιάννης». Η συλλογιστική είναι γλωσσικά και λογικά σωστή και στηρίζει άμεσα την ετικέτα Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0151",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση είναι λογικά σωστή: η υπόθεση πράγματι συνεπάγεται από το δεύτερο μέλος του συντονισμού, όπου το ρήμα ανακτάται μέσω gapping/έλλειψης. Όμως δεν κατονομάζει ρητά το φαινόμενο της έλλειψης (gapping) και το αποδίδει γενικά σε συντονισμό, άρα αναγνωρίζει σχετικό αλλά όχι ακριβές φαινόμενο.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0167",
+      "gold": [
+        "Contradiction"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly notes the numerical contradiction between 'only one woman' and 'two women,' so the reasoning is sound and supports the predicted contradiction label. However, it does not explicitly identify the gold phenomenon of phrasal ellipsis; it treats the case as a straightforward quantity mismatch, which is related but not the specific phenomenon.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0166",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά τη φραστική έλλειψη στο «Και την Παρασκευή», όπου κληρονομούνται το ρήμα και τα ορίσματα από την προηγούμενη πρόταση. Η συλλογιστική είναι γλωσσολογικά ορθή και στηρίζει άμεσα την πρόβλεψη Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0155",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά την ελλειπτική αναφορά/one anaphora μέσω του «επίσης», όπου το παραλειπόμενο αντικείμενο «αυτοκίνητο» ανακτάται από την προηγούμενη πρόταση. Η συλλογιστική είναι γλωσσικά και λογικά ορθή και στηρίζει άμεσα την πρόβλεψη Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0158",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 1,
+      "soundness": 1,
+      "consistency": 1,
+      "justification": "Η εξήγηση εστιάζει στο χρώμα του αυτοκινήτου του Βασίλη και αγγίζει έμμεσα την ελλειπτική αναφορά του «ένα μπλε», αλλά δεν αναγνωρίζει ρητά το φαινόμενο one-anaphora/ellipsis. Η συλλογιστική είναι ως επί το πλείστον γλωσσικά εύλογη, αφού το «ένα μπλε» υπονοεί μπλε αυτοκίνητο, αλλά αυτό οδηγεί σε contradiction ενώ το gold είναι Unknown, άρα υπάρχει σφάλμα στην ερμηνεία. Παρ' όλα αυτά, η εξήγηση υποστηρίζει καθαρά το προβλεπόμενο label Contradiction.",
+      "total": 3
+    },
+    {
+      "id": "fracas-0171",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά την ελλειπτική φράση «Και γυναίκες» ως phrasal ellipsis και αποκαθιστά ορθά το παραλειπόμενο περιεχόμενο από την πρώτη πρόταση. Η συλλογιστική είναι γλωσσικά και λογικά σωστή και στηρίζει άμεσα την πρόβλεψη Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0160",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά το φαινόμενο της ελλειπτικής αναφοράς/one anaphora ('ο Βασίλης έχει ένα γρήγορο' → αυτοκίνητο). Ωστόσο, η συλλογιστική είναι λανθασμένη, γιατί στην ελληνική one-anaphora το ελλειπτικό αντικείμενο κληρονομεί το ουσιαστικό και τις σχετικές ιδιότητες από το antecedent, άρα συνεπάγεται ότι ο Βασίλης έχει γρήγορο κόκκινο αυτοκίνητο. Η εξήγηση πάντως είναι συνεπής με την προβλεπόμενη ετικέτα Unknown.",
+      "total": 3
+    },
+    {
+      "id": "fracas-0173",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 0,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση είναι λογικά ορθή και υποστηρίζει σωστά το Entailment μέσω καθολικής εφαρμογής της πρώτης πρότασης στη Μαίρη. Ωστόσο, δεν αναγνωρίζει καθόλου το ειδικό φαινόμενο της Antecedent Contained Deletion/ellipsis και παραμένει γενική λογική παράφραση.",
+      "total": 3
+    },
+    {
+      "id": "fracas-0170",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά την ελλειπτική δομή στο «πριν το Βασίλη» ως phrasal ellipsis, όπου ανακτώνται το ίδιο υποκείμενο και ρήμα («ο Γιάννης βρήκε»). Η γλωσσική ανάλυση είναι ορθή και στηρίζει άμεσα την ετικέτα Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0174",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly reasons about the entailment relation as one-way inclusion, so the Unknown label is well supported. However, it does not identify the specific ellipsis/ACD phenomenon; it instead gives a more general semantic monotonicity/set-inclusion analysis, which is related but not the tagged phenomenon.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0168",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies phrasal ellipsis in the coordinated second clause and accurately reconstructs the omitted predicate from the first sentence. This reasoning validly supports entailment and is fully consistent with the predicted label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0165",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά την ελλειπτική/αποσπασματική χρονική συμπλήρωση («Την Παρασκευή.») ως phrasal ellipsis και εξηγεί ορθά ότι αυτή συμπληρώνει την πρώτη πρόταση, άρα στηρίζει συνεκτικά το Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0162",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 1,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "Η εξήγηση αγγίζει το ελλειπτικό 'ένα αργό [αυτοκίνητο]' αλλά δεν αναγνωρίζει σωστά το one-anaphora ότι το ελλειπτικό όνομα κληρονομεί και το 'κόκκινο' από το antecedent. Άρα το φαινόμενο εντοπίζεται μόνο συγγενικά. Η λογική είναι λανθασμένη, γιατί στο συγκεκριμένο φαινόμενο η υπόθεση πράγματι συνεπάγεται από τις προκείμενες. Ωστόσο η εξήγηση είναι συνεπής με την προβλεπόμενη ετικέτα Unknown, αφού υποστηρίζει ότι λείπει πληροφορία.",
+      "total": 2
+    },
+    {
+      "id": "fracas-0176",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά την ελλειπτική/προσθετική δομή («ο Βασίλης επίσης») και ότι κληρονομεί το κατηγόρημα «έγραψε μια αναφορά», που είναι ακριβώς το σχετικό φαινόμενο ελλειπτικής διαμόρφωσης. Η συλλογιστική είναι γλωσσικά και λογικά ορθή και στηρίζει άμεσα την πρόβλεψη Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0178",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά την ελλειπτική δομή και την αποκατάσταση του παραλειπόμενου κατηγορήματος από το προηγούμενο συμφραζόμενο, που ταιριάζει με το φαινόμενο ELLIPSIS:Configurational Effects. Η συλλογιστική είναι γλωσσολογικά και λογικά ορθή και στηρίζει άμεσα την πρόβλεψη Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0169",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά το φαινόμενο της φραστικής έλλειψης στο «πριν το Βασίλη». Ωστόσο, η ανάλυση ως αμφίσημης είναι λανθασμένη για το συγκεκριμένο παράδειγμα: η φυσική ελλειπτική ανάγνωση είναι «πριν ο Βασίλης βρει τη Μαίρη», άρα η υπόθεση συνεπάγεται. Παρ' όλα αυτά, η εξήγηση υποστηρίζει το προβλεπόμενο label Unknown.",
+      "total": 3
+    },
+    {
+      "id": "fracas-0172",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση είναι λογικά σωστή: από το «θέλει να ξέρει Α και Β» συνεπάγεται ότι θέλει να ξέρει και το Β, άρα υποστηρίζει σωστά το Entailment. Ωστόσο, δεν αναγνωρίζει ρητά το φαινόμενο της φραστικής έλλειψης στο «και ποιοί», αλλά το χειρίζεται ως απλή σύζευξη, άρα αγγίζει σχετικό αλλά όχι ακριβώς το gold phenomenon.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0179",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση είναι λογικά ορθή: από την υπό συνθήκη πρόταση και το γεγονός ότι ο Γιάννης έγραψε αναφορά, προκύπτει με modus ponens ότι και ο Βασίλης έγραψε αναφορά. Ωστόσο, δεν αναγνωρίζει ρητά το φαινόμενο της έλλειψης/ellipsis στο «το έκανε επίσης», αλλά το χειρίζεται έμμεσα ως απλή συνεπαγωγή.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0177",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 1,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά την ελλειπτική/διαμορφωτική ασάφεια του «ο Βασίλης επίσης», που ταιριάζει με το gold tag. Ωστόσο, ένα από τα παραδείγματα ανάγνωσης («η Μαίρη έγραψε μια αναφορά και για τον Βασίλη») δεν είναι καλή ανάλυση της έλλειψης εδώ, άρα υπάρχει μικρή γλωσσολογική ανακρίβεια. Παρ’ όλα αυτά, η βασική ιδέα ότι η πρόταση είναι αμφίσημη και δεν συνεπάγεται αναγκαστικά την υπόθεση στηρίζει το label Unknown.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0175",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά το φαινόμενο της έλλειψης/VP-ellipsis με configurational ambiguity. Ωστόσο, η ανάλυση είναι λανθασμένη για τη συγκεκριμένη πρόταση: η φυσική ανάγνωση είναι ότι ο Βασίλης επίσης είπε ότι η Μαίρη έγραψε μια αναφορά, άρα η υπόθεση συνεπάγεται. Η εξήγηση πάντως υποστηρίζει συνεκτικά την προβλεπόμενη ετικέτα Unknown.",
+      "total": 3
+    },
+    {
+      "id": "fracas-0186",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 1,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "Η εξήγηση αγγίζει σχετικό γλωσσικό ζήτημα (ερμηνεία του ελλειπτικού 'το ίδιο και ο Τζόουνς' και αλλαγή αναφοράς), αλλά δεν αναγνωρίζει σωστά ότι η έλλειψη/αναφορά οδηγεί σε ενταγόμενη ανάγνωση. Η συλλογιστική είναι λανθασμένη: από την πρόταση προκύπτει με ελλειπτική αποκατάσταση ότι και ο Τζόουνς ισχυρίστηκε πως είχε κοστολογήσει την πρότασή του Σμιθ, άρα δεν υπάρχει αντίφαση. Ωστόσο, η εξήγηση πράγματι στηρίζει την προβλεπόμενη ετικέτα Contradiction.",
+      "total": 2
+    },
+    {
+      "id": "fracas-0182",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά την έλλειψη στο «το ίδιο και ο Τζόουνς» και επιλύει σωστά την κτητική αντωνυμία ως αναφορική στον Τζόουνς. Η συλλογιστική είναι γλωσσικά και λογικά ορθή και στηρίζει άμεσα την ετικέτα Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0180",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά την ελλειπτική/αντωνυμική αναφορά στο «το έκανε», που αντιστοιχεί στο φαινόμενο configurational ellipsis. Η συλλογιστική είναι ορθή: το «το έκανε» ανακτά την πράξη «να αγοράσει ένα αυτοκίνητο», άρα προκύπτει entailment. Η εξήγηση υποστηρίζει πλήρως την προβλεπόμενη ετικέτα.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0185",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά την ελλειπτική/παράλληλη δομή («το ίδιο και ο Τζόουνς») και αποκαθιστά ορθά το παραλειπόμενο περιεχόμενο, δείχνοντας γιατί η υπόθεση συνεπάγεται από την πρόταση. Είναι λογικά και γλωσσικά ακριβής και υποστηρίζει πλήρως την ετικέτα Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0193",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά την ελλειπτική/συντονισμένη δομή και την αποκατάσταση του παραλειπόμενου ρήματος/συμπληρώματος στο δεύτερο μέλος. Η συλλογιστική είναι γλωσσικά και λογικά ορθή: από το πρώτο σκέλος μεταφέρεται ότι και ο Καρλ πρότεινε στη γυναίκα του Άλαν να πάνε μαζί. Αυτό στηρίζει άμεσα την ετικέτα Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0184",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά το φαινόμενο της έλλειψης/αντωνυμικής αναφοράς στο «το ίδιο και ο Τζόουνς» και αναλύει ορθά ότι το «του» ερμηνεύεται τοπικά για κάθε υποκείμενο, όχι διασταυρούμενα. Αυτό στηρίζει συνεκτικά την ετικέτα Unknown, αφού δεν συνεπάγεται ότι ο Σμιθ εκπροσωπεί την εταιρία του Τζόουνς.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0187",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 2,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά το φαινόμενο της έλλειψης/αναφοράς στην κτητική αντωνυμία και στην αλλαγή φορέα του ισχυρισμού. Ωστόσο, η λογική της είναι λανθασμένη: από το «το ίδιο και ο Τζόουνς» συνάγεται ότι και ο Τζόουνς ισχυρίστηκε το αντίστοιχο, άρα η υπόθεση ενάγεται. Παρ' όλα αυτά, η εξήγηση είναι συνεπής με την προβλεπόμενη ετικέτα Contradiction, αφού επιχειρεί να τη στηρίξει.",
+      "total": 3
+    },
+    {
+      "id": "fracas-0189",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά την ελλειπτική/παράλληλη δομή («το ίδιο και η Μαίρη») και την αναφορική μεταφορά του ίδιου κατηγορήματος στη Μαίρη. Η συλλογιστική είναι γλωσσικά και λογικά ορθή και στηρίζει άμεσα την πρόβλεψη Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0183",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά την ελλειπτική δομή/αναφορά («το ίδιο και ο Τζόουνς»), άρα πετυχαίνει το φαινόμενο. Όμως η ανάλυση είναι λανθασμένη: στη διαθέσιμη ανάγνωση η έλλειψη επιτρέπει ότι ο Τζόουνς εκπροσωπεί την εταιρία του Σμιθ, γι’ αυτό το gold είναι Entailment. Παρ’ όλα αυτά, η εξήγηση στηρίζει συνεκτικά την προβλεπόμενη ετικέτα Unknown.",
+      "total": 3
+    },
+    {
+      "id": "fracas-0194",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 1,
+      "soundness": 1,
+      "consistency": 1,
+      "justification": "The explanation notices the key mismatch in the second conjunct (\"Alan's wife\" vs. \"Alan\"), which is related to resolving the ellipsis/anaphora correctly, but it does not explicitly identify ellipsis/anaphora itself. Its reasoning is partly sound about the mismatch, but concluding Contradiction is too strong; the gold relation is Unknown. Still, the explanation is consistent with the model's predicted label because it argues the hypothesis is false due to that substitution.",
+      "total": 3
+    },
+    {
+      "id": "fracas-0196",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά την ελλειπτική φράση «το ίδιο έκανε ένας ελεγκτής» και την αποκαθιστά ως υπαρξιακή ποσοτικοποίηση με καθολική ιδιότητα πάνω στις αναφορές. Η λογική είναι ορθή: από την πρόταση συνεπάγεται ότι υπήρχε ελεγκτής που υπέγραψε κάθε αναφορά. Η εξήγηση στηρίζει άμεσα την πρόβλεψη Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0190",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά το φαινόμενο της έλλειψης/αναφοράς στο «το ίδιο και η Μαίρη», άρα ταιριάζει με το gold tag. Όμως η ανάλυση είναι γλωσσικά λανθασμένη: στην πρόταση η ελλειπτική συνέχεια φυσικά ανακτά το ίδιο αντικείμενο («την εταιρία του Γιάννη»), όχι «τη δική της εταιρία», οπότε το entailment ισχύει. Παρ’ όλα αυτά, η εξήγηση είναι συνεπής με την προβλεπόμενη ετικέτα Unknown.",
+      "total": 3
+    },
+    {
+      "id": "fracas-0191",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 1,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "Η εξήγηση αγγίζει σχετικό συντακτικό/αναφορικό ζήτημα ασάφειας, αλλά δεν αναγνωρίζει σωστά την έλλειψη/αναφορά του δεύτερου σκέλους. Επιπλέον, η βασική συλλογιστική είναι λανθασμένη: στην πρόταση το ελλειπτικό δεύτερο μέρος υποστηρίζει την ανάγνωση ότι προτάθηκε και για τον Καρλ και τον Άλαν να πάνε μαζί, άρα δεν θεμελιώνεται αντίφαση. Ωστόσο, η εξήγηση είναι συνεπής με την προβλεφθείσα ετικέτα Contradiction, αφού επιχειρεί να αρνηθεί το περιεχόμενο της υπόθεσης.",
+      "total": 2
+    },
+    {
+      "id": "fracas-0181",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά το ελλειπτικό/αντωνυμικό φαινόμενο του «το έκανε», άρα ταιριάζει με το gold tag. Ωστόσο είναι λογικά λανθασμένη: από το «ο Γιάννης έπρεπε να αγοράσει ένα αυτοκίνητο» το ελλειπτικό «ο Βασίλης το έκανε» ανακτά το σύνολο με το τροπικό στοιχείο («έπρεπε να αγοράσει»), όχι κατ’ ανάγκην το γεγονός ότι ο Βασίλης πράγματι αγόρασε αυτοκίνητο. Παρ’ όλα αυτά, η εξήγηση στηρίζει καθαρά την προβλεπόμενη ετικέτα Entailment.",
+      "total": 3
+    },
+    {
+      "id": "fracas-0195",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 1,
+      "consistency": 1,
+      "justification": "Η εξήγηση στηρίζει σωστά το Entailment, αλλά δεν αναγνωρίζει ρητά το φαινόμενο της έλλειψης/αναφοράς («και ο Καρλ στη γυναίκα του Άλαν» = ελλειπτική επανάληψη του ‘πρότεινε ... να πάνε μαζί’). Αντί γι’ αυτό μιλά γενικά για λογική συνεπαγωγή και παράλληλη δομή. Η βασική κατεύθυνση είναι σωστή, αλλά είναι γλωσσικά ελλιπής ως προς το κρίσιμο φαινόμενο.",
+      "total": 3
+    },
+    {
+      "id": "fracas-0197",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά το φαινόμενο των επιθέτων τύπου affirmative/non-affirmative: το «αληθινό» είναι affirming adjective και διατηρεί τη συνεπαγωγή προς το ουσιαστικό. Η συλλογιστική είναι γλωσσικά και λογικά ορθή και στηρίζει άμεσα την πρόβλεψη Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0199",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά το φαινόμενο της αλληλεπίδρασης επιθέτων, δηλαδή ότι το «πετυχημένος» αποδίδεται στον Γιάννη ενώ το «πρώην» τροποποιεί μόνο το «φοιτητής πανεπιστημίου». Η συλλογιστική είναι γλωσσικά και λογικά ορθή και στηρίζει άμεσα την πρόβλεψη Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0204",
+      "gold": [
+        "Contradiction"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά την αντίθεση επιθέτων («μικρό» vs «μεγάλο»), που ταιριάζει ακριβώς με το φαινόμενο ADJECTIVES:Opposites. Η συλλογιστική είναι γλωσσικά και λογικά ορθή και στηρίζει άμεσα την πρόβλεψη Contradiction.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0192",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 0,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "Η εξήγηση δεν αναγνωρίζει το φαινόμενο της έλλειψης/αναφοράς στην ελληνική πρόταση και απλώς υποθέτει παράλληλη συζευκτική δομή. Αυτό είναι λανθασμένο: η υπόθεση εξαρτάται από αμφίσημη ελλειπτική ανάλυση, άρα δεν συνεπάγεται. Ωστόσο, η εξήγηση είναι συνεπής με την προβλεπόμενη ετικέτα Entailment.",
+      "total": 1
+    },
+    {
+      "id": "fracas-0202",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση δίνει σωστό συλλογισμό υπαγωγής: από το ότι κάθε θηλαστικό είναι ζώο, κάθε τετράποδο θηλαστικό είναι τετράποδο ζώο. Όμως δεν ταυτοποιεί σωστά το gold phenomenon «ADJECTIVES:No Comparison Class» και αντ’ αυτού μιλά για μονοτονικότητα/υπαγωγή κατηγορίας, που είναι σχετικό αλλά όχι το ζητούμενο φαινόμενο.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0198",
+      "gold": [
+        "Contradiction"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά το φαινόμενο του επιθέτου «πρώην» ως μη καταφατικού/αναιρετικού της τωρινής ιδιότητας, που ταιριάζει με το gold tag. Η συλλογιστική είναι γλωσσικά και λογικά ορθή: αν είναι πρώην φοιτητής, δεν είναι τώρα φοιτητής. Υποστηρίζει άμεσα την πρόβλεψη Contradiction.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0188",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 2,
+      "soundness": 1,
+      "consistency": 1,
+      "justification": "Η εξήγηση εστιάζει σωστά στην ελλειπτική/αναφορική δομή του «και το ίδιο και ο Τζόουνς» και στις αλλαγές υποκειμένου/κατοχής. Ωστόσο, ενώ σωστά δείχνει ότι η υπόθεση δεν συνεπάγεται από την πρόταση, αυτό υποστηρίζει περισσότερο Unknown παρά καθαρή Contradiction, άρα υπάρχει μικρό σφάλμα στη λογική ισχύ της ερμηνείας.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0206",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά το φαινόμενο των αντίθετων επιθέτων/μη εξαντλητικής αντίθεσης: το «όχι μικρό» δεν συνεπάγεται «μεγάλο». Η συλλογιστική είναι λογικά ορθή και στηρίζει άμεσα την πρόβλεψη Unknown.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0201",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 2,
+      "soundness": 1,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά το φαινόμενο του μη-καταφατικού επιθέτου «πρώην», που σχετίζεται με το gold tag. Ωστόσο, από το ότι ήταν φοιτητής στο παρελθόν δεν προκύπτει αντίφαση με το ότι είναι φοιτητής τώρα· απλώς δεν συνεπάγεται ότι είναι ακόμη, άρα η σωστή σχέση είναι Unknown και όχι Contradiction. Παρ’ όλα αυτά, η εξήγηση στηρίζει την προβλεπόμενη ετικέτα Contradiction.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0207",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά το φαινόμενο των αντίθετων επιθέτων/μη συνεπαγωγής από την άρνηση του «μεγάλο» στο «μικρό». Η λογική είναι ορθή: το «όχι μεγάλο» δεν συνεπάγεται «μικρό», αφού υπάρχει και ενδιάμεση δυνατότητα. Αυτό στηρίζει πλήρως την ετικέτα Unknown.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0203",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση είναι λογικά σωστή: από το «τετράποδο ζώο» πράγματι συνεπάγεται το «τετράποδο». Ωστόσο, δεν κατονομάζει ειδικά το φαινόμενο των επιθέτων χωρίς comparison class, αλλά το περιγράφει πιο γενικά ως λεξική/εννοιολογική συνεπαγωγή μέσω απαλοιφής του ουσιαστικού.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0208",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά το φαινόμενο των αντίθετων επιθέτων/μεγέθους («μικρό» vs «μεγάλο»), αλλά η συλλογιστική της είναι λανθασμένη για αυτό το παράδειγμα: από το ότι ο Μίκι είναι μικρό ζώο και ο Ντάμπο μεγάλο ζώο προκύπτει η συγκριτική σχέση στο πλαίσιο του task. Παρ' όλα αυτά, η εξήγηση είναι συνεπής με την προβλεπόμενη ετικέτα Unknown.",
+      "total": 3
+    },
+    {
+      "id": "fracas-0211",
+      "gold": [
+        "Contradiction"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά τη σχετικότητα του επιθέτου «μικρός» ως προς διαφορετικές κλάσεις σύγκρισης («μικρός ελέφαντας» vs «μικρό ζώο»), που ταιριάζει ακριβώς με το gold phenomenon. Η συλλογιστική είναι γλωσσολογικά και λογικά ορθή και στηρίζει το predicted label Unknown, αφού δείχνει ότι η υπόθεση δεν ακολουθεί αναγκαστικά από τις προκείμενες.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0212",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά το φαινόμενο των επιθέτων και των σχετικών κλάσεων σύγκρισης (μεγάλος/μικρός σε διαφορετικές κατηγορίες). Ωστόσο, η λογική της είναι λανθασμένη για το συγκεκριμένο παράδειγμα: από το ότι ο Μίκι είναι μεγάλο ποντίκι και ο Ντάμπο μικρός ελέφαντας, μαζί με το ότι όλα τα ποντίκια είναι μικρά ζώα και όλοι οι ελέφαντες μεγάλα ζώα, προκύπτει ότι ο Ντάμπο είναι μεγαλύτερος από τον Μίκι. Η εξήγηση όμως είναι συνεπής με την προβλεπόμενη ετικέτα Unknown.",
+      "total": 3
+    },
+    {
+      "id": "fracas-0213",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 1,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά το φαινόμενο των σχετικών επιθέτων/κλάσεων σύγκρισης: το «μικρά ζώα» δεν συνεπάγεται ότι κάθε ποντίκι είναι «μικρό» γενικά, και το «μεγάλο ποντίκι» μπορεί να είναι μεγάλο μόνο σε σχέση με άλλα ποντίκια. Ωστόσο, η εξήγηση κάνει και λανθασμένο βήμα όταν λέει ότι από το «όλα τα ποντίκια είναι μικρά ζώα» προκύπτει ότι κάθε ποντίκι είναι μικρό. Παρ’ όλα αυτά, υποστηρίζει καθαρά την προβλεπόμενη ετικέτα Entailment.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0215",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly focuses on the adjective modifier as introducing a potentially different comparison class, matching the extensional/intensional adjective phenomenon. Its reasoning is sound: coextensiveness of 'νομικές αρχές' and 'λέκτορες νομικής' does not guarantee preservation under 'αρμόδιες/αρμόδιοι'. It directly supports the predicted Unknown label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0214",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly derives entailment via set equivalence between «νομικές αρχές» and «λέκτορες νομικής», and shows that adding the intersective adjective «χοντρές/χοντροί» preserves the inclusion. However, it does not explicitly identify the adjective/comparison-class phenomenon; it mainly appeals to coextensionality and monotonic inheritance, which is related but not the tagged phenomenon itself.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0205",
+      "gold": [
+        "Contradiction"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά το φαινόμενο των αντίθετων επιθέτων («μεγάλο» vs «μικρό»), που ταιριάζει με το gold tag ADJECTIVES:Opposites. Ο συλλογισμός είναι λογικά ορθός: οι δύο ιδιότητες δεν μπορούν να ισχύουν ταυτόχρονα με την ίδια σημασία για το ίδιο ον, άρα υποστηρίζει σωστά την ετικέτα Contradiction.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0209",
+      "gold": [
+        "Contradiction"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά την αντίθεση επιθέτων μεγέθους (μικρό vs μεγάλο), που ταιριάζει με το gold tag ADJECTIVES:Opposites. Η συλλογιστική είναι λογικά ορθή: αν ο Μίκι είναι μικρός και ο Ντάμπο μεγάλος, τότε η υπόθεση ότι ο Μίκι είναι μεγαλύτερος από τον Ντάμπο αντιφάσκει με τις προκείμενες. Η εξήγηση υποστηρίζει καθαρά την ετικέτα Contradiction.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0218",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση είναι λογικά σωστή: το «ένα έξυπνο άτομο» συνεπάγεται το «είναι έξυπνος», άρα υποστηρίζει σωστά το Entailment. Ωστόσο, δεν αναγνωρίζει ειδικά το φαινόμενο των default comparison classes στα επίθετα· το αντιμετωπίζει γενικά ως παραφραστική/κατηγορηματική ισοδυναμία, που είναι σχετικό αλλά όχι ακριβές ταίριασμα με το gold tag.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0200",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά το φαινόμενο του μη καταφατικού επιθέτου «πρώην», που δεν επιτρέπει να συναχθεί η τωρινή ιδιότητα. Η συλλογιστική είναι γλωσσικά και λογικά ορθή: από το «πρώην πετυχημένος φοιτητής» δεν έπεται ότι ο Γιάννης είναι τώρα πετυχημένος. Αυτό υποστηρίζει την προβλεπόμενη ετικέτα Contradiction, έστω κι αν το gold label είναι Unknown.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0221",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά το συγκριτικό φαινόμενο («πιο γρήγορο από») και εξηγεί ορθά ότι μια σχετική σύγκριση δεν συνεπάγεται απόλυτη ιδιότητα («γρήγορο»). Αυτό υποστηρίζει πλήρως την ετικέτα Unknown.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0210",
+      "gold": [
+        "Contradiction"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 0,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "Η εξήγηση δεν αναγνωρίζει το φαινόμενο των επιθέτων και των comparison classes· απλώς επικαλείται ταυτότητα με τη δεύτερη προκείμενη. Αυτό είναι λογικά εσφαλμένο εδώ, γιατί το κρίσιμο σημείο είναι ότι το «μεγάλο ποντίκι» συγκρίνεται με ποντίκια, ενώ από το «όλα τα ποντίκια είναι μικρά ζώα» προκύπτει σύγκρουση σε διαφορετική κλίμακα. Ωστόσο, η εξήγηση όντως στηρίζει την προβλεπόμενη ετικέτα Entailment.",
+      "total": 1
+    },
+    {
+      "id": "fracas-0216",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά ότι το κρίσιμο φαινόμενο είναι η συγκριτική δομή με πρόσθετο ουσιαστικό/κλάση σύγκρισης («παχύτερος πολιτικός»), και ότι αυτό εξακολουθεί να συνεπάγεται το απλό «παχύτερος». Η συλλογιστική είναι γλωσσικά και λογικά ορθή και στηρίζει την πρόβλεψη Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0219",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "Η εξήγηση πραγματεύεται γενική απαλοιφή ιδιοτήτων από σύνθετη ονοματική φράση, που είναι σχετικό αλλά όχι το σωστό φαινόμενο των default comparison classes για το επίθετο «έξυπνος». Επιπλέον, το gold label είναι Unknown ακριβώς επειδή το «έξυπνος πολιτικός» δεν συνεπάγεται κατ’ ανάγκην «έξυπνος» χωρίς να καθοριστεί η κλάση σύγκρισης. Ωστόσο, η εξήγηση είναι συνεπής με την προβλεπόμενη ετικέτα Entailment.",
+      "total": 2
+    },
+    {
+      "id": "fracas-0217",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά το φαινόμενο της αλλαγής κλάσης σύγκρισης: από «πιο έξυπνος πολιτικός» σε «πιο έξυπνος» γενικά. Η συλλογιστική είναι γλωσσολογικά και λογικά ορθή, αφού η ειδική σύγκριση εντός κατηγορίας δεν συνεπάγεται γενική σύγκριση. Αυτό υποστηρίζει άμεσα την ετικέτα Unknown.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0224",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά το φαινόμενο της συγκριτικής ισότητας («τόσο ... όσο»), που αντιστοιχεί σε phrasal comparatives. Ο συλλογισμός είναι έγκυρος: αν το PC-6082 είναι εξίσου γρήγορο με το ITEL-XZ και το ITEL-XZ είναι γρήγορο, τότε συνεπάγεται ότι και το PC-6082 είναι γρήγορο. Η εξήγηση στηρίζει πλήρως την πρόβλεψη Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0220",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά το συγκριτικό φαινόμενο (phrasal comparative) και εφαρμόζει έγκυρη συνεπαγωγή: αν το PC-6082 είναι πιο γρήγορο από κάτι που είναι γρήγορο, τότε είναι και το ίδιο γρήγορο. Υποστηρίζει πλήρως την πρόβλεψη Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0226",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά τη φραστική συγκριτική κατασκευή ισότητας («τόσο ... όσο»). Το σκεπτικό είναι λογικά έγκυρο: αν το PC-6082 είναι εξίσου γρήγορο με το ITEL-XZ και το PC-6082 είναι γρήγορο, τότε και το ITEL-XZ είναι γρήγορο. Η εξήγηση υποστηρίζει άμεσα την προβλεπόμενη ετικέτα Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0222",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά το συγκριτικό φαινόμενο (φραστικό συγκριτικό: «πιο γρήγορο από») και εξηγεί ορθά ότι από το ότι το PC-6082 είναι γρήγορο και γρηγορότερο από το ITEL-XZ δεν προκύπτει αν το ITEL-XZ είναι γρήγορο. Αυτό στηρίζει πλήρως την ετικέτα Unknown.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0227",
+      "gold": [
+        "Contradiction"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά το φαινόμενο της φραστικής συγκριτικής ισότητας («τόσο ... όσο»). Όμως είναι λογικά εσφαλμένη: αν το PC-6082 είναι εξίσου γρήγορο με το ITEL-XZ και το PC-6082 είναι αργό, τότε και το ITEL-XZ δεν είναι γρήγορο, άρα η υπόθεση αντιφάσκει. Παρ’ όλα αυτά, η εξήγηση υποστηρίζει συνεκτικά την προβλεπόμενη ετικέτα Unknown.",
+      "total": 3
+    },
+    {
+      "id": "fracas-0223",
+      "gold": [
+        "Contradiction"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά το συγκριτικό φαινόμενο («πιο γρήγορο από») και συλλογίζεται ορθά ότι από το ότι το PC-6082 είναι πιο γρήγορο από το ITEL-XZ και αργό δεν προκύπτει ότι το ITEL-XZ είναι γρήγορο· άρα υποστηρίζει συνεπώς την πρόβλεψη Unknown.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0229",
+      "gold": [
+        "Contradiction"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά τη συγκριτική δομή φρασικού τύπου: «τόσο γρήγορο όσο» δηλώνει ισότητα, ενώ «πιο αργό από» δηλώνει αυστηρή σύγκριση προς τα κάτω. Ο συλλογισμός είναι λογικά ορθός και στηρίζει άμεσα την ετικέτα Contradiction.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0231",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά το συγκριτικό φαινόμενο ποσότητας ('περισσότερες ... από'), δηλαδή phrasal comparative. Ο συλλογισμός είναι έγκυρος: από το ότι η ΙΤΕΛ κέρδισε περισσότερες παραγγελίες από την ΑΠΚΟΜ δεν προκύπτει ότι η ΑΠΚΟΜ κέρδισε τουλάχιστον μία, αφού μπορεί να κέρδισε 0. Αυτό στηρίζει σωστά την ετικέτα Unknown.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0232",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά το συγκριτικό φαινόμενο («περισσότερες ... από») και εφαρμόζει ορθά την αριθμητική συνεπαγωγή: αν η ΑΠΚΟΜ έχει 10 και η ΙΤΕΛ περισσότερες, τότε η ΙΤΕΛ έχει τουλάχιστον 11. Υποστηρίζει πλήρως την πρόβλεψη Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0228",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 2,
+      "soundness": 1,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά το συγκριτικό φαινόμενο ισότητας έναντι ανωτερότητας, που ταιριάζει με το gold tag για phrasal comparatives. Ωστόσο, παρότι η ανάλυση είναι γλωσσικά σχετική, το να θεωρείται η ισότητα («τόσο... όσο») ως άμεση αντίφαση της ανωτερότητας είναι προβληματικό εδώ, αφού το gold label είναι Unknown και όχι Contradiction. Παρ' όλα αυτά, η εξήγηση υποστηρίζει καθαρά το προβλεπόμενο label Contradiction.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0225",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά τη φραστική συγκριτική ισότητας («τόσο... όσο») και εξηγεί ορθά ότι από σχετική ισότητα δεν προκύπτει η απόλυτη ιδιότητα «γρήγορο» χωρίς πληροφορία για το ITEL-XZ. Αυτό στηρίζει πλήρως την ετικέτα Unknown.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0238",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά το συγκριτικό φαινόμενο «διπλάσιες» (phrasal comparative), κάνει ορθό αριθμητικό συλλογισμό 2×10=20 και στηρίζει πλήρως την πρόβλεψη Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0235",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση χειρίζεται σωστά το συγκριτικό σχήμα «περισσότερες από» και κάνει έγκυρη αριθμητική συνεπαγωγή: αν η ΑΠΚΟΜ έχει 10 και η ΙΤΕΛ έχει περισσότερες, τότε η ΙΤΕΛ έχει τουλάχιστον 11. Υποστηρίζει πλήρως την πρόβλεψη Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0239",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά τη συγκριτική δομή με προτασιακό συμπλήρωμα («περισσότερες ... από όσες έχασε η ΑΠΚΟΜ») και αντλεί τη σωστή ποσοτική συνεπαγωγή: αν η ΙΤΕΛ κέρδισε περισσότερες από έναν αριθμό, τότε κέρδισε τουλάχιστον κάποιες. Η συλλογιστική είναι συμβατή με την ετικέτα Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0233",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά το συγκριτικό ποσοτικό σχήμα («περισσότερες ... από»), που ταιριάζει με το gold tag για phrasal comparatives. Η συλλογιστική είναι έγκυρη: αν η ΙΤΕΛ κέρδισε περισσότερες παραγγελίες από την ΑΠΚΟΜ, τότε έχει κερδίσει τουλάχιστον κάποιες/μερικές παραγγελίες. Η εξήγηση στηρίζει άμεσα την πρόβλεψη Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0230",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά το συγκριτικό ποσοτικό φαινόμενο («περισσότερες ... από») και εξάγει έγκυρα ότι η ΙΤΕΛ είχε μη μηδενικό πλήθος παραγγελιών, άρα κέρδισε μερικές. Υποστηρίζει πλήρως την πρόβλεψη Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0234",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά το συγκριτικό φαινόμενο («περισσότερες ... από») και εξηγεί ορθά ότι η σύγκριση δεν συνεπάγεται πως η ΑΠΚΟΜ κέρδισε κάποιες παραγγελίες, αφού θα μπορούσε να έχει κερδίσει μηδέν. Αυτό υποστηρίζει πλήρως την ετικέτα Unknown.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0237",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά το συγκριτικό φαινόμενο ('περισσότερες ... από'). Όμως η λογική είναι λανθασμένη: το 'περισσότερες παραγγελίες από το συμβόλαιο της ΑΠΚΟΜ' συγκρίνει την ΙΤΕΛ με τον αριθμό παραγγελιών του συμβολαίου της ΑΠΚΟΜ, και δεν στηρίζει το σενάριο που δίνεται· το gold entailment βασίζεται στο ότι το συγκριτικό με πληθυντικό συνεπάγεται τουλάχιστον δύο. Παρ' όλα αυτά, η εξήγηση είναι συνεπής με την προβλεπόμενη ετικέτα Unknown.",
+      "total": 3
+    },
+    {
+      "id": "fracas-0241",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά το συγκριτικό με προτασιακό συμπλήρωμα («περισσότερες ... από όσες έχασε η ΑΠΚΟΜ») και εφαρμόζει ορθά τη λογική: αν η ΑΠΚΟΜ έχασε 10, τότε η ΙΤΕΛ κέρδισε >10, άρα τουλάχιστον 11. Υποστηρίζει πλήρως την πρόβλεψη Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0243",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση χειρίζεται σωστά το διαφορικό συγκριτικό ('3000 περισσότερους') και κάνει την ορθή αριθμητική πράξη 2500 + 3000 = 5500. Είναι λογικά έγκυρη και στηρίζει άμεσα την πρόβλεψη Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0236",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 1,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "Η εξήγηση ασχολείται με τη σημασία της συγκριτικής/φρασικής δομής γύρω από το «περισσότερες παραγγελίες από το συμβόλαιο», άρα αγγίζει σχετικό φαινόμενο, αλλά το αναλύει λανθασμένα. Στα ελληνικά η πρόταση συνεπάγεται ότι η ΙΤΕΛ πήρε το συμβόλαιο της ΑΠΚΟΜ, επομένως ο ισχυρισμός ότι αυτό δεν συνεπάγεται την υπόθεση είναι μη ορθός. Ωστόσο, η εξήγηση είναι συνεπής με την προβλεπόμενη ετικέτα Unknown.",
+      "total": 2
+    },
+    {
+      "id": "fracas-0242",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 1,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "Η εξήγηση εστιάζει κυρίως σε ασυμφωνία οντότητας/ονόματος (ITEL-ZX vs ITEL-XZ), που είναι σχετικό αλλά όχι το χρυσό φαινόμενο των συγκριτικών με measure phrases. Επιπλέον, η λογική της είναι λανθασμένη ως προς το gold, αφού η υπόθεση θεωρείται ενταγόμενη μέσω της συγκριτικής σχέσης, αλλά η εξήγηση απορρίπτει το συμπέρασμα λόγω ονόματος. Παρ' όλα αυτά, είναι συνεπής με την προβλεπόμενη ετικέτα Unknown.",
+      "total": 2
+    },
+    {
+      "id": "fracas-0245",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά το συγκριτικό φαινόμενο με αποδοτική/παραφραστική ισοδυναμία του «πιο σημαντικό ... από», που ταιριάζει με attributive comparatives. Η συλλογιστική είναι γλωσσικά και λογικά ορθή: η υπόθεση απλώς κάνει πιο ρητό το αντικείμενο σύγκρισης χωρίς να αλλάζει το νόημα. Αυτό στηρίζει πλήρως την πρόβλεψη Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0246",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "Η εξήγηση εστιάζει σωστά σε συγκριτικά και καθολική ποσοτικοποίηση ('πιο γρήγορο από κάθε υπολογιστή ΙΤΕΛ'), άρα αναγνωρίζει το φαινόμενο. Όμως είναι λογικά λανθασμένη, γιατί αγνοεί ότι το ITEL-XZ στην υπόθεση προφανώς αναφέρεται σε υπολογιστή ΙΤΕΛ στο πλαίσιο του παραδείγματος, οπότε από την καθολική πρόταση προκύπτει entailment. Παρ' όλα αυτά, η εξήγηση είναι συνεπής με την προβλεπόμενη ετικέτα Unknown.",
+      "total": 3
+    },
+    {
+      "id": "fracas-0244",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά παραφραστική ισοδυναμία σε συγκριτική/αποθετική συγκριτική κατασκευή, που ταιριάζει με το gold tag. Το σκεπτικό είναι γλωσσικά ορθό: η υπόθεση απλώς αναδιατυπώνει το ίδιο συγκριτικό νόημα με διαφορετική σύνταξη. Υποστηρίζει συνεπώς σωστά την πρόβλεψη Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0248",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση εστιάζει σωστά στη συγκριτική/ποσοδεικτική δομή («πιο γρήγορο από κάθε υπολογιστή ΙΤΕΛ») και στο αν το συγκεκριμένο αντικείμενο της υπόθεσης ανήκει στην κλάση. Το σκεπτικό είναι λογικά συνεπές: αφού δεν δηλώνεται ότι ο ITEL-XZ είναι υπολογιστής ΙΤΕΛ, η υπόθεση δεν συνάγεται. Αυτό υποστηρίζει άμεσα την προβλεπόμενη ετικέτα Unknown.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0253",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά το χρονικό φαινόμενο: το «έχει αναπτύξει ... από το 1992» δηλώνει κατάσταση/δραστηριότητα που ξεκινά το 1992 και ισχύει έως το 1996. Ορθά επισημαίνει ότι αυτό δεν συνεπάγεται συγκεκριμένο γεγονός το 1993, άρα στηρίζει σωστά την ετικέτα Unknown.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0249",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά τη συγκριτική δομή και τη λογική διάσπαση της σύζευξης: από το «πιο γρήγορο από το ITEL-XZ και το ITEL-ZY» συνεπάγεται άμεσα το «πιο γρήγορο από το ITEL-XZ». Είναι λογικά ορθή και στηρίζει πλήρως την πρόβλεψη Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0250",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά το φαινόμενο της διαζευκτικής συγκριτικής διατύπωσης («ή») μέσα σε συγκριτικό πλαίσιο, άρα ταιριάζει με το tag. Όμως η λογική της είναι λανθασμένη για τη συγκεκριμένη πρόταση: από το «πιο γρήγορο από το ITEL-XZ ή το ITEL-ZY» στην κανονική ανάγνωση των συγκριτικών ακολουθεί ότι το PC-6082 είναι πιο γρήγορο από το ITEL-XZ, άρα η αιτιολόγηση δεν είναι ορθή. Παρ’ όλα αυτά, η εξήγηση είναι συνεπής με το προβλεπόμενο label Unknown.",
+      "total": 3
+    },
+    {
+      "id": "fracas-0256",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly focuses on temporal reference and tense/aspect interpretation, matching the gold phenomenon. Its reasoning is sound: 'had a loss from 1992' does not necessarily entail a loss specifically in 1993. It directly supports the predicted Unknown label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0247",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά το φαινόμενο των συγκριτικών με υπαρξιακή ποσοτικοποίηση («κάποιον υπολογιστή ITEL») και την αδυναμία ταύτισης με συγκεκριμένο αντικείμενο. Η συλλογιστική είναι λογικά ορθή: από την ύπαρξη κάποιου ITEL πιο αργού από το PC-6082 και το ότι ο ITEL-ZX είναι ITEL δεν προκύπτει τίποτα για τον ITEL-XZ. Υποστηρίζει πλήρως την ετικέτα Unknown.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0254",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά το χρονικό φαινόμενο της χρήσης χρόνων/διάρκειας ('έχει επεκταθεί από το 1992' έως το 1996) έναντι ενός συγκεκριμένου χρονικού σημείου ('το 1993'). Η συλλογιστική είναι γλωσσικά και λογικά ορθή: η πρόταση δεν συνεπάγεται ότι η επέκταση έλαβε χώρα συγκεκριμένα το 1993. Αυτό υποστηρίζει συνεπώς την ετικέτα Unknown.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0251",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά το χρονικό φαινόμενο, εστιάζοντας στο «αυτή τη στιγμή» και στη χρονική αγκύρωση. Ωστόσο, η συλλογιστική είναι λανθασμένη για την κανονική χρήση ενεστώτα: το «έχει ένα εργοστάσιο» συνεπάγεται φυσικά τρέχουσα κατάσταση, άρα το gold entailment είναι σωστό. Η εξήγηση πάντως υποστηρίζει συνεκτικά την προβλεπόμενη ετικέτα Unknown.",
+      "total": 3
+    },
+    {
+      "id": "fracas-0240",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά το συγκριτικό σχήμα με προτασιακό συμπλήρωμα ('περισσότερες ... από όσες έχασε η ΑΠΚΟΜ'). Η συλλογιστική είναι ορθή: η σύγκριση δεν συνεπάγεται ότι η ΑΠΚΟΜ έχασε θετικό αριθμό παραγγελιών, αφού το πλήθος μπορεί να είναι και μηδέν. Αυτό υποστηρίζει συνεπώς την ετικέτα Unknown.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0252",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά τη χρονική αναφορά και τη σημασία του «Από το 1992 ... είναι», δηλαδή κατάσταση που ξεκινά το 1992 και ισχύει έως το 1996. Άρα το 1993 περιλαμβάνεται στο διάστημα, οπότε η συνεπαγωγή είναι λογικά ορθή και συμβατή με την ετικέτα Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0261",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά τη χρονική/σειριακή σχέση του «πριν» και χρησιμοποιεί έγκυρα τη μεταβατικότητα: αν ο Σμίθ έφυγε πριν από τον Τζόουνς και ο Τζόουνς πριν από τον Άντερσον, τότε ο Σμίθ έφυγε πριν από τον Άντερσον. Υποστηρίζει πλήρως την ετικέτα Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0260",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά το χρονικό φαινόμενο των χρονικών επιρρηματικών/δεικτικών («χθες», «σήμερα») και εφαρμόζει ορθά τη συλλογιστική: αν σήμερα είναι Σάββατο 14 Ιουλίου, τότε χθες ήταν Παρασκευή 13 Ιουλίου. Αυτό στηρίζει πλήρως το Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0257",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "The explanation correctly focuses on temporal reference/tense interpretation, matching the gold phenomenon. However, its reasoning is unsound: in standard use, 'had a loss from 1992' together with 'now it is 1996' supports that the loss held during the intervening period, including 1993, so denying entailment is linguistically incorrect. The explanation is nevertheless consistent with the model's predicted label 'Unknown' because it argues the premise does not guarantee 1993.",
+      "total": 3
+    },
+    {
+      "id": "fracas-0255",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "Η εξήγηση εστιάζει σωστά στη χρονική αναφορά του «από το 1992», άρα αναγνωρίζει το σχετικό temporal phenomenon. Όμως η συλλογιστική είναι λανθασμένη για τη συγκεκριμένη ελληνική διατύπωση: «Από το 1992 ... είχε μια απώλεια. Τώρα είναι 1996» υποστηρίζει ότι η απώλεια ίσχυε από το 1992 έως το 1996, άρα περιλαμβάνει το 1993. Παρ’ όλα αυτά, η εξήγηση είναι συνεπής με το predicted label Unknown, αφού επιχειρηματολογεί υπέρ μη συνεπαγωγής.",
+      "total": 3
+    },
+    {
+      "id": "fracas-0258",
+      "gold": [
+        "Contradiction"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά το χρονικό φαινόμενο: το «ίδρυσε τον Μάρτιο του 1993» συνεπάγεται ότι η ΙΤΕΛ δεν προϋπήρχε το 1992. Η συλλογιστική είναι λογικά και γλωσσικά ορθή και στηρίζει άμεσα την ετικέτα Contradiction.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0262",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά το χρονικό φαινόμενο της ακολουθίας γεγονότων μέσω του «αφού» και εφαρμόζει ορθά τη μεταβατικότητα της χρονικής σχέσης: Άντερσον πριν από Τζόουνς πριν από Σμίθ, άρα ο Σμίθ έφυγε μετά τον Άντερσον. Υποστηρίζει πλήρως την πρόβλεψη Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0265",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά τη χρονική σχέση που εκφράζει το «αφού», δηλαδή ότι ο Τζόουνς έφυγε πριν από τον Σμίθ. Ο συλλογισμός είναι γλωσσικά και λογικά ορθός και στηρίζει άμεσα την πρόβλεψη Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0259",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 2,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά το χρονικό φαινόμενο (ημερομηνία έναρξης + διάρκεια). Όμως η λογική της συγκρούεται με το gold entailment: από έναρξη στις 4 Ιουλίου και διάρκεια 2 ημερών δεν προκύπτει αντίφαση με λήξη στις 8 Ιουλίου όπως ισχυρίζεται η εξήγηση. Παρ' όλα αυτά, η εξήγηση είναι συνεπής με το προβλεπόμενο label Contradiction.",
+      "total": 3
+    },
+    {
+      "id": "fracas-0266",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά το χρονικό φαινόμενο των επιρρηματικών σχέσεων «πριν/αφού» και εφαρμόζει ορθά τη λογική ισοδυναμία: αν ο Τζόουνς έφυγε πριν φύγει ο Σμίθ, τότε ο Σμίθ έφυγε αφού έφυγε ο Τζόουνς. Υποστηρίζει πλήρως την ετικέτα Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0272",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly focuses on the temporal ordering relation ('before' vs. 'after'), matching the temporal adverbial phenomenon. Its reasoning is logically valid: from 'Smith was present before Jones,' it follows that 'Jones was present after Smith.' The explanation directly supports the model's predicted entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0264",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά το χρονικό φαινόμενο των επιρρηματικών/σχέσεων πριν–μετά και αποδίδει ορθά ότι «ο Σμίθ έφυγε πριν φύγει ο Τζόουνς» συνεπάγεται «ο Τζόουνς έφυγε αφού έφυγε ο Σμίθ». Υποστηρίζει πλήρως την πρόβλεψη Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0270",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies the temporal ordering phenomenon, specifically the equivalence between 'before' and 'after' in reversed event order. Its reasoning is logically sound and accurately shows why the hypothesis is entailed by the premises, and it fully supports the predicted Entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0277",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά τη χρονική αναφορά/διαφορά μεταξύ 1991 και 1992, εξηγεί ορθά ότι δεν υπάρχει πληροφορία συνέχειας από το ένα έτος στο άλλο, και αυτό στηρίζει πλήρως την ετικέτα Unknown.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0267",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά το χρονικό φαινόμενο των επιρρηματικών/σχέσεων «πριν» και «αφού», που αντιστοιχεί στο gold tag. Ο συλλογισμός είναι λογικά έγκυρος: από το ότι ο Τζόουνς αναθεώρησε πριν από τον Σμίθ, συνεπάγεται ότι ο Σμίθ αναθεώρησε αφού ο Τζόουνς αναθεώρησε. Η εξήγηση υποστηρίζει πλήρως την πρόβλεψη Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0263",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά το χρονικό φαινόμενο («αφού/μετά») και βασίζεται σε χρονική ακολουθία. Όμως η συλλογιστική είναι λανθασμένη: από το ότι ο Σμίθ ήταν παρών μετά την αποχώρηση του Τζόουνς και ο Τζόουνς έφυγε μετά την παρουσία του Άντερσον δεν προκύπτει ότι ο Σμίθ ήταν παρών μετά την παρουσία του Άντερσον, επειδή το ‘ήταν παρών’ δεν δηλώνει συγκεκριμένο χρονικό σημείο αλλά κατάσταση/διάστημα. Παρ’ όλα αυτά, η εξήγηση υποστηρίζει το προβλεπόμενο label Entailment.",
+      "total": 3
+    },
+    {
+      "id": "fracas-0273",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά το χρονικό φαινόμενο («πριν/αφού»). Όμως είναι λογικά εσφαλμένη: από το ότι ο Σμίθ έγραφε μια αναφορά πριν ο Τζόουνς γράψει μια αναφορά δεν προκύπτει κατ’ ανάγκην ότι ο Τζόουνς έγραφε αφού ο Σμίθ έγραφε, λόγω της αοριστίας/υπαρξιακής ανάγνωσης των γεγονότων. Παρ’ όλα αυτά, η εξήγηση υποστηρίζει το προβλεπόμενο label Entailment.",
+      "total": 3
+    },
+    {
+      "id": "fracas-0268",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά τη χρονική σχέση που εκφράζεται με τα επιρρήματα/συνδέσμους «αφού» και «πριν», που ταιριάζει με το temporal reference. Είναι λογικά ορθή: αν ο Τζόουνς αναθεώρησε το συμβόλαιο αφού το αναθεώρησε ο Σμίθ, τότε ο Σμίθ το αναθεώρησε πριν από τον Τζόουνς. Υποστηρίζει άμεσα την πρόβλεψη Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0278",
+      "gold": [
+        "Contradiction"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά τη χρονική αναφορά/διαφορά ετών ως το κρίσιμο φαινόμενο, αιτιολογεί ορθά ότι το ίδιο γεγονός δεν μπορεί να συνέβη και το 1991 και το 1992, και υποστηρίζει πλήρως την ετικέτα Contradiction.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0271",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά το χρονικό φαινόμενο/χρονικό επίρρημα («αφού», «πριν»). Ωστόσο, η συλλογιστική είναι λανθασμένη: από το «Ο Σμίθ ήταν παρών αφού παρέστη ο Τζόουνς» δεν προκύπτει ότι ο Τζόουνς ήταν παρών πριν παραστεί ο Σμιθ, επειδή συγχέει το να είναι ήδη παρών με το γεγονός της άφιξης/παράστασης. Παρ’ όλα αυτά, η εξήγηση στηρίζει την προβλεπόμενη ετικέτα Entailment.",
+      "total": 3
+    },
+    {
+      "id": "fracas-0281",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά τη χρονική αναφορά ('το 1991' vs 'το 1992') και εξηγεί ορθά ότι η πληροφορία για το 1991 δεν συνεπάγεται συνέχεια στο 1992. Αυτό υποστηρίζει πλήρως την ετικέτα Unknown.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0280",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 2,
+      "soundness": 1,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά το χρονικό φαινόμενο (αλλαγή έτους 1991→1992). Ωστόσο, το συμπέρασμα ως αντίφαση δεν είναι πλήρως ορθό για NLI, γιατί από το premise δεν αποκλείεται ο Σμίθ να έγραψε και άλλο μυθιστόρημα το 1992· άρα η σωστή σχέση είναι Unknown. Παρ’ όλα αυτά, η εξήγηση υποστηρίζει το προβλεπόμενο label Contradiction.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0279",
+      "gold": [
+        "Contradiction"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά το χρονικό φαινόμενο (διαφορετικά έτη/χρονικά επιρρήματα για το ίδιο γεγονός), αιτιολογεί ορθά γιατί αυτό δημιουργεί αντίφαση και υποστηρίζει πλήρως την προβλεπόμενη ετικέτα Contradiction.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0275",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 0,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά το χρονικό επίρρημα/σύνδεσμο «πριν» και εξηγεί ορθά ότι δεν συνεπάγεται πως ο Σμίθ όντως έχασε τη ψυχραιμία του, άρα το σωστό συμπέρασμα είναι Unknown. Επομένως είναι ασύμβατη με την προβλεπόμενη ετικέτα Contradiction.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0269",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά το χρονικό φαινόμενο των επιρρηματικών σχέσεων «πριν/αφού» και εφαρμόζει ορθά την αντιστροφή της χρονικής σχέσης: αν ο Σμίθ κολύμπησε πριν από τον Τζόουνς, τότε ο Τζόουνς κολύμπησε αφού ο Σμίθ. Η εξήγηση στηρίζει άμεσα την προβλεπόμενη ετικέτα Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0286",
+      "gold": [
+        "Contradiction"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά το χρονικό επίρρημα/τη χρονική διάρκεια («σε δυο ώρες») και βασίζει σωστά την αντίφαση στη διαφορά μεταξύ ολοκλήρωσης σε δύο ώρες και διάρκειας πάνω από δύο ώρες. Είναι λογικά ορθή και υποστηρίζει άμεσα την ετικέτα Contradiction.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0284",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά το χρονικό φαινόμενο (διάρκεια και χρονικά επιρρήματα), υπολογίζει ορθά ότι από τις 8 πμ + 2 ώρες προκύπτουν οι 10 πμ, και άρα εύλογα συμπεραίνει ότι είχε τελειώσει μέχρι τις 11 πμ. Υποστηρίζει πλήρως την πρόβλεψη Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0282",
+      "gold": [
+        "Contradiction"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά το χρονικό φαινόμενο (ασύμβατα έτη/χρονικά επιρρήματα), αιτιολογεί ορθά γιατί το 1991 και το 1992 δεν μπορούν να ισχύουν ταυτόχρονα για το ίδιο γεγονός και υποστηρίζει πλήρως την ετικέτα Contradiction.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0274",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά το χρονικό φαινόμενο («αφού»/«πριν»). Όμως είναι λογικά μη ορθή για το συγκεκριμένο παράδειγμα: από το ότι ο Σμίθ έγραφε αναφορά αφού ο Τζόουνς έγραφε αναφορά δεν προκύπτει αναγκαστικά ότι ο Τζόουνς έγραφε αναφορά πριν ο Σμίθ γράψει αναφορά, επειδή και οι δύο ήδη αναφέρονται ως έγραφαν αναφορά και η χρονική σχέση δεν καθορίζει με βεβαιότητα το ζητούμενο γεγονός. Παρ’ όλα αυτά, η εξήγηση υποστηρίζει την προβλεπόμενη ετικέτα Entailment.",
+      "total": 3
+    },
+    {
+      "id": "fracas-0288",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά το χρονικό επίρρημα/προσδιορισμό («σε δυο ώρες») ως πρόσθετη χρονική πληροφορία, που ταιριάζει με το φαινόμενο temporal adverbials. Η συλλογιστική είναι λογικά ορθή: από το ότι έγραψε την αναφορά σε δύο ώρες συνεπάγεται ότι την έγραψε. Υποστηρίζει άμεσα την ετικέτα Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0291",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά το χρονικό επιρρηματικό «σε δυο ώρες» και το συνδέει με τη διάρκεια/χρονικό πλαίσιο του γεγονότος, που ταιριάζει με το φαινόμενο temporal adverbials. Η συλλογιστική είναι γλωσσικά και λογικά εύλογη για συνεπαγωγή, και υποστηρίζει άμεσα την προβλεπόμενη ετικέτα Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0283",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 2,
+      "soundness": 1,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά το χρονικό φαινόμενο (διαφορά στο έτος/temporal adverbial). Ωστόσο, παρότι αυτό εξηγεί τη χρονική ασυμφωνία, δεν είναι πλήρως ορθή λογικά για NLI αφού από την προκείμενη δεν αποκλείεται κατ’ ανάγκην άλλη ανακάλυψη το 1992· έτσι η χρυσή ετικέτα είναι Unknown και όχι καθαρή αντίφαση. Παρ’ όλα αυτά, η εξήγηση είναι συνεπής με την προβλεπόμενη ετικέτα Contradiction.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0292",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "Η εξήγηση εστιάζει σωστά στη χρονική επιρρηματική φράση «σε δυο χρόνια», άρα αναγνωρίζει το φαινόμενο της χρονικής αναφοράς. Όμως η συλλογιστική είναι λανθασμένη: το «σε δυο χρόνια» δεν ισοδυναμεί με «για δυο χρόνια» ούτε συνεπάγεται ότι πέρασε διετία λειτουργώντας την επιχείρηση. Παρ’ όλα αυτά, η εξήγηση υποστηρίζει καθαρά την προβλεπόμενη ετικέτα Entailment.",
+      "total": 3
+    },
+    {
+      "id": "fracas-0290",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά το χρονικό επίρρημα/προσδιορισμό «σε δυο ώρες» ως το κρίσιμο φαινόμενο χρονικής αναφοράς και ορθά εξηγεί ότι αυτό δεν αναιρεί αλλά προϋποθέτει την πραγματοποίηση της ανακάλυψης, άρα στηρίζει σωστά το Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0296",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά το χρονικό επίρρημα/τη χρονική αναφορά («σε δυο χρόνια» έναντι «για πάνω από δυο χρόνια») και διακρίνει ορθά μεταξύ χρόνου επίτευξης και διάρκειας. Το σκεπτικό είναι γλωσσικά και λογικά σωστό και στηρίζει το label Unknown.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0287",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 2,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά το χρονικό επιρρηματικό στοιχείο/διάρκεια («σε δυο ώρες» vs «σε μια ώρα»), άρα ταιριάζει με το φαινόμενο temporal adverbials. Ωστόσο, το συμπέρασμα ότι αυτό συνιστά αντίφαση είναι λανθασμένο για NLI: η προκείμενη δεν αποκλείει ότι η αναφορά γράφτηκε σε μία ώρα, άρα η σωστή σχέση είναι unknown. Η εξήγηση πάντως υποστηρίζει συνεκτικά την προβλεπόμενη ετικέτα Contradiction.",
+      "total": 3
+    },
+    {
+      "id": "fracas-0293",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά το χρονικό φαινόμενο των επιρρηματικών χρονικών εκφράσεων και ειδικά τη διάκριση ανάμεσα σε χρονικό σημείο/όριο («σε δυο χρόνια») και διάρκεια («πάνω από δυο χρόνια»). Η συλλογιστική είναι γλωσσικά και λογικά ορθή: η υπόθεση δεν προκύπτει από την πρόταση. Υποστηρίζει συνεπώς σωστά την ετικέτα Unknown.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0289",
+      "gold": [
+        "Contradiction"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 0,
+      "justification": "Η εξήγηση εντοπίζει σωστά το χρονικό φαινόμενο των επιρρηματικών προσδιορισμών («σε δυο ώρες» vs «για δυο ώρες») και δίνει γλωσσολογικά ορθή ανάλυση ολοκλήρωσης έναντι διάρκειας. Όμως αυτή η ανάλυση υποστηρίζει αντίφαση/μη συνεπαγωγή, όχι την προβλεφθείσα ετικέτα Unknown.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0298",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά το χρονικό φαινόμενο διάρκειας/χρονικών επιρρηματικών προσδιορισμών και αιτιολογεί ορθά ότι τα δύο χρόνια περιλαμβάνουν και ένα έτος ως υποδιάστημα. Αυτό στηρίζει άμεσα την ετικέτα Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0294",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά το χρονικό φαινόμενο: από μια πιο συγκεκριμένη χρονικά δήλωση («λειτουργούσε ... σε δυο χρόνια») συνεπάγεται η γενικότερη («λειτούργησε ...»). Η συλλογιστική είναι λογικά και γλωσσικά εύλογη και στηρίζει άμεσα την πρόβλεψη Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0295",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά το φαινόμενο των χρονικών επιρρηματικών προσδιορισμών («σε δυο χρόνια» vs «για δυο χρόνια») και εξηγεί εύστοχα τη διάκριση μεταξύ χρονικού σημείου/ορίου επίτευξης και διάρκειας. Η συλλογιστική είναι γλωσσικά ακριβής και στηρίζει την πρόβλεψη Contradiction, αφού παρουσιάζει τις δύο προτάσεις ως ασύμβατες.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0300",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά το χρονικό φαινόμενο της διάρκειας/χρονικού επιρρηματικού («για δυο χρόνια») και εξηγεί ορθά ότι η πιο συγκεκριμένη χρονικά πρόταση συνεπάγεται τη γενικότερη. Υποστηρίζει άμεσα την πρόβλεψη Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0285",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά το φαινόμενο των χρονικών επιρρηματικών εκφράσεων/διάρκειας, αλλά η συλλογιστική είναι λανθασμένη: το «σε δυο ώρες» δηλώνει χρόνο ολοκλήρωσης (telic completion time), όχι κατ’ ανάγκην ότι πέρασε όλο το δίωρο γράφοντας. Ωστόσο, η εξήγηση υποστηρίζει καθαρά την προβλεπόμενη ετικέτα Entailment.",
+      "total": 3
+    },
+    {
+      "id": "fracas-0301",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά το χρονικό φαινόμενο διάρκειας/χρονικών επιρρηματικών προσδιορισμών και αιτιολογεί ορθά ότι το 'για δύο χρόνια' συνεπάγεται το ασθενέστερο 'για ένα χρόνο'. Είναι λογικά έγκυρη και υποστηρίζει πλήρως την ετικέτα Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0297",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά το χρονικό επίρρημα/χρονικό προσδιορισμό («Σε δυο χρόνια») και εξηγεί ότι η υπόθεση προκύπτει με αφαίρεση αυτού του χρονικού περιορισμού. Η συλλογιστική είναι γλωσσικά και λογικά ορθή και στηρίζει την ετικέτα Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0299",
+      "gold": [
+        "Contradiction"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά τη χρονική/ποσοτική αντίφαση στα χρονικά επιρρηματικά («δύο χρόνια» vs «ακριβώς ένα χρόνο»), που ταιριάζει με το φαινόμενο temporal adverbials. Ο συλλογισμός είναι λογικά ορθός και στηρίζει άμεσα την ετικέτα Contradiction.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0307",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά το χρονικό φαινόμενο των χρονικών επιρρηματικών προσδιορισμών/κατανομής στο χρόνο («κάθε μήνα» μέσα στο 1994) και συλλογίζεται ορθά ότι αυτό περιλαμβάνει και τον Ιούλιο του 1994. Υποστηρίζει άμεσα την πρόβλεψη Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0302",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά το χρονικό/διαρκειακό στοιχείο ('για δυο χρόνια') και εξηγεί ορθά ότι η πιο ειδική χρονικά πρόταση συνεπάγεται τη γενικότερη πράξη χωρίς τη χρονική εξειδίκευση. Είναι λογικά έγκυρη και ευθυγραμμίζεται με την πρόβλεψη Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0304",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά το φαινόμενο των χρονικών επιρρηματικών/διάρκειας («για δυο ώρες»). Όμως η συλλογιστική είναι λανθασμένη: από το «έγραψε μια αναφορά για δυο ώρες» δεν συνεπάγεται κατ’ ανάγκην ότι ολοκλήρωσε/έγραψε μια αναφορά· μπορεί απλώς να εργαζόταν πάνω σε αυτήν για δύο ώρες. Παρ’ όλα αυτά, η εξήγηση είναι συνεπής με την προβλεπόμενη ετικέτα Entailment.",
+      "total": 3
+    },
+    {
+      "id": "fracas-0311",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά τη χρονική/αναφορική ακολουθία μέσω του «Έπειτα», που αντιστοιχεί στο φαινόμενο temporal reference. Το συλλογιστικό βήμα είναι έγκυρο: η αποχώρηση από το σπίτι προηγείται της λήψης ταξί, άρα υποστηρίζεται σωστά το Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0312",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά το επίρρημα ποσοτικοποίησης «πάντα» και εφαρμόζει ορθά καθολική εξειδίκευση: αφού η ΙΤΕΛ πάντα παραδίδει αναφορές αργά και το 1993 παρέδωσε αναφορές, έπεται ότι τις παρέδωσε αργά το 1993. Υποστηρίζει πλήρως την ετικέτα Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0308",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά την αμφισημία εύρους που προκύπτει με το χρονικό επιρρηματικό «κάθε εβδομάδα» και τον υπαρξιακό ποσοδείκτη. Το σκεπτικό είναι λογικά ορθό: η προκείμενη επιτρέπει είτε διαφορετικό εκπρόσωπο κάθε εβδομάδα είτε έναν σταθερό, ενώ η υπόθεση απαιτεί τον σταθερό εκπρόσωπο, άρα δεν συνεπάγεται. Αυτό υποστηρίζει σωστά την ετικέτα Unknown.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0317",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly targets temporal/additive duration reasoning with a non-overlap constraint, matching the gold temporal-reference phenomenon. Its logic is sound: 16 representatives × at least 0.5 day each, with no simultaneous reading, yields more than 8 days total, which entails more than a week. It directly supports the Entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0313",
+      "gold": [
+        "Contradiction"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly targets the temporal/adverb-of-quantification phenomenon: 'never' universally rules out any late delivery, including the 1993 instance. The reasoning is logically sound and directly supports the predicted contradiction label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0306",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά το χρονικό επίρρημα/προσδιορισμό διάρκειας («για δυο χρόνια») ως το κρίσιμο φαινόμενο και εξηγεί ορθά ότι η αφαίρεσή του διατηρεί τη βασική πρόταση. Η συλλογιστική είναι λογικά έγκυρη και στηρίζει άμεσα την ετικέτα Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0315",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά το φαινόμενο της χρονικής αναφοράς/συνεπαγωγής: το ότι ταξίδευε για τρεις μέρες μέχρι την άφιξη συνεπάγεται ότι ταξίδευε και την προηγούμενη μέρα. Η συλλογιστική είναι λογικά ορθή και στηρίζει άμεσα την ετικέτα Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0319",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση χειρίζεται σωστά τη χρονική/αθροιστική αναφορά διάρκειας: 8 χρόνια στο προηγούμενο κτίριο και πάνω από 10 στο τωρινό, άρα συνολικά πάνω από 18 και επομένως τουλάχιστον 15. Είναι λογικά έγκυρη και στηρίζει το label Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0316",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "The explanation correctly focuses on temporal reference/underspecification, matching the gold phenomenon. However, its reasoning is unsound: from 'graduated in March and has worked since then' plus 'has been unemployed in the past,' the unemployment must have been before March/graduation, so the hypothesis is entailed. The explanation does support the model's predicted label of Unknown.",
+      "total": 3
+    },
+    {
+      "id": "fracas-0314",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά το χρονικό φαινόμενο/αναφορά διάρκειας: από άφιξη στις 5 Μαΐου και παραμονή έως τις 15 Μαΐου συνάγεται παρουσία στις 7 Μαΐου. Η συλλογιστική είναι λογικά ορθή και στηρίζει άμεσα την ετικέτα Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0321",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "The explanation correctly identifies the temporal reasoning involved: counting past visits plus scheduled future visits and evaluating the total by a later reference time ('two years from now'). The logic is valid: 2 past visits + 2 visits next year entails at least 4 total visits by two years from now. It directly supports the Entailment label.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0323",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά το χρονικό φαινόμενο του «μέχρι» και το συνδυάζει με την αδυναμία συνέχισης μετά το σημείο που κάποιος μένει ταπί. Η συλλογιστική είναι λογικά ορθή και στηρίζει καθαρά την ετικέτα Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0322",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "Η εξήγηση εστιάζει σωστά στη χρονική/υποθετική δομή της πρότασης, άρα αναγνωρίζει το temporal reference phenomenon. Όμως η συλλογιστική είναι λανθασμένη: η premiss συνεπάγεται ότι η ανακάλυψη θα συμβεί εντός ενός μήνα από την περασμένη εβδομάδα, άρα σε μερικές εβδομάδες, και τότε η Σμίθ θα γίνει έξαλλη. Η εξήγηση nevertheless υποστηρίζει το predicted label Unknown, άρα είναι συνεπής με αυτό.",
+      "total": 3
+    },
+    {
+      "id": "fracas-0325",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά τη χρονική διάσταση: η γνώση δεν υπάρχει κατά τη διάρκεια του ύπνου αλλά αποκτάται μετά. Το συλλογιστικό βήμα από το «γνωρίζουν αφού έχουν κοιμηθεί» στο «ανακαλύπτουν ότι έχουν κοιμηθεί» είναι λογικά εύλογο, και στηρίζει καθαρά την πρόβλεψη Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0326",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 1,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "Η εξήγηση αγγίζει σχετικό λεξικο-σημασιολογικό ζήτημα στα ρήματα, αλλά δεν αναγνωρίζει σωστά το aspectual φαινόμενο του gold tag. Επιπλέον, ο ισχυρισμός ότι το «κατασκεύασε» δεν συνεπάγεται ότι το «τελείωσε» είναι λανθασμένος εδώ, αφού το πρώτο φυσικά υποδηλώνει ολοκλήρωση του έργου. Ωστόσο, η εξήγηση είναι συνεπής με την προβλεπόμενη ετικέτα Unknown.",
+      "total": 2
+    },
+    {
+      "id": "fracas-0320",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 1,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "Η εξήγηση εστιάζει σε σημασιολογική ισχύ/συνεπαγωγή γύρω από το «δεν θα του επιτρεπόταν ποτέ», που σχετίζεται έμμεσα με τη χρονική αναφορά αλλά δεν αναγνωρίζει σωστά το temporal phenomenon. Είναι λογικά εσφαλμένη, γιατί από το ότι δεν θα του επιτραπεί ποτέ να γράψει τα απομνημονεύματά του ακολουθεί ουσιαστικά ότι δεν θα τα γράψει (στο πλαίσιο της πρότασης), άρα η απόρριψη της υπόθεσης δεν στέκει. Ωστόσο, η εξήγηση είναι συνεπής με την προβλεπόμενη ετικέτα Unknown.",
+      "total": 2
+    },
+    {
+      "id": "fracas-0328",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση είναι λογικά σωστή: από το πιο συγκεκριμένο «κέρδισε το συμβόλαιο από την ΑΠΚΟΜ το 1993» συνεπάγεται το γενικότερο «κέρδισε ένα συμβόλαιο το 1993». Ωστόσο, δεν εντοπίζει το φαινόμενο του gold tag (ρηματική/aspectual κατηγορία), αλλά μιλά γενικά για υπαγωγή/γενίκευση.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0324",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αποδίδει σωστά τη λογική ισοδυναμία μεταξύ της πρότασης με άρνηση και της καθολικής καταφατικής διατύπωσης, άρα είναι ορθή και στηρίζει το Entailment. Ωστόσο, δεν επισημαίνει ρητά το φαινόμενο της χρονικής αναφοράς/του 'μέχρι', αλλά περισσότερο μια γενική λογική παραφράση με άρνηση και καθολικότητα.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0333",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά τη συλλογική/ομαδική ανάγνωση του ρήματος «συναντήθηκαν» και τη μετάβαση από ονομασμένα άτομα στην ύπαρξη ομάδας. Ο συλλογισμός είναι λογικά έγκυρος και στηρίζει άμεσα την ετικέτα Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0318",
+      "gold": [
+        "Contradiction"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση εστιάζει σωστά στη χρονική αναφορά/διάρκεια: το ότι η ομιλία της Μαίρης τελείωσε πριν τελειώσει ο Τζόουνς αποκλείει ότι κράτησε όσο χρειαζόταν εκείνος για να ολοκληρώσει την ενημέρωση. Η συλλογιστική είναι λογικά ορθή και υποστηρίζει το προβλεπόμενο label Unknown, αφού λέει ότι η ισότητα διάρκειας δεν προκύπτει από το κείμενο.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0303",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 2,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά το χρονικό φαινόμενο της διάρκειας/χρονικών επιρρηματικών προσδιορισμών. Όμως η συλλογιστική είναι λανθασμένη για το συγκεκριμένο ζεύγος: από το ότι έγραφε για δύο ώρες έπεται ότι έγραφε και για μία ώρα, άρα δεν υπάρχει αντίφαση. Παρ' όλα αυτά, η εξήγηση είναι συνεπής με την προβλεπόμενη ετικέτα Contradiction.",
+      "total": 3
+    },
+    {
+      "id": "fracas-0330",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση είναι λογικά σωστή: το 1990 ανήκει στο διάστημα 1988–1992, άρα προκύπτει συνεπαγωγή. Ωστόσο, εντοπίζει κυρίως χρονική ένταξη/χρονικό εύρος και όχι ειδικά το φαινόμενο των ρηματικών όψεων/Aspectual Classes του gold tag.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0337",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά το φαινόμενο της προθεσιακής/σκοπικής στάσης: το «προσπάθησε να» δεν συνεπάγεται ότι το γεγονός πραγματοποιήθηκε. Η συλλογιστική είναι λογικά ορθή και στηρίζει άμεσα την ετικέτα Unknown.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0332",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά τη διανεμητική ανάγνωση της συζευκτικής υποκειμενικής φράσης με το ρήμα «έφυγαν»: από το ότι ο Σμίθ και ο Τζόουνς έφυγαν, συνεπάγεται ότι ο Τζόουνς έφυγε. Η συλλογιστική είναι λογικά έγκυρη και στηρίζει άμεσα την ετικέτα Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0327",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά το φαινόμενο της όψης/ρηματικής κατηγορίας: το «κατασκεύαζε» δηλώνει μη ολοκληρωμένη, εν εξελίξει πράξη, ενώ το «τελείωσε» δηλώνει ολοκλήρωση. Η συλλογιστική είναι γλωσσολογικά ορθή και στηρίζει πλήρως την ετικέτα Unknown, αφού η πρόταση δεν συνεπάγεται ότι η ολοκλήρωση έγινε το 1993.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0334",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά το φαινόμενο της factive/επιστημικής στάσης με το ρήμα «ήξερε», που συνεπάγεται την αλήθεια του συμπληρώματος. Η συλλογιστική είναι γλωσσολογικά και λογικά ορθή και στηρίζει άμεσα την ετικέτα Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0335",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Unknown",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά το φαινόμενο των επιστημικών/αναφορικών στάσεων: το «ο Σμίθ πίστευε ότι» δεν συνεπάγεται την αλήθεια του ενσωματωμένου γεγονότος. Η συλλογιστική είναι λογικά ορθή και στηρίζει άμεσα την ετικέτα Unknown.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0338",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση σωστά καταλήγει σε entailment και είναι λογικά ορθή, αφού το περιεχόμενο της υπόθεσης περιέχεται στην προκείμενη. Ωστόσο δεν αναγνωρίζει ρητά το φαινόμενο των επιστημικών στάσεων/αληθοσυνθηκών του 'Είναι αλήθεια ότι', αλλά το αντιμετωπίζει γενικά ως παράφραση/ισοδυναμία.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0329",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 0,
+      "soundness": 0,
+      "consistency": 1,
+      "justification": "Η εξήγηση δεν αναγνωρίζει το φαινόμενο της όψης/ρηματικής κατηγορίας (imperfective «κέρδιζε» vs perfective/past «κέρδισε»), αλλά δίνει γενική συνεπαγωγή ειδικού→γενικού. Αυτό είναι λανθασμένο εδώ: το «κέρδιζε» δεν συνεπάγεται ότι ολοκληρώθηκε γεγονός ώστε να ισχύει «κέρδισε». Ωστόσο, η εξήγηση είναι συνεπής με την προβλεπόμενη ετικέτα Entailment, αφού επιχειρεί να την υποστηρίξει.",
+      "total": 1
+    },
+    {
+      "id": "fracas-0339",
+      "gold": [
+        "Contradiction"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά την άρνηση/αντίφαση μεταξύ προκείμενης και υπόθεσης, άρα είναι λογικά ορθή και στηρίζει το label Contradiction. Ωστόσο, δεν αναγνωρίζει ειδικά το φαινόμενο των επιστημικών/αναφορικών στάσεων του gold tag, αλλά ένα συναφές γενικό φαινόμενο άρνησης.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0343",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση είναι λογικά ορθή: από το ότι ο Τζόουνς είναι ο πρόεδρος της ΙΤΕΛ και ότι ο Σμίθ τον είδε να υπογράφει, έπεται ότι ο Σμίθ είδε τον πρόεδρο της ΙΤΕΛ να υπογράφει. Ωστόσο, δεν αναγνωρίζει ρητά το ειδικό φαινόμενο του gold tag, δηλαδή το preceptive attitude 'see' με bare infinitive complement, αλλά ένα συναφές φαινόμενο ταυτοτικής αντικατάστασης.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0336",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά τη ρηματική κατασκευή επιτυχίας/implicative ('κατάφερε να κερδίσει'), που ανήκει στο πεδίο των attitudes και συνεπάγεται την αλήθεια του συμπληρώματος. Η συλλογιστική είναι γλωσσικά και λογικά ορθή και στηρίζει άμεσα την πρόβλεψη Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0341",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση εντοπίζει σωστά το φαινόμενο των αντιληπτικών ρημάτων με bare infinitive και τη μη-μεταφορά της οπτικής πρόσβασης σε ταυτόχρονα γεγονότα. Το σκεπτικό είναι γλωσσικά και λογικά ορθό: από το ότι ο Σμίθ είδε την υπογραφή ενώ η καρδιά χτυπούσε δεν συνεπάγεται ότι είδε και τον χτύπο της καρδιάς. Αυτό υποστηρίζει την προβλεπόμενη ετικέτα Contradiction, έστω κι αν η gold label είναι Unknown.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0345",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση είναι σωστή και δείχνει ότι από τον συντονισμό δύο γεγονότων που είδε ο Σμίθ προκύπτει το πρώτο σκέλος μόνο του, άρα υποστηρίζει έγκυρα το Entailment. Ωστόσο, δεν κατονομάζει ρητά το ειδικό φαινόμενο της αντιληπτικής στάσης με 'είδε' και bare infinitive complement, αλλά εστιάζει γενικότερα στον συντονισμό.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0344",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση είναι λογικά σωστή: από το ότι η Ελένη είδε τον πρόεδρο να απαντάει στο τηλέφωνο συνεπάγεται ότι υπάρχει κάποιο άτομο που είδε να το κάνει. Ωστόσο, δεν αναγνωρίζει ρητά το φαινόμενο του perceptive attitude με bare infinitive complement («είδε ... να απαντάει»), αλλά το χειρίζεται πιο γενικά ως υπαρξιακή συνεπαγωγή από οριστική αναφορά.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0340",
+      "gold": [
+        "Unknown"
+      ],
+      "predicted": "Contradiction",
+      "phenomenon_id": 2,
+      "soundness": 1,
+      "consistency": 0,
+      "justification": "Η εξήγηση εντοπίζει σωστά το φαινόμενο της αντιληπτικής στάσης με το 'είδε' και την άκυρη μεταφορά από το γεγονός που είδε ο Σμίθ σε άλλο αντιληπτικό περιεχόμενο. Όμως περιέχει σφάλμα όταν λέει ότι από τις προκείμενες προκύπτει ότι ο Τζόουνς υπέγραψε το συμβόλαιο· το 'είδε να υπογράφει' δεν συνεπάγεται κατ’ ανάγκην ότι υπέγραψε επιτυχώς. Παρ’ όλα αυτά, η βασική κατεύθυνση προς το Unknown είναι σωστή. Η εξήγηση δεν στηρίζει το προβλεπόμενο Contradiction αλλά μάλλον το Unknown.",
+      "total": 3
+    },
+    {
+      "id": "fracas-0342",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά το φαινόμενο των προληπτικών ρημάτων αντίληψης («είδε») με γυμνό απαρέμφατο/συμπλήρωμα γεγονότος, που συνεπάγονται την πραγματοποίηση του παρατηρούμενου γεγονότος. Η συλλογιστική είναι γλωσσολογικά ορθή και στηρίζει άμεσα την ετικέτα Entailment.",
+      "total": 5
+    },
+    {
+      "id": "fracas-0346",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 1,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση σωστά λέει ότι η υπόθεση είναι συντακτική παραλλαγή με ελλειπτική επανάληψη του «τον Τζόουνς» και άρα σημασιολογικά ισοδύναμη με την πρόταση. Ωστόσο δεν κατονομάζει ειδικά το φαινόμενο του gold tag, δηλαδή το perceptive attitude verb «είδε» με bare infinitive συμπλήρωμα, οπότε αναγνωρίζει μόνο συναφές φαινόμενο.",
+      "total": 4
+    },
+    {
+      "id": "fracas-0331",
+      "gold": [
+        "Entailment"
+      ],
+      "predicted": "Entailment",
+      "phenomenon_id": 2,
+      "soundness": 2,
+      "consistency": 1,
+      "justification": "Η εξήγηση αναγνωρίζει σωστά τη διανεμητική ανάγνωση του υποκειμένου με «και» και εφαρμόζει ορθά τη συζευκτική απαλοιφή: από το ότι ο Σμίθ και ο Τζόουνς έφυγαν, συνεπάγεται ότι ο Σμίθ έφυγε. Είναι λογικά και γλωσσικά ορθή και στηρίζει πλήρως την πρόβλεψη Entailment.",
+      "total": 5
+    }
+  ]
+}
