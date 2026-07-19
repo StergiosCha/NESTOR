@@ -30,6 +30,7 @@ from datetime import datetime
 from pathlib import Path
 import pandas as pd
 import streamlit as st
+import review_sampler
 st.set_page_config(page_title="NLI Explanation Reviewer", layout="wide")
 # --------------------------------------------------------------------------
 # App location & fixed defaults — the app lives in NESTOR/, the data to
@@ -298,63 +299,153 @@ st.sidebar.markdown(f"**Reviewer:** {reviewer_name}")
 if st.sidebar.button("Switch reviewer"):
     del st.session_state["reviewer_name"]
     st.rerun()
-root_dir_input = st.sidebar.text_input(
-    "Results folder",
-    value=str(DEFAULT_RESULTS_ROOT),
-    help="Defaults to phase_1_nli_eval/results next to the app — override only "
-         "if your data lives somewhere else.",
-)
-try:
-    root_path = Path(root_dir_input).expanduser().resolve()
-except OSError:
-    root_path = DEFAULT_RESULTS_ROOT.resolve()
-if not root_path.exists() or not root_path.is_dir():
-    st.sidebar.error("That results folder doesn't exist.")
-    st.title("NLI Explanation Reviewer")
-    st.stop()
-subfolders = list_subfolders(str(root_path))
-if not subfolders:
-    st.sidebar.error("No subfolders found inside the results folder to choose from.")
-    st.title("NLI Explanation Reviewer")
-    st.stop()
-subfolder_names = [d.name for d in subfolders]
-chosen_subfolder = st.sidebar.selectbox(
-    "Choose the subfolder to work on",
-    ["(select)"] + subfolder_names,
+# --- Stratified pool helpers (pure function of the results tree + seed) -----
+@st.cache_data(show_spinner=False)
+def build_review_pool(results_root: str, tree_sig, fraction: float, floor: int, seed: int):
+    """Universe + stratified pool, recomputed only when the tree signature
+    (per-file mtimes) or the parameters change. `tree_sig` is part of the cache
+    key, not used directly."""
+    universe = review_sampler.build_universe(results_root)
+    return review_sampler.draw_stratified_pool(universe, seed=seed, fraction=fraction, floor=floor)
+@st.cache_data(show_spinner=False)
+def stem_to_path_map(results_root: str, tree_sig):
+    """Map each file stem to its full path, so an assigned slice's
+    (dataset, model, technique, language) key resolves back to a real file."""
+    p = Path(results_root)
+    return {f.stem: str(f) for f in p.rglob("*.json")}
+def tree_signature(results_root: str):
+    p = Path(results_root)
+    return tuple(sorted(
+        (str(f.relative_to(p)), f.stat().st_mtime) for f in p.rglob("*.json")
+    ))
+# --- Mode selector: let the sampler allocate, or browse files by hand -------
+sample_mode = st.sidebar.radio(
+    "How do you pick samples?",
+    ["🎲 Assign my samples (stratified)", "📂 Browse files manually"],
     index=0,
-    help="The loose .json files directly inside the results folder are ignored "
-         "on purpose — pick the subfolder that has the files you want to review.",
+    help="Assigned: the app hands you a reproducible, disjoint slice of a ~10% "
+         "stratified pool — no navigation needed. Manual: browse the results "
+         "folders and choose files yourself.",
 )
-if chosen_subfolder == "(select)":
-    st.title("NLI Explanation Reviewer")
-    st.info("Choose a subfolder from the sidebar to begin.")
-    st.stop()
-browse_path = subfolders[subfolder_names.index(chosen_subfolder)]
-recursive = st.sidebar.checkbox(
-    "Include files from nested subfolders", value=False,
-    help="Off: only show files directly inside the chosen subfolder. On: show "
-         "every JSON file nested anywhere below it.",
+assigned_mode = sample_mode.startswith("🎲")
+reviews_dir = st.sidebar.text_input(
+    "Reviews folder (where scores are saved)", value=str(DEFAULT_REVIEWS_DIR)
 )
-json_files = list_json_files(str(browse_path), recursive=recursive)
-if not json_files:
-    st.sidebar.warning(
-        "No .json files found in that subfolder."
-        + ("" if recursive else " Try enabling nested search.")
+only_assigned = False
+my_slice_keys: set = set()
+if assigned_mode:
+    # --- Stratified allocation: no folder/file hunting ---------------------
+    with st.sidebar.expander("⚙️ Advanced (pool settings)", expanded=False):
+        adv_root = st.text_input("Results folder", value=str(DEFAULT_RESULTS_ROOT))
+        assign_fraction = st.number_input(
+            "Pool fraction of all explanations",
+            min_value=0.0, max_value=1.0, value=0.10, step=0.01,
+        )
+        assign_ceiling = st.number_input(
+            "Max samples assigned to you (ceiling)",
+            min_value=0, value=200, step=10,
+        )
+    try:
+        root_path = Path(adv_root).expanduser().resolve()
+    except OSError:
+        root_path = DEFAULT_RESULTS_ROOT.resolve()
+    if not root_path.exists() or not root_path.is_dir():
+        st.sidebar.error("That results folder doesn't exist.")
+        st.title("NLI Explanation Reviewer")
+        st.stop()
+    my_slug = sanitize_for_filename(reviewer_name or "unnamed")
+    roster = sorted(set(discover_known_usernames(Path(reviews_dir))) | {my_slug})
+    sig = tree_signature(str(root_path))
+    pool = build_review_pool(str(root_path), sig, float(assign_fraction), 1, 42)
+    my_slice = review_sampler.slice_for_annotator(
+        pool, my_slug, roster, ceiling=int(assign_ceiling)
     )
-    st.title("NLI Explanation Reviewer")
-    st.stop()
-# Show relative paths in the picker so files with the same name in different
-# nested subfolders (e.g. recursive mode) stay distinguishable.
-file_labels = [str(f.relative_to(browse_path)) for f in json_files]
-selected_label = st.sidebar.selectbox("Choose a file", file_labels)
-selected_path = json_files[file_labels.index(selected_label)]
-reviews_dir = st.sidebar.text_input("Reviews folder (where scores are saved)",
-                                     value=str(DEFAULT_REVIEWS_DIR))
+    my_slice_keys = {review_sampler.item_key(rec) for rec in my_slice}
+    only_assigned = True
+    if not my_slice_keys:
+        st.sidebar.warning("No samples are assigned to you yet.")
+        st.title("NLI Explanation Reviewer")
+        st.info("No assigned samples for you in the current pool.")
+        st.stop()
+    # One dropdown of the files that hold your items; first auto-selected.
+    path_map = stem_to_path_map(str(root_path), sig)
+    file_keys = sorted({k[:4] for k in my_slice_keys})
+    counts = {fk: sum(1 for k in my_slice_keys if k[:4] == fk) for fk in file_keys}
+    resolved = [(fk, path_map.get("__".join(fk))) for fk in file_keys]
+    resolved = [(fk, p) for fk, p in resolved if p]
+    if not resolved:
+        st.sidebar.error("Could not locate your assigned files under the results folder.")
+        st.title("NLI Explanation Reviewer")
+        st.stop()
+    st.sidebar.caption(
+        f"Your slice: **{len(my_slice_keys)}** items across **{len(resolved)}** "
+        f"files (pool total {len(pool)})."
+    )
+    labels = [f"{'__'.join(fk)} · {counts[fk]} item(s)" for fk, _ in resolved]
+    picked_label = st.sidebar.selectbox("Your files", labels, index=0)
+    selected_path = Path(resolved[labels.index(picked_label)][1])
+else:
+    # --- Manual browse: original folder → subfolder → file pickers ---------
+    root_dir_input = st.sidebar.text_input(
+        "Results folder",
+        value=str(DEFAULT_RESULTS_ROOT),
+        help="Defaults to phase_1_nli_eval/results next to the app — override only "
+             "if your data lives somewhere else.",
+    )
+    try:
+        root_path = Path(root_dir_input).expanduser().resolve()
+    except OSError:
+        root_path = DEFAULT_RESULTS_ROOT.resolve()
+    if not root_path.exists() or not root_path.is_dir():
+        st.sidebar.error("That results folder doesn't exist.")
+        st.title("NLI Explanation Reviewer")
+        st.stop()
+    subfolders = list_subfolders(str(root_path))
+    if not subfolders:
+        st.sidebar.error("No subfolders found inside the results folder to choose from.")
+        st.title("NLI Explanation Reviewer")
+        st.stop()
+    subfolder_names = [d.name for d in subfolders]
+    chosen_subfolder = st.sidebar.selectbox(
+        "Choose the subfolder to work on",
+        ["(select)"] + subfolder_names,
+        index=0,
+        help="The loose .json files directly inside the results folder are ignored "
+             "on purpose — pick the subfolder that has the files you want to review.",
+    )
+    if chosen_subfolder == "(select)":
+        st.title("NLI Explanation Reviewer")
+        st.info("Choose a subfolder from the sidebar to begin.")
+        st.stop()
+    browse_path = subfolders[subfolder_names.index(chosen_subfolder)]
+    recursive = st.sidebar.checkbox(
+        "Include files from nested subfolders", value=False,
+        help="Off: only show files directly inside the chosen subfolder. On: show "
+             "every JSON file nested anywhere below it.",
+    )
+    json_files = list_json_files(str(browse_path), recursive=recursive)
+    if not json_files:
+        st.sidebar.warning(
+            "No .json files found in that subfolder."
+            + ("" if recursive else " Try enabling nested search.")
+        )
+        st.title("NLI Explanation Reviewer")
+        st.stop()
+    # Show relative paths in the picker so files with the same name in different
+    # nested subfolders (e.g. recursive mode) stay distinguishable.
+    file_labels = [str(f.relative_to(browse_path)) for f in json_files]
+    selected_label = st.sidebar.selectbox("Choose a file", file_labels)
+    selected_path = json_files[file_labels.index(selected_label)]
 review_file_path = reviewer_file_path(reviews_dir, selected_path.stem, reviewer_name or "unnamed")
 mtime = selected_path.stat().st_mtime
 metadata, results, summary = load_json_file(str(selected_path), mtime)
 dataset_name = guess_dataset_name(metadata, selected_path)
 model_name = guess_model_name(metadata, selected_path)
+# Current file's identity components, parsed from the stem like the sampler,
+# so the assigned-slice keys line up.
+cur_parts = selected_path.stem.split("__")
+cur_parts += [""] * (4 - len(cur_parts))
+cur_dataset, cur_model, cur_technique, cur_language = cur_parts[:4]
 reviews_key = f"reviews::{selected_path}::{sanitize_for_filename(reviewer_name or 'unnamed')}"
 if reviews_key not in st.session_state:
     st.session_state[reviews_key] = load_json_dict(review_file_path)
@@ -525,6 +616,8 @@ def matches_filters(r):
     ):
         return False
     if only_sample and rid not in sample_ids_for_dataset:
+        return False
+    if only_assigned and (cur_dataset, cur_model, cur_technique, cur_language, rid) not in my_slice_keys:
         return False
     return True
 filtered = [r for r in results if matches_filters(r)]
