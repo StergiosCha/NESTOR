@@ -16,6 +16,7 @@ JUDGE_TEMPLATE = """You are an expert evaluator of Natural Language Inference ex
 Given:
 - Premise(s): {premise}
 - Hypothesis: {hypothesis}
+- Gold label: {gold}
 - Gold phenomenon tag: {tags}
 - Model's predicted label: {predicted}
 - Model's explanation: {reasoning}
@@ -52,6 +53,7 @@ def build_judge_prompt(entry: dict) -> list[dict]:
     body = JUDGE_TEMPLATE.format(
         premise=entry.get("premise", ""),
         hypothesis=entry.get("hypothesis", ""),
+        gold=_as_text(entry.get("gold")),
         tags=_as_text(entry.get("tags", [])),
         predicted=_as_text(entry.get("predicted")),
         reasoning=entry.get("reasoning", ""),
