@@ -90,12 +90,6 @@ def judge_file(
     if limit is not None:
         pending = pending[:limit]
 
-    print(
-        f"[judge] file={result_path.name} judge_model={judge_model} "
-        f"total={len(entries)} scorable={len(scorable)} skipped(phase1)={skipped_count} "
-        f"pending={len(pending)}"
-    )
-
     limiter = get_limiter(deployment, rpm)
     lock = threading.Lock()
     judge_failed = [0]
