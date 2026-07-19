@@ -94,7 +94,6 @@ def build_score_object(entry: dict, parsed: dict) -> dict:
         "id": entry.get("id"),
         "gold": entry.get("gold"),
         "predicted": entry.get("predicted"),
-        "tags": entry.get("tags"),
         "phenomenon_id": parsed["phenomenon_id"],
         "soundness": parsed["soundness"],
         "consistency": parsed["consistency"],

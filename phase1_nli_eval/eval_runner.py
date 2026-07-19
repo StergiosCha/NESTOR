@@ -1,5 +1,8 @@
 """LLM-as-judge runner: discover Phase-1 result files and judge scorable
-entries, with resume, concurrency, and incremental flush."""
+entries, with resume, concurrency, and incremental flush.
+
+Run: python -m phase1_nli_eval.eval_runner --data fracas --model gpt-4o [--technique zero-shot] [--resume] [--limit N]
+"""
 
 from __future__ import annotations
 
