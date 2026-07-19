@@ -227,6 +227,7 @@ def load_judge_scores(path: Path) -> dict:
             "soundness_notes": "",
             "consistency_notes": "",
             "general_notes": "",
+            "justification": s.get("justification", ""),
             "reviewer": "llm_judge",
             "reviewed_at": data.get("metadata", {}).get("completed_at", ""),
         }
@@ -646,6 +647,8 @@ with tab_review:
                         st.caption(f"_{cinfo['label']}:_ {note}")
                 if entry.get("general_notes"):
                     st.caption(f"_General:_ {entry['general_notes']}")
+                if entry.get("justification"):
+                    st.caption(f"_Justification:_ {entry['justification']}")
     existing = reviews.get(sample_id, {})
     score_values = {}
     note_values = {}
@@ -697,6 +700,7 @@ with tab_review:
             for ck in CRITERION_KEYS:
                 entry[ck] = score_values[ck]
                 entry[f"{ck}_notes"] = note_values[ck]
+            entry["total"] = total_score(entry)
             reviews[sample_id] = entry
             st.session_state[reviews_key] = reviews
             save_json_dict(review_file_path, reviews)
@@ -965,6 +969,8 @@ with tab_library:
                             st.caption(f"_{cinfo['label']}:_ {note}")
                     if entry.get("general_notes"):
                         st.caption(f"_General:_ {entry['general_notes']}")
+                    if entry.get("justification"):
+                        st.caption(f"_Justification:_ {entry['justification']}")
                     if entry.get("reviewed_at"):
                         st.caption(f"Reviewed at: {entry['reviewed_at']}")
 # --------------------------------------------------------------------------
