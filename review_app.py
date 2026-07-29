@@ -300,12 +300,22 @@ if st.sidebar.button("Switch reviewer"):
     del st.session_state["reviewer_name"]
     st.rerun()
 # --- Stratified pool helpers (pure function of the results tree + seed) -----
+# Files whose stem contains "_el" (e.g. the Greek-language slice) are excluded
+# from the auto-assigned sampling pool by default — they're still on disk and
+# still reachable via manual browsing, just never drawn into anyone's slice.
+POOL_EXCLUDED_STEM_SUBSTRING = "_el"
+def _stem_from_universe_rec(rec) -> str:
+    return "__".join(str(part) for part in review_sampler.item_key(rec)[:4])
 @st.cache_data(show_spinner=False)
 def build_review_pool(results_root: str, tree_sig, fraction: float, floor: int, seed: int):
     """Universe + stratified pool, recomputed only when the tree signature
     (per-file mtimes) or the parameters change. `tree_sig` is part of the cache
     key, not used directly."""
     universe = review_sampler.build_universe(results_root)
+    universe = [
+        rec for rec in universe
+        if POOL_EXCLUDED_STEM_SUBSTRING not in _stem_from_universe_rec(rec)
+    ]
     return review_sampler.draw_stratified_pool(universe, seed=seed, fraction=fraction, floor=floor)
 @st.cache_data(show_spinner=False)
 def stem_to_path_map(results_root: str, tree_sig):
@@ -380,6 +390,10 @@ if assigned_mode:
     st.sidebar.caption(
         f"Your slice: **{len(my_slice_keys)}** items across **{len(resolved)}** "
         f"files (pool total {len(pool)})."
+    )
+    st.sidebar.caption(
+        f"Files containing `{POOL_EXCLUDED_STEM_SUBSTRING}` are excluded from the "
+        "assignment pool by default."
     )
     # Per-file scored progress across the whole slice, and the ordered list of
     # files that still have unfinished assigned items.
@@ -501,7 +515,7 @@ with st.sidebar.expander("LLM-judge scores (optional)"):
         st.caption("No judge-scored file found at that path yet — that's fine, it's optional.")
 if st.session_state.get("current_file") != str(selected_path):
     st.session_state["current_file"] = str(selected_path)
-    st.session_state["nav_idx"] = 0
+    st.session_state["nav_idx"] = st.session_state.pop("_pending_nav_idx", 0)
 # --------------------------------------------------------------------------
 # Header: metadata + summary + progress
 # --------------------------------------------------------------------------
@@ -565,7 +579,9 @@ if sample_ids_for_dataset and not assigned_mode:
     )
 st.divider()
 # --------------------------------------------------------------------------
-# Sidebar: filters
+# Option lists — still computed for the Library tab's own filters, just no
+# longer surfaced as a duplicate "Filters" panel in the left sidebar (that
+# panel was redundant with the Library tab and has been removed).
 # --------------------------------------------------------------------------
 def unique_flat_values(field):
     vals = set()
@@ -576,91 +592,14 @@ def unique_flat_values(field):
         elif v is not None:
             vals.add(v)
     return sorted(str(v) for v in vals)
-st.sidebar.title("Filters")
-search_text = st.sidebar.text_input("Search premise / hypothesis / reasoning")
 gold_opts = unique_flat_values("gold")
-gold_sel = st.sidebar.multiselect("Gold label", gold_opts, default=[])
 pred_opts = unique_flat_values("predicted")
-pred_sel = st.sidebar.multiselect("Predicted label", pred_opts, default=[])
-# In assigned mode the file is already one dataset/model/language/technique, so
-# these dimension filters add clutter without helping — hide them (keeping the
-# search + label + progress filters that still matter).
-# Compute option lists always (the Library tab reuses them); only render the
-# sidebar widgets in manual mode.
 lang_opts = unique_flat_values("language")
 source_opts = unique_flat_values("source")
 section_opts = unique_flat_values("fracas_sections")
 tag_opts = unique_flat_values("tags")
-if not assigned_mode:
-    lang_sel = st.sidebar.multiselect("Language", lang_opts, default=[])
-    source_sel = st.sidebar.multiselect("Source", source_opts, default=[])
-    section_sel = st.sidebar.multiselect("FraCaS section", section_opts, default=[])
-    tag_sel = st.sidebar.multiselect("Tags", tag_opts, default=[])
-else:
-    lang_sel = source_sel = section_sel = tag_sel = []
-success_choice = st.sidebar.radio(
-    "Model result", ["All", "Success only", "Failure only"], index=0
-)
-st.sidebar.markdown("**Your scores**")
-crit_filters = {}
-if not assigned_mode:
-    for ck, cinfo in CRITERIA.items():
-        opt_labels = ["Not scored"] + [str(v) for v, _ in cinfo["options"]]
-        crit_filters[ck] = st.sidebar.multiselect(f"Your {cinfo['label']} score", opt_labels, default=[])
-only_unreviewed = st.sidebar.checkbox("Only show samples not fully scored by you", value=False)
-only_unreviewed_by_anyone = (
-    False if assigned_mode
-    else st.sidebar.checkbox("Only show samples not scored by anyone", value=False)
-)
 def matches_filters(r):
     rid = str(r["id"])
-    if search_text:
-        hay = " ".join([
-            str(r.get("premise", "")),
-            str(r.get("hypothesis", "")),
-            str(r.get("reasoning", "")),
-        ]).lower()
-        if search_text.lower() not in hay:
-            return False
-    if gold_sel:
-        g = r.get("gold") or []
-        g = g if isinstance(g, list) else [g]
-        if not set(str(x) for x in g) & set(gold_sel):
-            return False
-    if pred_sel and str(r.get("predicted")) not in pred_sel:
-        return False
-    if lang_sel and str(r.get("language")) not in lang_sel:
-        return False
-    if source_sel and str(r.get("source")) not in source_sel:
-        return False
-    if section_sel:
-        secs = r.get("fracas_sections") or []
-        secs = secs if isinstance(secs, list) else [secs]
-        if not set(str(x) for x in secs) & set(section_sel):
-            return False
-    if tag_sel:
-        tags = r.get("tags") or []
-        tags = tags if isinstance(tags, list) else [tags]
-        if not set(str(x) for x in tags) & set(tag_sel):
-            return False
-    if success_choice == "Success only" and r.get("success") != 1:
-        return False
-    if success_choice == "Failure only" and r.get("success") == 1:
-        return False
-    my_entry = reviews.get(rid)
-    for ck, sel in crit_filters.items():
-        if not sel:
-            continue
-        val = my_entry.get(ck) if my_entry else None
-        val_label = "Not scored" if val is None else str(val)
-        if val_label not in sel:
-            return False
-    if only_unreviewed and is_fully_scored(my_entry):
-        return False
-    if only_unreviewed_by_anyone and any(
-        is_fully_scored(e) for e in all_reviews.get(rid, {}).values()
-    ):
-        return False
     if only_sample and rid not in sample_ids_for_dataset:
         return False
     if only_assigned and (cur_dataset, cur_model, cur_technique, cur_language, rid) not in my_slice_keys:
@@ -672,7 +611,84 @@ if not filtered:
     st.stop()
 if st.session_state.get("nav_idx", 0) >= len(filtered):
     st.session_state["nav_idx"] = 0
+# If Previous/Next just crossed into this file looking for unrated samples,
+# pinpoint the actual first/last unrated position now that this file's real
+# data (and reviews) are loaded — the file-crossing step itself only knew
+# the item *count*, not which specific ones are still unrated.
+if "_land_on_unrated" in st.session_state:
+    _land_direction = st.session_state.pop("_land_on_unrated")
+    _i = -1 if _land_direction > 0 else len(filtered)
+    while 0 <= _i < len(filtered):
+        if not is_fully_scored(reviews.get(str(filtered[_i]["id"]))):
+            st.session_state["nav_idx"] = _i
+            break
+        _i += _land_direction
 st.sidebar.markdown(f"**{len(filtered)} / {len(results)} samples match filters**")
+# --------------------------------------------------------------------------
+# Previous/Next stepping. These now jump to the next/previous sample that
+# YOU haven't fully scored yet, skipping over ones you've already rated —
+# that's the point of assigned-entry review: work through what's left, not
+# re-click past things that are done. In assigned mode this also seamlessly
+# crosses into neighboring files that still have unfinished assigned items
+# (wrapping around your whole slice), instead of stopping dead at a file's
+# edge or making you hunt through the "Your files" dropdown.
+#
+# IMPORTANT: these functions are only ever wired up as `on_click` callbacks
+# on the Previous/Next buttons below (never called inline after the button
+# check). Streamlit forbids writing to a widget-bound session_state key
+# (like "assigned_file_pick") after that widget has rendered in the current
+# script pass; on_click callbacks run *before* the rerun's widgets are
+# instantiated, which is the only safe place to do that write.
+# --------------------------------------------------------------------------
+def _find_next_unrated_index(start_idx, direction):
+    """Scan `filtered` from start_idx + direction onward (in `direction`)
+    for the next sample not fully scored by the current reviewer. None if
+    there isn't one before running off the end of the list."""
+    i = start_idx + direction
+    while 0 <= i < len(filtered):
+        rid = str(filtered[i]["id"])
+        if not is_fully_scored(reviews.get(rid)):
+            return i
+        i += direction
+    return None
+def _step_sample(direction):
+    idx = st.session_state["nav_idx"]
+    nxt = _find_next_unrated_index(idx, direction)
+    if nxt is not None:
+        st.session_state["nav_idx"] = nxt
+        return
+    if not assigned_mode or len(ordered_stems) <= 1:
+        # Manual mode (or only one assigned file): nothing left to skip to
+        # in this direction — just clamp at the edge as before.
+        st.session_state["nav_idx"] = max(0, min(len(filtered) - 1, idx + direction))
+        return
+    # No more unrated samples ahead in this file — hop to the next (or
+    # previous) file that still has unfinished assigned items, wrapping
+    # around the whole slice.
+    cur_stem_idx = labels.index(picked_label)
+    n = len(ordered_stems)
+    unfinished_set = set(unfinished_stems)
+    for step in range(1, n + 1):
+        candidate_idx = (cur_stem_idx + direction * step) % n
+        candidate_stem = ordered_stems[candidate_idx]
+        if candidate_stem not in unfinished_set:
+            continue
+        if candidate_idx == cur_stem_idx:
+            # This file is the only one left with unrated items — wrap
+            # around within it directly, no file switch required.
+            start = -1 if direction > 0 else len(filtered)
+            wrapped = _find_next_unrated_index(start, direction)
+            if wrapped is not None:
+                st.session_state["nav_idx"] = wrapped
+            return
+        st.session_state["assigned_file_pick"] = labels[candidate_idx]
+        st.session_state["_pending_nav_idx"] = (
+            0 if direction > 0 else max(0, len(keys_by_stem.get(candidate_stem, [])) - 1)
+        )
+        st.session_state["_land_on_unrated"] = direction
+        return
+    # Nothing unrated anywhere in your slice — just clamp at the edge.
+    st.session_state["nav_idx"] = max(0, min(len(filtered) - 1, idx + direction))
 # --------------------------------------------------------------------------
 # Top-level tabs: blind single-sample review vs. the analysis/library view
 # --------------------------------------------------------------------------
@@ -683,11 +699,15 @@ with tab_review:
     # ----------------------------------------------------------------------
     nav_col1, nav_col2, nav_col3, nav_col4 = st.columns([1, 1, 3, 2])
     with nav_col1:
-        if st.button("Previous", use_container_width=True, key="top_prev_button"):
-            st.session_state["nav_idx"] = max(0, st.session_state["nav_idx"] - 1)
+        st.button(
+            "Previous", use_container_width=True, key="top_prev_button",
+            on_click=_step_sample, args=(-1,),
+        )
     with nav_col2:
-        if st.button("Next", use_container_width=True, key="top_next_button"):
-            st.session_state["nav_idx"] = min(len(filtered) - 1, st.session_state["nav_idx"] + 1)
+        st.button(
+            "Next", use_container_width=True, key="top_next_button",
+            on_click=_step_sample, args=(1,),
+        )
     with nav_col3:
         def _status_marker(r):
             rid = str(r["id"])
@@ -861,11 +881,15 @@ with tab_review:
     # ----------------------------------------------------------------------
     bottom_col1, bottom_col2, bottom_col3 = st.columns([1, 1, 3])
     with bottom_col1:
-        if st.button("◀ Previous", use_container_width=True, key="bottom_prev_button"):
-            st.session_state["nav_idx"] = max(0, st.session_state["nav_idx"] - 1)
+        st.button(
+            "◀ Previous", use_container_width=True, key="bottom_prev_button",
+            on_click=_step_sample, args=(-1,),
+        )
     with bottom_col2:
-        if st.button("Next ▶", use_container_width=True, key="bottom_next_button"):
-            st.session_state["nav_idx"] = min(len(filtered) - 1, st.session_state["nav_idx"] + 1)
+        st.button(
+            "Next ▶", use_container_width=True, key="bottom_next_button",
+            on_click=_step_sample, args=(1,),
+        )
     with bottom_col3:
         st.caption("Same as the buttons at the top — handy for saving and moving on in one place.")
 with tab_library:
@@ -879,22 +903,22 @@ with tab_library:
         "Every reviewer's (and the LLM judge's) scores are shown openly, side by side. "
         "Use this tab for analysis; use the Review tab for actual blind grading."
     )
-    with st.expander("🔍 Filters (mirrors the sidebar, plus a few extras)", expanded=True):
+    with st.expander("🔍 Filters", expanded=True):
         lib_col1, lib_col2, lib_col3 = st.columns(3)
         with lib_col1:
             lib_search = st.text_input(
-                "Search premise / hypothesis / reasoning", value=search_text, key="lib_search"
+                "Search premise / hypothesis / reasoning", value="", key="lib_search"
             )
-            lib_gold_sel = st.multiselect("Gold label", gold_opts, default=gold_sel, key="lib_gold")
-            lib_pred_sel = st.multiselect("Predicted label", pred_opts, default=pred_sel, key="lib_pred")
+            lib_gold_sel = st.multiselect("Gold label", gold_opts, default=[], key="lib_gold")
+            lib_pred_sel = st.multiselect("Predicted label", pred_opts, default=[], key="lib_pred")
         with lib_col2:
-            lib_tag_sel = st.multiselect("Tags", tag_opts, default=tag_sel, key="lib_tags")
+            lib_tag_sel = st.multiselect("Tags", tag_opts, default=[], key="lib_tags")
             lib_section_sel = st.multiselect(
-                "FraCaS section", section_opts, default=section_sel, key="lib_sections"
+                "FraCaS section", section_opts, default=[], key="lib_sections"
             )
             lib_success = st.radio(
                 "Model result", ["All", "Success only", "Failure only"],
-                index=["All", "Success only", "Failure only"].index(success_choice),
+                index=0,
                 key="lib_success", horizontal=True,
             )
         with lib_col3:
