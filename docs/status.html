@@ -24,6 +24,10 @@ ol{padding-left:24px} ol li{margin:12px 0}
 ul{padding-left:24px} ul li{margin:6px 0}
 code{background:var(--bg);border:1px solid var(--line);border-radius:3px;padding:2px 6px;font-size:14.5px}
 .crit{border:1px solid var(--line);border-radius:6px;padding:4px 20px 14px;background:var(--bg);margin:16px 0}
+figure{margin:22px 0}
+img{width:100%;height:auto;border:1px solid var(--line);border-radius:6px}
+figcaption{font-size:13.5px;color:var(--mut);margin-top:8px;line-height:1.5}
+h3{font-size:18px;margin:26px 0 6px}
 footer{margin-top:56px;padding-top:16px;border-top:1px solid var(--line);color:var(--mut);font-size:14px}
 </style></head><body>
 
@@ -55,6 +59,40 @@ footer{margin-top:56px;padding-top:16px;border-top:1px solid var(--line);color:v
 <li><strong>Συνέπεια (0–1)</strong> — ταιριάζει η εξήγηση με την ετικέτα που έδωσε το μοντέλο;</li>
 </ul>
 </div>
+
+
+<h2>Τι βρήκαμε μέχρι τώρα</h2>
+
+<p>Τρία ευρήματα, από 95.917 items Coq και 77.112 items FOL, σε 9 μοντέλα και 5 datasets.</p>
+
+<figure>
+<img src="figs/overview_results.png" alt="Τα τρία βασικά ευρήματα">
+<figcaption>Αριστερά: η επίδραση της συνθήκης (Coq, T0). Μέση: η επίδραση του prompt
+(Coq, FraCaS, και τα τρία tiers). Δεξιά: FOL έναντι Coq στην τυφλή συνθήκη.</figcaption>
+</figure>
+
+<h3>1. Η σωστή ετικέτα βοηθάει πολύ — η δική του απάντηση το μπερδεύει</h3>
+<p>Όταν δίνουμε στο μοντέλο τη σωστή ετικέτα και του ζητάμε μόνο την απόδειξη, κερδίζει
+<strong>+14 έως +19 μονάδες</strong> — και στα πέντε datasets. Το περίεργο είναι το άλλο άκρο:
+όταν του δείχνουμε τη <em>δική του</em> προηγούμενη απάντηση, τα πάει <strong>χειρότερα</strong>
+απ' ό,τι αν δεν του δώσουμε τίποτα. Και αυτό σε κάθε dataset, χωρίς εξαίρεση.</p>
+
+<h3>2. Περισσότερη βοήθεια στο prompt δεν βοηθάει</h3>
+<p>Δοκιμάσαμε τρία επίπεδα: σκέτο prompt, prompt με θεμελίωση Montague, και prompt με
+βιβλιοθήκες ανά φαινόμενο. Το αποτέλεσμα πέφτει ελαφρά κάθε φορά —
+<strong>51,8% → 51,2% → 50,7%</strong> — ενώ οι προσπάθειες ανά item αυξάνονται. Δηλαδή το
+πρόβλημα δεν είναι ότι λείπει το θεωρητικό υπόβαθρο.</p>
+
+<h3>3. Η απλή λογική κερδίζει την Coq</h3>
+<p>Χωρίς καμία βοήθεια, η FOL με automated prover βγάζει <strong>58%</strong> στο FraCaS ενώ
+η Coq <strong>47%</strong>. Το ίδιο και στα υπόλοιπα datasets. Η Coq προλαβαίνει μόνο όταν
+της δοθεί η σωστή ετικέτα.</p>
+
+<h3>Και κάτι για τη δική σας δουλειά</h3>
+<p>Ο LLM judge συμφωνεί με τους ανθρώπους σχεδόν απόλυτα στο αν μια εξήγηση είναι
+<em>συνεπής</em>, αρκετά καλά στο αν <em>στέκει ο συλλογισμός</em> — αλλά στο αν εντόπισε
+το <em>σωστό γλωσσολογικό φαινόμενο</em> δεν τα καταφέρνει καθόλου. Αυτό είναι από τα πιο
+ενδιαφέροντα ευρήματα και στηρίζεται ακόμα σε λίγα items. Γι' αυτό μετράει η αξιολόγησή σας.</p>
 
 <h2>Πού βρισκόμαστε</h2>
 <table>
