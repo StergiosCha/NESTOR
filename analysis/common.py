@@ -525,10 +525,14 @@ def partial_coq_files():
         except Exception:
             continue
         counts[p] = len(items)
-        groups.setdefault((meta.get("prompt_tier"), meta.get("condition")),
-                          []).append(p)
+        # Same keying as coq_files(): the dataset MUST be in the key, or the
+        # reported n_expected is the largest corpus in the group rather than
+        # this cell's own corpus (see coq_files for the full rationale).
+        groups.setdefault((meta.get("dataset"), meta.get("prompt_tier"),
+                           meta.get("condition")), []).append(p)
     for key, paths in groups.items():
-        target = max(counts[p] for p in paths)
+        dataset = key[0]
+        target = DATASET_SIZES.get(dataset) or max(counts[p] for p in paths)
         for p in paths:
             if p not in complete:
                 out.append((p, counts[p], target))
