@@ -1,0 +1,325 @@
+dataset,model,section,section_name,n_correct,n_items,accuracy
+fracas,deepseek-r1,1,Generalized Quantifiers,54,80,0.675
+fracas,deepseek-r1,2,Plurals,24,33,0.7272727272727273
+fracas,deepseek-r1,3,Anaphora,22,28,0.7857142857142857
+fracas,deepseek-r1,4,Ellipsis,35,55,0.6363636363636364
+fracas,deepseek-r1,5,Adjectives,15,23,0.6521739130434783
+fracas,deepseek-r1,6,Comparatives,22,31,0.7096774193548387
+fracas,deepseek-r1,7,Temporal Reference,48,71,0.676056338028169
+fracas,deepseek-r1,8,Verbs,8,8,1.0
+fracas,deepseek-r1,9,Attitudes,11,13,0.8461538461538461
+fracas,deepseek-v4-pro,1,Generalized Quantifiers,63,80,0.7875
+fracas,deepseek-v4-pro,2,Plurals,25,33,0.7575757575757576
+fracas,deepseek-v4-pro,3,Anaphora,20,28,0.7142857142857143
+fracas,deepseek-v4-pro,4,Ellipsis,34,55,0.6181818181818182
+fracas,deepseek-v4-pro,5,Adjectives,17,23,0.7391304347826086
+fracas,deepseek-v4-pro,6,Comparatives,22,31,0.7096774193548387
+fracas,deepseek-v4-pro,7,Temporal Reference,51,71,0.7183098591549296
+fracas,deepseek-v4-pro,8,Verbs,7,8,0.875
+fracas,deepseek-v4-pro,9,Attitudes,11,13,0.8461538461538461
+fracas,gpt-4o,1,Generalized Quantifiers,62,80,0.775
+fracas,gpt-4o,2,Plurals,23,33,0.696969696969697
+fracas,gpt-4o,3,Anaphora,21,28,0.75
+fracas,gpt-4o,4,Ellipsis,28,55,0.509090909090909
+fracas,gpt-4o,5,Adjectives,19,23,0.8260869565217391
+fracas,gpt-4o,6,Comparatives,24,31,0.7741935483870968
+fracas,gpt-4o,7,Temporal Reference,52,71,0.7323943661971831
+fracas,gpt-4o,8,Verbs,7,8,0.875
+fracas,gpt-4o,9,Attitudes,12,13,0.9230769230769231
+fracas,gpt-5.4,1,Generalized Quantifiers,70,80,0.875
+fracas,gpt-5.4,2,Plurals,26,33,0.7878787878787878
+fracas,gpt-5.4,3,Anaphora,20,28,0.7142857142857143
+fracas,gpt-5.4,4,Ellipsis,36,55,0.6545454545454545
+fracas,gpt-5.4,5,Adjectives,15,23,0.6521739130434783
+fracas,gpt-5.4,6,Comparatives,22,31,0.7096774193548387
+fracas,gpt-5.4,7,Temporal Reference,53,71,0.7464788732394366
+fracas,gpt-5.4,8,Verbs,6,8,0.75
+fracas,gpt-5.4,9,Attitudes,11,13,0.8461538461538461
+fracas,grok-4-20,1,Generalized Quantifiers,64,80,0.8
+fracas,grok-4-20,2,Plurals,26,33,0.7878787878787878
+fracas,grok-4-20,3,Anaphora,19,28,0.6785714285714286
+fracas,grok-4-20,4,Ellipsis,31,55,0.5636363636363636
+fracas,grok-4-20,5,Adjectives,16,23,0.6956521739130435
+fracas,grok-4-20,6,Comparatives,24,31,0.7741935483870968
+fracas,grok-4-20,7,Temporal Reference,47,71,0.6619718309859155
+fracas,grok-4-20,8,Verbs,7,8,0.875
+fracas,grok-4-20,9,Attitudes,11,13,0.8461538461538461
+fracas,grok-4-20-reasoning,1,Generalized Quantifiers,60,80,0.75
+fracas,grok-4-20-reasoning,2,Plurals,26,33,0.7878787878787878
+fracas,grok-4-20-reasoning,3,Anaphora,21,28,0.75
+fracas,grok-4-20-reasoning,4,Ellipsis,38,55,0.6909090909090909
+fracas,grok-4-20-reasoning,5,Adjectives,18,23,0.782608695652174
+fracas,grok-4-20-reasoning,6,Comparatives,26,31,0.8387096774193549
+fracas,grok-4-20-reasoning,7,Temporal Reference,53,71,0.7464788732394366
+fracas,grok-4-20-reasoning,8,Verbs,8,8,1.0
+fracas,grok-4-20-reasoning,9,Attitudes,11,13,0.8461538461538461
+fracas,llama-3.3-70b,1,Generalized Quantifiers,53,80,0.6625
+fracas,llama-3.3-70b,2,Plurals,25,33,0.7575757575757576
+fracas,llama-3.3-70b,3,Anaphora,23,28,0.8214285714285714
+fracas,llama-3.3-70b,4,Ellipsis,37,55,0.6727272727272727
+fracas,llama-3.3-70b,5,Adjectives,15,23,0.6521739130434783
+fracas,llama-3.3-70b,6,Comparatives,24,31,0.7741935483870968
+fracas,llama-3.3-70b,7,Temporal Reference,51,71,0.7183098591549296
+fracas,llama-3.3-70b,8,Verbs,7,8,0.875
+fracas,llama-3.3-70b,9,Attitudes,9,13,0.6923076923076923
+fracas,llama-4-maverick,1,Generalized Quantifiers,52,80,0.65
+fracas,llama-4-maverick,2,Plurals,25,33,0.7575757575757576
+fracas,llama-4-maverick,3,Anaphora,23,28,0.8214285714285714
+fracas,llama-4-maverick,4,Ellipsis,36,55,0.6545454545454545
+fracas,llama-4-maverick,5,Adjectives,14,23,0.6086956521739131
+fracas,llama-4-maverick,6,Comparatives,22,31,0.7096774193548387
+fracas,llama-4-maverick,7,Temporal Reference,50,71,0.704225352112676
+fracas,llama-4-maverick,8,Verbs,7,8,0.875
+fracas,llama-4-maverick,9,Attitudes,10,13,0.7692307692307693
+fracas,mistral-large-3,1,Generalized Quantifiers,46,80,0.575
+fracas,mistral-large-3,2,Plurals,23,33,0.696969696969697
+fracas,mistral-large-3,3,Anaphora,20,28,0.7142857142857143
+fracas,mistral-large-3,4,Ellipsis,30,55,0.5454545454545454
+fracas,mistral-large-3,5,Adjectives,12,23,0.5217391304347826
+fracas,mistral-large-3,6,Comparatives,22,31,0.7096774193548387
+fracas,mistral-large-3,7,Temporal Reference,48,71,0.676056338028169
+fracas,mistral-large-3,8,Verbs,5,8,0.625
+fracas,mistral-large-3,9,Attitudes,8,13,0.6153846153846154
+fracas-multilabel,deepseek-r1,1,Generalized Quantifiers,323,436,0.7408256880733946
+fracas-multilabel,deepseek-r1,2,Plurals,152,184,0.8260869565217391
+fracas-multilabel,deepseek-r1,3,Anaphora,89,146,0.6095890410958904
+fracas-multilabel,deepseek-r1,4,Ellipsis,42,68,0.6176470588235294
+fracas-multilabel,deepseek-r1,5,Adjectives,168,232,0.7241379310344828
+fracas-multilabel,deepseek-r1,6,Comparatives,32,53,0.6037735849056604
+fracas-multilabel,deepseek-r1,7,Temporal Reference,233,310,0.7516129032258064
+fracas-multilabel,deepseek-r1,8,Verbs,24,32,0.75
+fracas-multilabel,deepseek-r1,9,Attitudes,81,105,0.7714285714285715
+fracas-multilabel,deepseek-v4-pro,1,Generalized Quantifiers,322,436,0.7385321100917431
+fracas-multilabel,deepseek-v4-pro,2,Plurals,151,184,0.8206521739130435
+fracas-multilabel,deepseek-v4-pro,3,Anaphora,98,147,0.6666666666666666
+fracas-multilabel,deepseek-v4-pro,4,Ellipsis,49,68,0.7205882352941176
+fracas-multilabel,deepseek-v4-pro,5,Adjectives,155,232,0.6681034482758621
+fracas-multilabel,deepseek-v4-pro,6,Comparatives,34,53,0.6415094339622641
+fracas-multilabel,deepseek-v4-pro,7,Temporal Reference,219,310,0.7064516129032258
+fracas-multilabel,deepseek-v4-pro,8,Verbs,26,33,0.7878787878787878
+fracas-multilabel,deepseek-v4-pro,9,Attitudes,83,105,0.7904761904761904
+fracas-multilabel,gpt-4o,1,Generalized Quantifiers,311,436,0.713302752293578
+fracas-multilabel,gpt-4o,2,Plurals,145,184,0.7880434782608695
+fracas-multilabel,gpt-4o,3,Anaphora,87,147,0.5918367346938775
+fracas-multilabel,gpt-4o,4,Ellipsis,40,68,0.5882352941176471
+fracas-multilabel,gpt-4o,5,Adjectives,158,232,0.6810344827586207
+fracas-multilabel,gpt-4o,6,Comparatives,33,53,0.6226415094339622
+fracas-multilabel,gpt-4o,7,Temporal Reference,219,310,0.7064516129032258
+fracas-multilabel,gpt-4o,8,Verbs,23,33,0.696969696969697
+fracas-multilabel,gpt-4o,9,Attitudes,79,105,0.7523809523809524
+fracas-multilabel,gpt-5.4,1,Generalized Quantifiers,327,436,0.75
+fracas-multilabel,gpt-5.4,2,Plurals,149,184,0.8097826086956522
+fracas-multilabel,gpt-5.4,3,Anaphora,87,147,0.5918367346938775
+fracas-multilabel,gpt-5.4,4,Ellipsis,46,68,0.6764705882352942
+fracas-multilabel,gpt-5.4,5,Adjectives,183,232,0.7887931034482759
+fracas-multilabel,gpt-5.4,6,Comparatives,35,53,0.660377358490566
+fracas-multilabel,gpt-5.4,7,Temporal Reference,239,310,0.7709677419354839
+fracas-multilabel,gpt-5.4,8,Verbs,25,33,0.7575757575757576
+fracas-multilabel,gpt-5.4,9,Attitudes,83,105,0.7904761904761904
+fracas-multilabel,grok-4-20,1,Generalized Quantifiers,290,436,0.6651376146788991
+fracas-multilabel,grok-4-20,2,Plurals,148,184,0.8043478260869565
+fracas-multilabel,grok-4-20,3,Anaphora,86,147,0.5850340136054422
+fracas-multilabel,grok-4-20,4,Ellipsis,42,68,0.6176470588235294
+fracas-multilabel,grok-4-20,5,Adjectives,149,232,0.6422413793103449
+fracas-multilabel,grok-4-20,6,Comparatives,32,53,0.6037735849056604
+fracas-multilabel,grok-4-20,7,Temporal Reference,198,310,0.6387096774193548
+fracas-multilabel,grok-4-20,8,Verbs,23,33,0.696969696969697
+fracas-multilabel,grok-4-20,9,Attitudes,72,105,0.6857142857142857
+fracas-multilabel,grok-4-20-reasoning,1,Generalized Quantifiers,330,436,0.7568807339449541
+fracas-multilabel,grok-4-20-reasoning,2,Plurals,150,184,0.8152173913043478
+fracas-multilabel,grok-4-20-reasoning,3,Anaphora,93,147,0.6326530612244898
+fracas-multilabel,grok-4-20-reasoning,4,Ellipsis,46,68,0.6764705882352942
+fracas-multilabel,grok-4-20-reasoning,5,Adjectives,172,232,0.7413793103448276
+fracas-multilabel,grok-4-20-reasoning,6,Comparatives,36,53,0.6792452830188679
+fracas-multilabel,grok-4-20-reasoning,7,Temporal Reference,230,310,0.7419354838709677
+fracas-multilabel,grok-4-20-reasoning,8,Verbs,26,33,0.7878787878787878
+fracas-multilabel,grok-4-20-reasoning,9,Attitudes,84,105,0.8
+fracas-multilabel,llama-3.3-70b,1,Generalized Quantifiers,251,436,0.5756880733944955
+fracas-multilabel,llama-3.3-70b,2,Plurals,134,184,0.7282608695652174
+fracas-multilabel,llama-3.3-70b,3,Anaphora,81,147,0.5510204081632653
+fracas-multilabel,llama-3.3-70b,4,Ellipsis,46,68,0.6764705882352942
+fracas-multilabel,llama-3.3-70b,5,Adjectives,115,232,0.4956896551724138
+fracas-multilabel,llama-3.3-70b,6,Comparatives,33,53,0.6226415094339622
+fracas-multilabel,llama-3.3-70b,7,Temporal Reference,172,310,0.5548387096774193
+fracas-multilabel,llama-3.3-70b,8,Verbs,22,33,0.6666666666666666
+fracas-multilabel,llama-3.3-70b,9,Attitudes,63,105,0.6
+fracas-multilabel,llama-4-maverick,1,Generalized Quantifiers,287,434,0.6612903225806451
+fracas-multilabel,llama-4-maverick,2,Plurals,142,184,0.7717391304347826
+fracas-multilabel,llama-4-maverick,3,Anaphora,73,147,0.4965986394557823
+fracas-multilabel,llama-4-maverick,4,Ellipsis,38,68,0.5588235294117647
+fracas-multilabel,llama-4-maverick,5,Adjectives,141,231,0.6103896103896104
+fracas-multilabel,llama-4-maverick,6,Comparatives,37,53,0.6981132075471698
+fracas-multilabel,llama-4-maverick,7,Temporal Reference,195,309,0.6310679611650486
+fracas-multilabel,llama-4-maverick,8,Verbs,23,33,0.696969696969697
+fracas-multilabel,llama-4-maverick,9,Attitudes,67,105,0.638095238095238
+fracas-multilabel,mistral-large-3,1,Generalized Quantifiers,280,436,0.6422018348623854
+fracas-multilabel,mistral-large-3,2,Plurals,142,184,0.7717391304347826
+fracas-multilabel,mistral-large-3,3,Anaphora,85,147,0.5782312925170068
+fracas-multilabel,mistral-large-3,4,Ellipsis,44,68,0.6470588235294118
+fracas-multilabel,mistral-large-3,5,Adjectives,134,232,0.5775862068965517
+fracas-multilabel,mistral-large-3,6,Comparatives,29,53,0.5471698113207547
+fracas-multilabel,mistral-large-3,7,Temporal Reference,196,310,0.632258064516129
+fracas-multilabel,mistral-large-3,8,Verbs,24,33,0.7272727272727273
+fracas-multilabel,mistral-large-3,9,Attitudes,72,105,0.6857142857142857
+fracas-translated,deepseek-r1,1,Generalized Quantifiers,41,80,0.5125
+fracas-translated,deepseek-r1,2,Plurals,23,33,0.696969696969697
+fracas-translated,deepseek-r1,3,Anaphora,20,28,0.7142857142857143
+fracas-translated,deepseek-r1,4,Ellipsis,31,55,0.5636363636363636
+fracas-translated,deepseek-r1,5,Adjectives,13,23,0.5652173913043478
+fracas-translated,deepseek-r1,6,Comparatives,15,31,0.4838709677419355
+fracas-translated,deepseek-r1,7,Temporal Reference,43,71,0.6056338028169014
+fracas-translated,deepseek-r1,8,Verbs,7,8,0.875
+fracas-translated,deepseek-r1,9,Attitudes,8,13,0.6153846153846154
+fracas-translated,deepseek-v4-pro,1,Generalized Quantifiers,61,80,0.7625
+fracas-translated,deepseek-v4-pro,2,Plurals,24,33,0.7272727272727273
+fracas-translated,deepseek-v4-pro,3,Anaphora,22,28,0.7857142857142857
+fracas-translated,deepseek-v4-pro,4,Ellipsis,33,55,0.6
+fracas-translated,deepseek-v4-pro,5,Adjectives,15,23,0.6521739130434783
+fracas-translated,deepseek-v4-pro,6,Comparatives,21,31,0.6774193548387096
+fracas-translated,deepseek-v4-pro,7,Temporal Reference,44,71,0.6197183098591549
+fracas-translated,deepseek-v4-pro,8,Verbs,6,8,0.75
+fracas-translated,deepseek-v4-pro,9,Attitudes,12,13,0.9230769230769231
+fracas-translated,gpt-4o,1,Generalized Quantifiers,56,80,0.7
+fracas-translated,gpt-4o,2,Plurals,26,33,0.7878787878787878
+fracas-translated,gpt-4o,3,Anaphora,22,28,0.7857142857142857
+fracas-translated,gpt-4o,4,Ellipsis,30,55,0.5454545454545454
+fracas-translated,gpt-4o,5,Adjectives,16,23,0.6956521739130435
+fracas-translated,gpt-4o,6,Comparatives,24,31,0.7741935483870968
+fracas-translated,gpt-4o,7,Temporal Reference,48,71,0.676056338028169
+fracas-translated,gpt-4o,8,Verbs,6,8,0.75
+fracas-translated,gpt-4o,9,Attitudes,11,13,0.8461538461538461
+fracas-translated,gpt-5.4,1,Generalized Quantifiers,69,80,0.8625
+fracas-translated,gpt-5.4,2,Plurals,27,33,0.8181818181818182
+fracas-translated,gpt-5.4,3,Anaphora,23,28,0.8214285714285714
+fracas-translated,gpt-5.4,4,Ellipsis,37,55,0.6727272727272727
+fracas-translated,gpt-5.4,5,Adjectives,15,23,0.6521739130434783
+fracas-translated,gpt-5.4,6,Comparatives,21,31,0.6774193548387096
+fracas-translated,gpt-5.4,7,Temporal Reference,47,71,0.6619718309859155
+fracas-translated,gpt-5.4,8,Verbs,6,8,0.75
+fracas-translated,gpt-5.4,9,Attitudes,11,13,0.8461538461538461
+fracas-translated,grok-4-20,1,Generalized Quantifiers,58,80,0.725
+fracas-translated,grok-4-20,2,Plurals,26,33,0.7878787878787878
+fracas-translated,grok-4-20,3,Anaphora,22,28,0.7857142857142857
+fracas-translated,grok-4-20,4,Ellipsis,32,55,0.5818181818181818
+fracas-translated,grok-4-20,5,Adjectives,16,23,0.6956521739130435
+fracas-translated,grok-4-20,6,Comparatives,25,31,0.8064516129032258
+fracas-translated,grok-4-20,7,Temporal Reference,40,71,0.5633802816901409
+fracas-translated,grok-4-20,8,Verbs,7,8,0.875
+fracas-translated,grok-4-20,9,Attitudes,12,13,0.9230769230769231
+fracas-translated,grok-4-20-reasoning,1,Generalized Quantifiers,62,80,0.775
+fracas-translated,grok-4-20-reasoning,2,Plurals,25,33,0.7575757575757576
+fracas-translated,grok-4-20-reasoning,3,Anaphora,18,28,0.6428571428571429
+fracas-translated,grok-4-20-reasoning,4,Ellipsis,36,55,0.6545454545454545
+fracas-translated,grok-4-20-reasoning,5,Adjectives,18,23,0.782608695652174
+fracas-translated,grok-4-20-reasoning,6,Comparatives,22,31,0.7096774193548387
+fracas-translated,grok-4-20-reasoning,7,Temporal Reference,51,71,0.7183098591549296
+fracas-translated,grok-4-20-reasoning,8,Verbs,7,8,0.875
+fracas-translated,grok-4-20-reasoning,9,Attitudes,11,13,0.8461538461538461
+fracas-translated,llama-3.3-70b,1,Generalized Quantifiers,42,80,0.525
+fracas-translated,llama-3.3-70b,2,Plurals,24,33,0.7272727272727273
+fracas-translated,llama-3.3-70b,3,Anaphora,23,28,0.8214285714285714
+fracas-translated,llama-3.3-70b,4,Ellipsis,33,55,0.6
+fracas-translated,llama-3.3-70b,5,Adjectives,13,23,0.5652173913043478
+fracas-translated,llama-3.3-70b,6,Comparatives,22,31,0.7096774193548387
+fracas-translated,llama-3.3-70b,7,Temporal Reference,45,71,0.6338028169014085
+fracas-translated,llama-3.3-70b,8,Verbs,6,8,0.75
+fracas-translated,llama-3.3-70b,9,Attitudes,9,13,0.6923076923076923
+fracas-translated,llama-4-maverick,1,Generalized Quantifiers,50,80,0.625
+fracas-translated,llama-4-maverick,2,Plurals,26,33,0.7878787878787878
+fracas-translated,llama-4-maverick,3,Anaphora,22,28,0.7857142857142857
+fracas-translated,llama-4-maverick,4,Ellipsis,33,55,0.6
+fracas-translated,llama-4-maverick,5,Adjectives,13,23,0.5652173913043478
+fracas-translated,llama-4-maverick,6,Comparatives,23,30,0.7666666666666667
+fracas-translated,llama-4-maverick,7,Temporal Reference,45,71,0.6338028169014085
+fracas-translated,llama-4-maverick,8,Verbs,6,8,0.75
+fracas-translated,llama-4-maverick,9,Attitudes,10,13,0.7692307692307693
+fracas-translated,mistral-large-3,1,Generalized Quantifiers,45,80,0.5625
+fracas-translated,mistral-large-3,2,Plurals,24,33,0.7272727272727273
+fracas-translated,mistral-large-3,3,Anaphora,19,28,0.6785714285714286
+fracas-translated,mistral-large-3,4,Ellipsis,31,55,0.5636363636363636
+fracas-translated,mistral-large-3,5,Adjectives,11,23,0.4782608695652174
+fracas-translated,mistral-large-3,6,Comparatives,19,31,0.6129032258064516
+fracas-translated,mistral-large-3,7,Temporal Reference,43,71,0.6056338028169014
+fracas-translated,mistral-large-3,8,Verbs,6,8,0.75
+fracas-translated,mistral-large-3,9,Attitudes,9,13,0.6923076923076923
+oyxoy,deepseek-r1,1,Generalized Quantifiers,471,633,0.7440758293838863
+oyxoy,deepseek-r1,2,Plurals,123,154,0.7987012987012987
+oyxoy,deepseek-r1,3,Anaphora,69,119,0.5798319327731093
+oyxoy,deepseek-r1,4,Ellipsis,45,60,0.75
+oyxoy,deepseek-r1,5,Adjectives,195,307,0.6351791530944625
+oyxoy,deepseek-r1,6,Comparatives,42,47,0.8936170212765957
+oyxoy,deepseek-r1,7,Temporal Reference,200,273,0.7326007326007326
+oyxoy,deepseek-r1,8,Verbs,166,222,0.7477477477477478
+oyxoy,deepseek-r1,9,Attitudes,179,263,0.6806083650190115
+oyxoy,deepseek-v4-pro,1,Generalized Quantifiers,459,637,0.7205651491365777
+oyxoy,deepseek-v4-pro,2,Plurals,113,154,0.7337662337662337
+oyxoy,deepseek-v4-pro,3,Anaphora,61,119,0.5126050420168067
+oyxoy,deepseek-v4-pro,4,Ellipsis,44,60,0.7333333333333333
+oyxoy,deepseek-v4-pro,5,Adjectives,181,310,0.5838709677419355
+oyxoy,deepseek-v4-pro,6,Comparatives,38,47,0.8085106382978723
+oyxoy,deepseek-v4-pro,7,Temporal Reference,198,274,0.7226277372262774
+oyxoy,deepseek-v4-pro,8,Verbs,170,223,0.7623318385650224
+oyxoy,deepseek-v4-pro,9,Attitudes,172,264,0.6515151515151515
+oyxoy,gpt-4o,1,Generalized Quantifiers,453,637,0.7111459968602826
+oyxoy,gpt-4o,2,Plurals,116,154,0.7532467532467533
+oyxoy,gpt-4o,3,Anaphora,66,119,0.5546218487394958
+oyxoy,gpt-4o,4,Ellipsis,45,60,0.75
+oyxoy,gpt-4o,5,Adjectives,197,310,0.635483870967742
+oyxoy,gpt-4o,6,Comparatives,40,47,0.851063829787234
+oyxoy,gpt-4o,7,Temporal Reference,197,274,0.718978102189781
+oyxoy,gpt-4o,8,Verbs,170,223,0.7623318385650224
+oyxoy,gpt-4o,9,Attitudes,182,264,0.6893939393939394
+oyxoy,gpt-5.4,1,Generalized Quantifiers,478,636,0.7515723270440252
+oyxoy,gpt-5.4,2,Plurals,123,154,0.7987012987012987
+oyxoy,gpt-5.4,3,Anaphora,72,119,0.6050420168067226
+oyxoy,gpt-5.4,4,Ellipsis,49,60,0.8166666666666667
+oyxoy,gpt-5.4,5,Adjectives,203,310,0.6548387096774193
+oyxoy,gpt-5.4,6,Comparatives,40,47,0.851063829787234
+oyxoy,gpt-5.4,7,Temporal Reference,213,274,0.7773722627737226
+oyxoy,gpt-5.4,8,Verbs,176,223,0.7892376681614349
+oyxoy,gpt-5.4,9,Attitudes,191,264,0.7234848484848485
+oyxoy,grok-4-20,1,Generalized Quantifiers,443,637,0.695447409733124
+oyxoy,grok-4-20,2,Plurals,109,154,0.7077922077922078
+oyxoy,grok-4-20,3,Anaphora,61,119,0.5126050420168067
+oyxoy,grok-4-20,4,Ellipsis,44,60,0.7333333333333333
+oyxoy,grok-4-20,5,Adjectives,186,310,0.6
+oyxoy,grok-4-20,6,Comparatives,36,47,0.7659574468085106
+oyxoy,grok-4-20,7,Temporal Reference,196,274,0.7153284671532847
+oyxoy,grok-4-20,8,Verbs,164,223,0.7354260089686099
+oyxoy,grok-4-20,9,Attitudes,173,264,0.6553030303030303
+oyxoy,grok-4-20-reasoning,1,Generalized Quantifiers,492,637,0.7723704866562009
+oyxoy,grok-4-20-reasoning,2,Plurals,128,154,0.8311688311688312
+oyxoy,grok-4-20-reasoning,3,Anaphora,75,119,0.6302521008403361
+oyxoy,grok-4-20-reasoning,4,Ellipsis,47,60,0.7833333333333333
+oyxoy,grok-4-20-reasoning,5,Adjectives,210,310,0.6774193548387096
+oyxoy,grok-4-20-reasoning,6,Comparatives,42,47,0.8936170212765957
+oyxoy,grok-4-20-reasoning,7,Temporal Reference,220,274,0.8029197080291971
+oyxoy,grok-4-20-reasoning,8,Verbs,172,223,0.7713004484304933
+oyxoy,grok-4-20-reasoning,9,Attitudes,193,264,0.7310606060606061
+oyxoy,llama-3.3-70b,1,Generalized Quantifiers,384,637,0.6028257456828885
+oyxoy,llama-3.3-70b,2,Plurals,98,154,0.6363636363636364
+oyxoy,llama-3.3-70b,3,Anaphora,46,119,0.3865546218487395
+oyxoy,llama-3.3-70b,4,Ellipsis,39,60,0.65
+oyxoy,llama-3.3-70b,5,Adjectives,158,310,0.5096774193548387
+oyxoy,llama-3.3-70b,6,Comparatives,36,47,0.7659574468085106
+oyxoy,llama-3.3-70b,7,Temporal Reference,168,274,0.6131386861313869
+oyxoy,llama-3.3-70b,8,Verbs,160,223,0.7174887892376681
+oyxoy,llama-3.3-70b,9,Attitudes,139,264,0.5265151515151515
+oyxoy,llama-4-maverick,1,Generalized Quantifiers,431,636,0.6776729559748428
+oyxoy,llama-4-maverick,2,Plurals,118,154,0.7662337662337663
+oyxoy,llama-4-maverick,3,Anaphora,60,119,0.5042016806722689
+oyxoy,llama-4-maverick,4,Ellipsis,47,60,0.7833333333333333
+oyxoy,llama-4-maverick,5,Adjectives,178,309,0.5760517799352751
+oyxoy,llama-4-maverick,6,Comparatives,39,47,0.8297872340425532
+oyxoy,llama-4-maverick,7,Temporal Reference,184,272,0.6764705882352942
+oyxoy,llama-4-maverick,8,Verbs,165,222,0.7432432432432432
+oyxoy,llama-4-maverick,9,Attitudes,163,263,0.6197718631178707
+oyxoy,mistral-large-3,1,Generalized Quantifiers,413,638,0.6473354231974922
+oyxoy,mistral-large-3,2,Plurals,106,154,0.6883116883116883
+oyxoy,mistral-large-3,3,Anaphora,57,119,0.4789915966386555
+oyxoy,mistral-large-3,4,Ellipsis,45,60,0.75
+oyxoy,mistral-large-3,5,Adjectives,171,311,0.5498392282958199
+oyxoy,mistral-large-3,6,Comparatives,35,47,0.7446808510638298
+oyxoy,mistral-large-3,7,Temporal Reference,182,275,0.6618181818181819
+oyxoy,mistral-large-3,8,Verbs,152,223,0.6816143497757847
+oyxoy,mistral-large-3,9,Attitudes,156,264,0.5909090909090909

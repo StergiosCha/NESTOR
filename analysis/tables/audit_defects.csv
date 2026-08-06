@@ -1,0 +1,28 @@
+severity,location,defect,detail,handled
+medium,fracas__mistral-large-3__few-shot__el.json,partial_success_count < success_count,stored partial=0 but strict=232; FraCaS is single-label so partial >= strict always,analysis recomputes both from item level
+medium,fracas__mistral-large-3__few-shot__en.json,partial_success_count < success_count,stored partial=0 but strict=241; FraCaS is single-label so partial >= strict always,analysis recomputes both from item level
+medium,fracas__mistral-large-3__zero-shot__el.json,partial_success_count < success_count,stored partial=0 but strict=208; FraCaS is single-label so partial >= strict always,analysis recomputes both from item level
+medium,fracas__mistral-large-3__zero-shot__en.json,partial_success_count < success_count,stored partial=0 but strict=214; FraCaS is single-label so partial >= strict always,analysis recomputes both from item level
+medium,phase1_nli_eval/results/fracas-extended/*.json,no section metadata,"0 of 427 items carry fracas_sections, and ids run 347-774 (outside FraCaS 1-346) so the section cannot be recovered from the number either",excluded from all per-section analyses
+medium,phase1_nli_eval/judge_scores/,9 of 45 dataset x model cells unscored,fracas-extended/gpt-4o; fracas-extended/gpt-5.4; fracas-extended/deepseek-r1; fracas-extended/deepseek-v4-pro; fracas-extended/grok-4-20; fracas-extended/grok-4-20-reasoning; fracas-extended/llama-3.3-70b; fracas-extended/llama-4-maverick; fracas-extended/mistral-large-3,judge analyses report coverage explicitly
+medium,fracas-translated__gpt-5.4-pro__zero-shot__en__scores.json; fracas__gpt-5.4-pro__zero-shot__en__scores.json; oyxoy__gpt-5.4-pro__zero-shot__en__scores.json,judge scores for 1 model(s) outside the 9-model design,"1708 scored items for ['gpt-5.4-pro']; their metadata.source_file Phase 1 results are absent, so the scores cannot be joined to a prediction",excluded from all judge analyses (common.judge_files)
+high,pilot__fracas__gpt-5.4__T0__c1.json,incomplete Coq cell (excluded from aggregates),27 of 1049 items (3%); rerun to include it,EXCLUDED by common.coq_files(); rerun the cell
+high,pilot__fracas__gpt-5.4__T0__c3.json,incomplete Coq cell (excluded from aggregates),27 of 1049 items (3%); rerun to include it,EXCLUDED by common.coq_files(); rerun the cell
+high,pilot__fracas__gpt-5.4__T1__c1.json,incomplete Coq cell (excluded from aggregates),27 of 342 items (8%); rerun to include it,EXCLUDED by common.coq_files(); rerun the cell
+high,pilot__fracas__gpt-5.4__T1__c3.json,incomplete Coq cell (excluded from aggregates),27 of 342 items (8%); rerun to include it,EXCLUDED by common.coq_files(); rerun the cell
+high,pilot__fracas__gpt-5.4__T2__c1.json,incomplete Coq cell (excluded from aggregates),27 of 342 items (8%); rerun to include it,EXCLUDED by common.coq_files(); rerun the cell
+high,pilot__fracas__gpt-5.4__T2__c3.json,incomplete Coq cell (excluded from aggregates),27 of 342 items (8%); rerun to include it,EXCLUDED by common.coq_files(); rerun the cell
+high,pilot__fracas__grok-4-20-reasoning__T0__c1.json,incomplete Coq cell (excluded from aggregates),27 of 1049 items (3%); rerun to include it,EXCLUDED by common.coq_files(); rerun the cell
+high,pilot__fracas__grok-4-20-reasoning__T0__c3.json,incomplete Coq cell (excluded from aggregates),27 of 1049 items (3%); rerun to include it,EXCLUDED by common.coq_files(); rerun the cell
+high,pilot__fracas__grok-4-20-reasoning__T1__c1.json,incomplete Coq cell (excluded from aggregates),27 of 342 items (8%); rerun to include it,EXCLUDED by common.coq_files(); rerun the cell
+high,pilot__fracas__grok-4-20-reasoning__T1__c3.json,incomplete Coq cell (excluded from aggregates),27 of 342 items (8%); rerun to include it,EXCLUDED by common.coq_files(); rerun the cell
+high,pilot__fracas__grok-4-20-reasoning__T2__c1.json,incomplete Coq cell (excluded from aggregates),27 of 342 items (8%); rerun to include it,EXCLUDED by common.coq_files(); rerun the cell
+high,pilot__fracas__grok-4-20-reasoning__T2__c3.json,incomplete Coq cell (excluded from aggregates),27 of 342 items (8%); rerun to include it,EXCLUDED by common.coq_files(); rerun the cell
+high,pilot__fracas__llama-3.3-70b__T0__c1.json,incomplete Coq cell (excluded from aggregates),27 of 1049 items (3%); rerun to include it,EXCLUDED by common.coq_files(); rerun the cell
+high,pilot__fracas__llama-3.3-70b__T0__c3.json,incomplete Coq cell (excluded from aggregates),27 of 1049 items (3%); rerun to include it,EXCLUDED by common.coq_files(); rerun the cell
+high,pilot__fracas__llama-3.3-70b__T1__c1.json,incomplete Coq cell (excluded from aggregates),27 of 342 items (8%); rerun to include it,EXCLUDED by common.coq_files(); rerun the cell
+high,pilot__fracas__llama-3.3-70b__T1__c3.json,incomplete Coq cell (excluded from aggregates),27 of 342 items (8%); rerun to include it,EXCLUDED by common.coq_files(); rerun the cell
+high,pilot__fracas__llama-3.3-70b__T2__c1.json,incomplete Coq cell (excluded from aggregates),27 of 342 items (8%); rerun to include it,EXCLUDED by common.coq_files(); rerun the cell
+high,pilot__fracas__llama-3.3-70b__T2__c3.json,incomplete Coq cell (excluded from aggregates),27 of 342 items (8%); rerun to include it,EXCLUDED by common.coq_files(); rerun the cell
+low,phase1_nli_eval/results/,114 items have no parseable prediction,"counted as incorrect, not dropped",reported as no_prediction in phase1_accuracy.csv
+info,phase2_fol/results/,13732 items labelled 'Undecided',"a pipeline outcome, not an NLI class: neither prover nor model-finder settled the item. Never correct against gold",reported separately as undecided_rate

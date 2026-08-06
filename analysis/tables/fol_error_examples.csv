@@ -1,0 +1,19 @@
+category,example_message
+arity_conflict,"Syntax error: %%ERROR: The following symbols are used with multiple arities: Revised/2, Revised/3.
+Fatal error:  The following symbols are used with multiple arities: Revised/2, Revised/3
+Fatal error:  The following symbols are used with multiple arities: Revised/2, Revised/3"
+llm_call_failed,<LLM call failed: APIConnectionError: Connection error.>
+llm_timeout,<LLM call failed: APITimeoutError: Request timed out.>
+parse_failure,"Parse error: could not extract premises/hypothesis from LLM output:
+"
+relation_function_clash,"Syntax error: %%ERROR: The following symbols/arities are used as both relation and function symbols: report/1, write/2.
+Fatal error:  The following symbols/arities are used as both relation and function symbols: report/1, write/2
+Fatal error:  The following symbols/arities are used as both relation and function symbols: report/1, write/2"
+syntax_other,"Syntax error: Command '['/opt/homebrew/bin/prover9', '-t', '1', '-f', '/var/folders/md/1jq5fq6s3wj65r8_l5vzz8_h0000gn/T/tmpbf99wxy4.in']' timed out after 5 seconds"
+term_construction,"Syntax error: %%ERROR: A term cannot be constructed from the marked string:
+%%START ERROR%%exists x (great_tenor(x) & exists y (popular_music(y) & sing(x,y))) & -all x (great_tenor(x) -> exists y (popular_music(y) & sing(x,y))).%%END ERROR%%
+Fatal error:  sread_term error
+Fatal error:  sread_term error"
+variable_as_atom,"Syntax error: %%ERROR: The following symbols cannot be used as atomic formulas, because they are variables: x.
+Fatal error:  The following symbols cannot be used as atomic formulas, because they are variables: x
+Fatal error:  The following symbols cannot be used as atomic formulas, because they are variables: x"

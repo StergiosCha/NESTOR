@@ -38,11 +38,21 @@ def assert_env(provider: str) -> None:
         )
 
 
+# Reasoning models (grok-4-20-reasoning, deepseek-r1) can spend minutes on a
+# single Coq formalisation. The SDK default timeout is far too short for them:
+# a 60s read timeout killed a pilot run mid-batch with an uncaught
+# APITimeoutError. Both values are overridable from the environment.
+LLM_TIMEOUT = float(os.environ.get("LLM_TIMEOUT", "300"))
+LLM_MAX_RETRIES = int(os.environ.get("LLM_MAX_RETRIES", "5"))
+
+
 def get_azure_openai_client():
     return AzureOpenAI(
         api_version=os.environ.get("AZURE_OPENAI_API_VERSION", ""),
         azure_endpoint=os.environ.get("AZURE_OPENAI_ENDPOINT", ""),
         api_key=os.environ.get("AZURE_API_KEY", ""),
+        timeout=LLM_TIMEOUT,
+        max_retries=LLM_MAX_RETRIES,
     )
 
 
@@ -50,7 +60,8 @@ def get_azure_ai_client():
     return OpenAI(
         base_url=os.environ.get("AZURE_AI_ENDPOINT", ""),
         api_key=os.environ.get("AZURE_API_KEY", ""),
-        timeout=60,
+        timeout=LLM_TIMEOUT,
+        max_retries=LLM_MAX_RETRIES,
     )
 
 

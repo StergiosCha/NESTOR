@@ -9,7 +9,6 @@ Hypothesis: {hypothesis}
 C1 (blind): No label given. Decide the relation yourself.
 C2 (Phase 1 prediction): A previous model predicted: {phase1_label}
 C3 (gold label): The correct relation is: {gold_label}
-{gold_directive}
 C4 (Phase 1 + explanation): Prediction: {phase1_label}. Explanation: {phase1_explanation}
 
 === END CONDITION ===
@@ -50,75 +49,18 @@ Relative clauses: conjoin inside the restriction.
   "every man who runs is tired"
   ->  forall x : Entity, (man x /\ run x) -> tired x
 
-=== REQUIRED FILE STRUCTURE (follow exactly) ===
-
-Name each premise and the hypothesis with Definition ... : Prop := ...,
-then state the two theorems over those names. This structure is the only
-one that compiles; write it every time.
-
-  (* 1. vocabulary *)
-  Parameter Entity : Type.
-  Parameter Italian tenor famous : Entity -> Prop.
-
-  (* 2. premises and hypothesis as NAMED PROPOSITIONS *)
-  Definition P1 : Prop := exists x : Entity, Italian x /\ tenor x /\ famous x.
-  Definition H  : Prop := exists x : Entity, Italian x /\ famous x.
-
-  (* 3. the two attempts *)
-  Theorem entailment : P1 -> H.
-  Proof.
-    unfold P1, H. intros [x [HI [HT HF]]]. exists x. split.
-    - exact HI.
-    - exact HF.
-  Qed.
-
-  Theorem contradiction : P1 -> ~ H.
-  Proof.
-  Abort.
-
-With several premises, conjoin them:  Theorem entailment : P1 /\ P2 -> H.
-
-CRITICAL RULES -- each of these was checked against coqc:
-
-1. Use `Definition NAME : Prop := ...` for every premise and for the
-   hypothesis. NEVER `Axiom NAME : <formula>` or `Hypothesis NAME :
-   <formula>` for something you then use on either side of `->`.
-   `Axiom P1 : exists x, ...` declares a PROOF of that proposition, not
-   the proposition, so `Theorem entailment : P1 -> H.` fails with
-
-     Error: The term "P1" has type "exists x : Entity, ..."
-            which should be Set, Prop or Type.
-
-   This single mistake is the most common cause of compilation failure.
-
-2. `Parameter` is for vocabulary only: types (`Entity : Type`),
-   predicates (`man : Entity -> Prop`), and named individuals
-   (`john : Entity`).
-
-3. Begin proofs with `unfold` of the names you are using, otherwise the
-   tactics cannot see through the Definition.
-
-4. Every `Proof.` must be closed by `Qed.` or `Abort.` -- never leave one
-   open, and never use `Admitted.` (it makes an unproved goal look
-   proved; the harness rewrites it to `Abort.`).
-
-5. Do NOT emit `Require Import` for any semantics file. Everything you
-   need is either in this prompt or in Coq's prelude.
-
-6. Output ONLY Coq code, in a single ```coq block.
-
 === HOW TO DETERMINE THE RELATION ===
 
 You must attempt TWO proofs. This is how we decide the relation:
 
 STEP 1: Try to prove ENTAILMENT (premise implies hypothesis).
-  Theorem entailment : P1 -> H.        (* P1, H are Definitions *)
+  Theorem entailment : (* formalised premise *) -> (* formalised hypothesis *).
   Proof. (* attempt *) Qed.
 
   If this proof goes through (Qed succeeds): the relation is ENTAILMENT.
 
 STEP 2: Try to prove CONTRADICTION (premise implies negation of hypothesis).
-  Theorem contradiction : P1 -> ~ H.
+  Theorem contradiction : (* formalised premise *) -> ~ (* formalised hypothesis *).
   Proof. (* attempt *) Qed.
 
   If this proof goes through (Qed succeeds): the relation is CONTRADICTION.
@@ -126,10 +68,10 @@ STEP 2: Try to prove CONTRADICTION (premise implies negation of hypothesis).
 STEP 3: If NEITHER proof goes through, the relation is NEUTRAL/UNKNOWN.
   In this case, write both theorems but use Abort on both:
 
-  Theorem entailment : P1 -> H.
+  Theorem entailment : (* ... *).
   Proof. (* stuck *) Abort.
 
-  Theorem contradiction : P1 -> ~ H.
+  Theorem contradiction : (* ... *).
   Proof. (* stuck *) Abort.
 
 IMPORTANT: always attempt both directions. Do not skip to Abort without trying.
@@ -152,33 +94,9 @@ Common tactics that work for NLI proofs:
 Strategy: try "firstorder" first. If it works, done. If not, do it manually
 with intro/destruct/exists/apply.
 
-=== FOUNDATION: Montague-style semantics ===
-
-The following is the Montague.v foundation file. It defines quantifier
-combinators (every, some, no) and a compositional NP/VP framework.
-You may reuse these definitions or follow the same patterns in your
-formalisation. In particular, note how "every", "some", and "no" are
-defined as 2-place functions over predicates.
-
---- BEGIN Montague.v ---
-
-{montague_v}
-
---- END Montague.v ---
-
-When using the foundation file, you can reference the MontagueExtensional
-module for standard quantifiers:
-
-  - every N P = forall x, N x -> P x
-  - some N P  = exists x, N x /\ P x
-  - no N P    = ~ some N P
-
-For counting quantifiers (at least n, exactly n, most), use the
-generalised quantifiers g_at_least, g_exactly, g_most from the file.
-
 === EXAMPLES ===
 
-Example 1 (entailment, using Montague-style every/some):
+Example 1 (entailment):
   Premise: "Every man is mortal. Socrates is a man."
   Hypothesis: "Socrates is mortal."
 
@@ -186,30 +104,28 @@ Example 1 (entailment, using Montague-style every/some):
   Parameter man mortal : Entity -> Prop.
   Parameter socrates : Entity.
 
-  Definition P1 : Prop := forall x : Entity, man x -> mortal x.
-  Definition P2 : Prop := man socrates.
+  Axiom p1 : forall x : Entity, man x -> mortal x.
+  Axiom p2 : man socrates.
 
-  Theorem entailment : P1 /\ P2 -> mortal socrates.
+  Theorem entailment : mortal socrates.
   Proof. apply p1. exact p2. Qed.
 
-  Theorem contradiction : P1 /\ P2 -> ~ mortal socrates.
+  Theorem contradiction : ~ mortal socrates.
   Proof. Abort. (* Cannot prove: entailment holds, not contradiction *)
 
-Example 2 (contradiction, "no" quantifier):
+Example 2 (contradiction):
   Premise: "No dog is a cat."
   Hypothesis: "Some dog is a cat."
 
   Parameter Entity : Type.
   Parameter dog cat : Entity -> Prop.
 
-  Definition P1 : Prop := forall x : Entity, dog x -> ~ cat x.
+  Axiom p1 : forall x : Entity, dog x -> ~ cat x.
 
-  Definition H : Prop := exists x : Entity, dog x /\ cat x.
-
-  Theorem entailment : P1 -> H.
+  Theorem entailment : exists x : Entity, dog x /\ cat x.
   Proof. Abort. (* Cannot prove: no witness available *)
 
-  Theorem contradiction : P1 -> ~ H.
+  Theorem contradiction : ~ exists x : Entity, dog x /\ cat x.
   Proof. intro H. destruct H as [x [Hd Hc]]. apply (p1 x Hd). exact Hc. Qed.
 
 Example 3 (neutral):
@@ -220,31 +136,13 @@ Example 3 (neutral):
   Parameter student good : Entity -> Prop.
   Parameter john : Entity.
 
-  Definition P1 : Prop := student john.
+  Axiom p1 : student john.
 
-  Definition H : Prop := student john /\ good john.
-
-  Theorem entailment : P1 -> H.
+  Theorem entailment : student john /\ good john.
   Proof. Abort. (* Cannot prove: we don't know if John is good *)
 
-  Theorem contradiction : P1 -> ~ H.
+  Theorem contradiction : ~ (student john /\ good john).
   Proof. Abort. (* Cannot prove either: John might be good *)
-
-Example 4 (multi-premise chain, entailment):
-  Premise: "Every European is a person. Every Italian is a European."
-  Hypothesis: "Every Italian is a person."
-
-  Parameter Entity : Type.
-  Parameter european person italian : Entity -> Prop.
-
-  Axiom p1 : forall x : Entity, european x -> person x.
-  Axiom p2 : forall x : Entity, italian x -> european x.
-
-  Theorem entailment : forall x : Entity, italian x -> person x.
-  Proof. intros x Hi. apply p1. apply p2. exact Hi. Qed.
-
-  Theorem contradiction : ~ (forall x : Entity, italian x -> person x).
-  Proof. Abort.
 
 === END ===
 

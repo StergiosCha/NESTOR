@@ -1,0 +1,61 @@
+# The Dockerfile does `COPY . .`, so anything not excluded here is baked
+# into the image. Two reasons that matters:
+#
+#  1. SECRETS. .env holds a live Azure API key. An image layer is readable
+#     by anyone who can pull the image, and the key would persist in the
+#     registry even after the file is deleted in a later layer. Keys are
+#     passed at run time via --secure-environment-variables instead.
+#  2. SIZE. The results and the local Coq build are hundreds of MB and are
+#     never needed inside the container.
+
+# --- secrets ---
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# --- results: mounted at run time, must not be pre-seeded ---
+phase2_coq/results/
+phase2_fol/results/
+analysis/tables/
+analysis/figs/
+
+# Condition c2/c4 (Coq and FOL alike) shows a model its OWN earlier direct
+# answer, read from
+#   phase1_nli_eval/results/<dataset>/<dataset>__<model>__zero-shot__en.json
+#
+# HISTORY: the previous rule was
+#     phase1_nli_eval/results/**
+#     !phase1_nli_eval/results/*/*__zero-shot__en.json
+# which LOOKED correct but silently excluded every Phase-1 file. Docker's
+# context builder will not re-include a file whose parent directory was
+# excluded by `**`, so the negation never took effect and all 27 c2 Coq
+# cells died with `FileNotFoundError: Phase 1 results not found`.
+#
+# The whole results tree is ~116 MB. Rather than fight Docker's re-inclusion
+# rule (which also needs every intermediate directory re-admitted), just
+# ship the tree. The build context is a one-time upload; correctness beats
+# saving 90 MB of transfer. .env is excluded above, so no secret ships.
+phase1_nli_eval/judge_scores/
+
+# --- local toolchains (linux coqc comes from apt) ---
+coq812/
+coqc_wrap.sh
+opamroot/
+.opam*
+*.vo
+*.vok
+*.vos
+*.glob
+
+# --- python / vcs / editor cruft ---
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.git/
+.gitignore
+.ipynb_checkpoints/
+.DS_Store
+*.swp

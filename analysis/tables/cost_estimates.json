@@ -1,0 +1,39 @@
+{
+  "measured": {
+    "mean_attempts": 1.593,
+    "source": "gpt-5.4/T0/c1, 27 real items",
+    "prior_mean_attempts": 1.252,
+    "prior_source": "FOL 23670 items",
+    "mean_output_tokens": 795,
+    "reasoning_multiplier": 3.0
+  },
+  "prompt_tokens": {
+    "T0": 1886,
+    "T1": 3630,
+    "T2": 4693,
+    "T3": 11990
+  },
+  "pilot_usd": 16.88,
+  "full_usd": 695.21,
+  "t3_usd": 450.22,
+  "pilot_plus_full_usd": 712.09,
+  "sensitivity_reasoning_mult": {
+    "1x": {
+      "pilot": 9.66,
+      "full": 528.95
+    },
+    "3x": {
+      "pilot": 15.81,
+      "full": 687.99
+    },
+    "5x": {
+      "pilot": 21.97,
+      "full": 847.03
+    }
+  },
+  "superseded": {
+    "pilot": 7.28,
+    "full": 415.72,
+    "why": "used the 9-model average price and attempts=1.252; the pilot's 3 models are pricier and measured attempts are 1.593"
+  }
+}

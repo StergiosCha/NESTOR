@@ -1,0 +1,5 @@
+item,api_calls,api_usd,aci_usd,total_usd,basis
+pilot_18cells,972,15.81,1.07,16.88,3 models x 3 tiers x 2 conds x 27 items
+full_81cells,44129,687.99,7.22,695.21,9 models x 3 tiers x 3 conds x 342 items
+t3_addon_27cells,14709,447.01,3.21,450.22,excluded by default
+pilot_plus_full,45101,703.80,8.29,712.09,recommended total

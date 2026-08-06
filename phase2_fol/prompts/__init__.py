@@ -49,9 +49,16 @@ No commentary, no explanation, no markdown.
 # Non-empty blocks carry their own trailing blank line; c1 leaves the slot empty.
 _CONDITION_BLOCKS = {
     "c1": "",
-    "c2": "A previous model predicted: {phase1_label}\n\n",
+    "c2": ("In an earlier round you answered this item directly, without\n"
+           "formalising it. Your answer was: {phase1_label}\n"
+           "That answer may be wrong. Formalise the pair and let the\n"
+           "proof decide.\n\n"),
     "c3": "The correct entailment relation is: {gold_label}\n\n",
-    "c4": "A previous model predicted: {phase1_label}\nIts explanation: {phase1_explanation}\n\n",
+    "c4": ("In an earlier round you answered this item directly, without\n"
+           "formalising it. Your answer was: {phase1_label}\n"
+           "Your reasoning then: {phase1_explanation}\n"
+           "That answer may be wrong. Formalise the pair and let the\n"
+           "proof decide.\n\n"),
 }
 
 

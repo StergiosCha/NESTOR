@@ -1,0 +1,8 @@
+comparison,level,n,statistic,estimate,p_value,spearman_rho,spearman_p
+judge_phenomenon_id vs FOL correctness,item,250197,point-biserial r,-0.03640648543496744,3.827808407478192e-74,-0.04711773285569609,6.0206629995644475e-123
+judge_soundness vs FOL correctness,item,250197,point-biserial r,0.11427867270005669,0.0,0.11390858711804533,0.0
+judge_consistency vs FOL correctness,item,250197,point-biserial r,-0.06710346927615352,1.5339330019798216e-247,-0.06710346927615271,1.5339330019851174e-247
+judge_total vs FOL correctness,item,250197,point-biserial r,0.05031498957420697,6.115652064101319e-140,0.020848822522978774,1.816531255180735e-25
+judge_phenomenon_id vs FOL undecided,item,250197,point-biserial r,0.04450201420859286,7.109197424767302e-110,,
+judge_soundness vs FOL undecided,item,250197,point-biserial r,0.00349877828155678,0.08010539424677543,,
+Phase 1 accuracy vs FOL accuracy,model x dataset,45,Pearson r,0.5069098081913219,0.0003801877817483728,0.49464597783726505,0.0005524056066007379

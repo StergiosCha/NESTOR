@@ -86,10 +86,30 @@ def load_phase1_results(dataset: str, model: str = "gpt-4o") -> dict:
     return _phase1_cache[key]
 
 
-def get_phase1_prediction(item_id, dataset):
-    """Get the reference Phase 1 prediction and reasoning for an item (best-effort)."""
-    entry = load_phase1_results(dataset).get(item_id, {})
+def get_phase1_prediction(item_id, dataset, model="gpt-4o"):
+    """Get the model's OWN Phase 1 prediction and reasoning for an item.
+
+    `model` must be threaded through: condition c2/c4 asks whether a
+    model's own earlier direct answer helps or anchors it. Defaulting to
+    gpt-4o here would show every model gpt-4o's answers instead, which
+    measures something else entirely (deference to another model).
+
+    Raises KeyError when the item is absent, rather than silently
+    substituting "unknown" -- a c2 run in which most items carry no real
+    prediction looks like a completed run but is not one.
+    """
+    results = load_phase1_results(dataset, model)
+    if not results:
+        raise KeyError(
+            f"no Phase 1 results for {dataset}/{model}; "
+            f"expected {_phase1_path(dataset, model)}")
+    entry = results.get(item_id)
+    if entry is None:
+        raise KeyError(
+            f"item {item_id!r} not in Phase 1 results for {dataset}/{model}")
     predicted = entry.get("predicted")
+    if isinstance(predicted, list):
+        predicted = ", ".join(predicted)
     return {
         "label": predicted if predicted else "unknown",
         "explanation": entry.get("reasoning", ""),
@@ -106,7 +126,8 @@ def translate_to_fol(client, model, premise, hypothesis,
     phase1_label = ""
     phase1_explanation = ""
     if condition in ("c2", "c4") and item_id and dataset:
-        p1 = get_phase1_prediction(item_id, dataset)
+        # `model`, not a default: the model must see its OWN prior answer.
+        p1 = get_phase1_prediction(item_id, dataset, model)
         phase1_label = p1["label"]
         phase1_explanation = p1["explanation"]
     messages = build_prompt(

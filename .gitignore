@@ -18,9 +18,26 @@ phase1_nli_eval/results/
 phase1_nli_eval/fracas_results*.json
 phase1_nli_eval/fracas_summary*.txt
 phase2_fol/results/
+# Coq results: 215 files / ~300MB, regenerable from the pipeline. Kept out
+# for the same reason as the FOL and Phase 1 results above.
+phase2_coq/results/
+
+# Per-item join tables are regenerable intermediates (~59MB); the summary
+# tables and figures that the paper cites are committed.
+analysis/tables/cross_pipeline.csv
+analysis/tables/coq_by_item.csv
+analysis/tables/fol_by_item.csv
+analysis/tables/judge_scores_by_item.csv
+analysis/tables/agreement_by_item.csv
+
+# Collect staging dir and one-off vision previews
+.download_stage/
+_view_*.png
+logs/
+.DS_Store
 
 # OS
 .DS_Store
 .DS_Store
 
-.claude/*
+.claude/*run_*.log

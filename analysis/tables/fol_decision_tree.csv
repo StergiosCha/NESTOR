@@ -1,0 +1,8 @@
+entailment_proved,contradiction_proved,entailment_refuted,contradiction_refuted,fol_label,n,share,accuracy_in_pattern
+False,False,True,True,Unknown,37311,0.48758526959567183,0.4404331162391788
+True,False,False,False,Entailment,21587,0.2821018791981391,0.7062583962570065
+False,False,False,False,Undecided,12606,0.16473693839680092,0.36038394415357766
+False,True,False,False,Contradiction,3892,0.05086119024594234,0.7687564234326825
+False,False,False,True,Undecided,748,0.009774966676249967,0.13502673796791445
+True,True,False,False,Undecided,223,0.0029141946107001907,0.34080717488789236
+False,False,True,False,Undecided,155,0.0020255612764956484,0.0967741935483871
