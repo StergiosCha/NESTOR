@@ -30,6 +30,7 @@ from datetime import datetime
 from pathlib import Path
 import pandas as pd
 import streamlit as st
+import review_sampler
 st.set_page_config(page_title="NLI Explanation Reviewer", layout="wide")
 # --------------------------------------------------------------------------
 # App location & fixed defaults — the app lives in NESTOR/, the data to
@@ -227,6 +228,7 @@ def load_judge_scores(path: Path) -> dict:
             "soundness_notes": "",
             "consistency_notes": "",
             "general_notes": "",
+            "justification": s.get("justification", ""),
             "reviewer": "llm_judge",
             "reviewed_at": data.get("metadata", {}).get("completed_at", ""),
         }
@@ -297,63 +299,201 @@ st.sidebar.markdown(f"**Reviewer:** {reviewer_name}")
 if st.sidebar.button("Switch reviewer"):
     del st.session_state["reviewer_name"]
     st.rerun()
-root_dir_input = st.sidebar.text_input(
-    "Results folder",
-    value=str(DEFAULT_RESULTS_ROOT),
-    help="Defaults to phase_1_nli_eval/results next to the app — override only "
-         "if your data lives somewhere else.",
-)
-try:
-    root_path = Path(root_dir_input).expanduser().resolve()
-except OSError:
-    root_path = DEFAULT_RESULTS_ROOT.resolve()
-if not root_path.exists() or not root_path.is_dir():
-    st.sidebar.error("That results folder doesn't exist.")
-    st.title("NLI Explanation Reviewer")
-    st.stop()
-subfolders = list_subfolders(str(root_path))
-if not subfolders:
-    st.sidebar.error("No subfolders found inside the results folder to choose from.")
-    st.title("NLI Explanation Reviewer")
-    st.stop()
-subfolder_names = [d.name for d in subfolders]
-chosen_subfolder = st.sidebar.selectbox(
-    "Choose the subfolder to work on",
-    ["(select)"] + subfolder_names,
+# --- Stratified pool helpers (pure function of the results tree + seed) -----
+# Files whose stem contains "_el" (e.g. the Greek-language slice) are excluded
+# from the auto-assigned sampling pool by default — they're still on disk and
+# still reachable via manual browsing, just never drawn into anyone's slice.
+POOL_EXCLUDED_STEM_SUBSTRING = "_el"
+def _stem_from_universe_rec(rec) -> str:
+    return "__".join(str(part) for part in review_sampler.item_key(rec)[:4])
+@st.cache_data(show_spinner=False)
+def build_review_pool(results_root: str, tree_sig, fraction: float, floor: int, seed: int):
+    """Universe + stratified pool, recomputed only when the tree signature
+    (per-file mtimes) or the parameters change. `tree_sig` is part of the cache
+    key, not used directly."""
+    universe = review_sampler.build_universe(results_root)
+    universe = [
+        rec for rec in universe
+        if POOL_EXCLUDED_STEM_SUBSTRING not in _stem_from_universe_rec(rec)
+    ]
+    return review_sampler.draw_stratified_pool(universe, seed=seed, fraction=fraction, floor=floor)
+@st.cache_data(show_spinner=False)
+def stem_to_path_map(results_root: str, tree_sig):
+    """Map each file stem to its full path, so an assigned slice's
+    (dataset, model, technique, language) key resolves back to a real file."""
+    p = Path(results_root)
+    return {f.stem: str(f) for f in p.rglob("*.json")}
+def tree_signature(results_root: str):
+    p = Path(results_root)
+    return tuple(sorted(
+        (str(f.relative_to(p)), f.stat().st_mtime) for f in p.rglob("*.json")
+    ))
+# --- Mode selector: let the sampler allocate, or browse files by hand -------
+sample_mode = st.sidebar.radio(
+    "How do you pick samples?",
+    ["🎲 Assign my samples (stratified)", "📂 Browse files manually"],
     index=0,
-    help="The loose .json files directly inside the results folder are ignored "
-         "on purpose — pick the subfolder that has the files you want to review.",
+    help="Assigned: the app hands you a reproducible, disjoint slice of a ~10% "
+         "stratified pool — no navigation needed. Manual: browse the results "
+         "folders and choose files yourself.",
 )
-if chosen_subfolder == "(select)":
-    st.title("NLI Explanation Reviewer")
-    st.info("Choose a subfolder from the sidebar to begin.")
-    st.stop()
-browse_path = subfolders[subfolder_names.index(chosen_subfolder)]
-recursive = st.sidebar.checkbox(
-    "Include files from nested subfolders", value=False,
-    help="Off: only show files directly inside the chosen subfolder. On: show "
-         "every JSON file nested anywhere below it.",
+assigned_mode = sample_mode.startswith("🎲")
+reviews_dir = st.sidebar.text_input(
+    "Reviews folder (where scores are saved)", value=str(DEFAULT_REVIEWS_DIR)
 )
-json_files = list_json_files(str(browse_path), recursive=recursive)
-if not json_files:
-    st.sidebar.warning(
-        "No .json files found in that subfolder."
-        + ("" if recursive else " Try enabling nested search.")
+only_assigned = False
+my_slice_keys: set = set()
+if assigned_mode:
+    # --- Stratified allocation: no folder/file hunting ---------------------
+    with st.sidebar.expander("⚙️ Advanced (pool settings)", expanded=False):
+        adv_root = st.text_input("Results folder", value=str(DEFAULT_RESULTS_ROOT))
+        assign_fraction = st.number_input(
+            "Pool fraction of all explanations",
+            min_value=0.0, max_value=1.0, value=0.10, step=0.01,
+        )
+        assign_ceiling = st.number_input(
+            "Max samples assigned to you (ceiling)",
+            min_value=0, value=200, step=10,
+        )
+    try:
+        root_path = Path(adv_root).expanduser().resolve()
+    except OSError:
+        root_path = DEFAULT_RESULTS_ROOT.resolve()
+    if not root_path.exists() or not root_path.is_dir():
+        st.sidebar.error("That results folder doesn't exist.")
+        st.title("NLI Explanation Reviewer")
+        st.stop()
+    my_slug = sanitize_for_filename(reviewer_name or "unnamed")
+    roster = sorted(set(discover_known_usernames(Path(reviews_dir))) | {my_slug})
+    sig = tree_signature(str(root_path))
+    pool = build_review_pool(str(root_path), sig, float(assign_fraction), 1, 42)
+    my_slice = review_sampler.slice_for_annotator(
+        pool, my_slug, roster, ceiling=int(assign_ceiling)
     )
-    st.title("NLI Explanation Reviewer")
-    st.stop()
-# Show relative paths in the picker so files with the same name in different
-# nested subfolders (e.g. recursive mode) stay distinguishable.
-file_labels = [str(f.relative_to(browse_path)) for f in json_files]
-selected_label = st.sidebar.selectbox("Choose a file", file_labels)
-selected_path = json_files[file_labels.index(selected_label)]
-reviews_dir = st.sidebar.text_input("Reviews folder (where scores are saved)",
-                                     value=str(DEFAULT_REVIEWS_DIR))
+    my_slice_keys = {review_sampler.item_key(rec) for rec in my_slice}
+    only_assigned = True
+    if not my_slice_keys:
+        st.sidebar.warning("No samples are assigned to you yet.")
+        st.title("NLI Explanation Reviewer")
+        st.info("No assigned samples for you in the current pool.")
+        st.stop()
+    # One dropdown of the files that hold your items; first auto-selected.
+    path_map = stem_to_path_map(str(root_path), sig)
+    file_keys = sorted({k[:4] for k in my_slice_keys})
+    counts = {fk: sum(1 for k in my_slice_keys if k[:4] == fk) for fk in file_keys}
+    resolved = [(fk, path_map.get("__".join(fk))) for fk in file_keys]
+    resolved = [(fk, p) for fk, p in resolved if p]
+    if not resolved:
+        st.sidebar.error("Could not locate your assigned files under the results folder.")
+        st.title("NLI Explanation Reviewer")
+        st.stop()
+    st.sidebar.caption(
+        f"Your slice: **{len(my_slice_keys)}** items across **{len(resolved)}** "
+        f"files (pool total {len(pool)})."
+    )
+    st.sidebar.caption(
+        f"Files containing `{POOL_EXCLUDED_STEM_SUBSTRING}` are excluded from the "
+        "assignment pool by default."
+    )
+    # Per-file scored progress across the whole slice, and the ordered list of
+    # files that still have unfinished assigned items.
+    ordered_stems = ["__".join(fk) for fk, _ in resolved]
+    keys_by_stem: dict = {}
+    for k in my_slice_keys:
+        keys_by_stem.setdefault("__".join(k[:4]), set()).add(str(k[4]))
+    scored_total, unfinished_stems = 0, []
+    for stem in ordered_stems:
+        rv = load_json_dict(reviewer_file_path(reviews_dir, stem, reviewer_name or "unnamed"))
+        ids = keys_by_stem.get(stem, set())
+        done = sum(1 for i in ids if is_fully_scored(rv.get(i)))
+        scored_total += done
+        if done < len(ids):
+            unfinished_stems.append(stem)
+    labels = [f"{stem} · {counts[fk]} item(s)" for (fk, _), stem in zip(resolved, ordered_stems)]
+    # Keep the selection stable across reruns and targetable by the jump button.
+    if st.session_state.get("assigned_file_pick") not in labels:
+        st.session_state["assigned_file_pick"] = labels[0]
+    picked_label = st.sidebar.selectbox("Your files", labels, key="assigned_file_pick")
+    cur_pos = labels.index(picked_label) + 1
+    st.sidebar.caption(
+        f"File {cur_pos} of {len(labels)} · "
+        f"{scored_total}/{len(my_slice_keys)} assigned items scored."
+    )
+    if unfinished_stems:
+        # First unfinished file strictly after the current one (wrap around).
+        rotation = ordered_stems[cur_pos:] + ordered_stems[:cur_pos]
+        target_stem = next((s for s in rotation if s in set(unfinished_stems)), unfinished_stems[0])
+        target_label = labels[ordered_stems.index(target_stem)]
+        def _jump_to_assigned_file(label):
+            st.session_state["assigned_file_pick"] = label
+        st.sidebar.button(
+            "➡️ Next unfinished file", on_click=_jump_to_assigned_file, args=(target_label,)
+        )
+    else:
+        st.sidebar.success("All your assigned samples are scored 🎉")
+    selected_path = Path(resolved[labels.index(picked_label)][1])
+else:
+    # --- Manual browse: original folder → subfolder → file pickers ---------
+    root_dir_input = st.sidebar.text_input(
+        "Results folder",
+        value=str(DEFAULT_RESULTS_ROOT),
+        help="Defaults to phase_1_nli_eval/results next to the app — override only "
+             "if your data lives somewhere else.",
+    )
+    try:
+        root_path = Path(root_dir_input).expanduser().resolve()
+    except OSError:
+        root_path = DEFAULT_RESULTS_ROOT.resolve()
+    if not root_path.exists() or not root_path.is_dir():
+        st.sidebar.error("That results folder doesn't exist.")
+        st.title("NLI Explanation Reviewer")
+        st.stop()
+    subfolders = list_subfolders(str(root_path))
+    if not subfolders:
+        st.sidebar.error("No subfolders found inside the results folder to choose from.")
+        st.title("NLI Explanation Reviewer")
+        st.stop()
+    subfolder_names = [d.name for d in subfolders]
+    chosen_subfolder = st.sidebar.selectbox(
+        "Choose the subfolder to work on",
+        ["(select)"] + subfolder_names,
+        index=0,
+        help="The loose .json files directly inside the results folder are ignored "
+             "on purpose — pick the subfolder that has the files you want to review.",
+    )
+    if chosen_subfolder == "(select)":
+        st.title("NLI Explanation Reviewer")
+        st.info("Choose a subfolder from the sidebar to begin.")
+        st.stop()
+    browse_path = subfolders[subfolder_names.index(chosen_subfolder)]
+    recursive = st.sidebar.checkbox(
+        "Include files from nested subfolders", value=False,
+        help="Off: only show files directly inside the chosen subfolder. On: show "
+             "every JSON file nested anywhere below it.",
+    )
+    json_files = list_json_files(str(browse_path), recursive=recursive)
+    if not json_files:
+        st.sidebar.warning(
+            "No .json files found in that subfolder."
+            + ("" if recursive else " Try enabling nested search.")
+        )
+        st.title("NLI Explanation Reviewer")
+        st.stop()
+    # Show relative paths in the picker so files with the same name in different
+    # nested subfolders (e.g. recursive mode) stay distinguishable.
+    file_labels = [str(f.relative_to(browse_path)) for f in json_files]
+    selected_label = st.sidebar.selectbox("Choose a file", file_labels)
+    selected_path = json_files[file_labels.index(selected_label)]
 review_file_path = reviewer_file_path(reviews_dir, selected_path.stem, reviewer_name or "unnamed")
 mtime = selected_path.stat().st_mtime
 metadata, results, summary = load_json_file(str(selected_path), mtime)
 dataset_name = guess_dataset_name(metadata, selected_path)
 model_name = guess_model_name(metadata, selected_path)
+# Current file's identity components, parsed from the stem like the sampler,
+# so the assigned-slice keys line up.
+cur_parts = selected_path.stem.split("__")
+cur_parts += [""] * (4 - len(cur_parts))
+cur_dataset, cur_model, cur_technique, cur_language = cur_parts[:4]
 reviews_key = f"reviews::{selected_path}::{sanitize_for_filename(reviewer_name or 'unnamed')}"
 if reviews_key not in st.session_state:
     st.session_state[reviews_key] = load_json_dict(review_file_path)
@@ -375,7 +515,7 @@ with st.sidebar.expander("LLM-judge scores (optional)"):
         st.caption("No judge-scored file found at that path yet — that's fine, it's optional.")
 if st.session_state.get("current_file") != str(selected_path):
     st.session_state["current_file"] = str(selected_path)
-    st.session_state["nav_idx"] = 0
+    st.session_state["nav_idx"] = st.session_state.pop("_pending_nav_idx", 0)
 # --------------------------------------------------------------------------
 # Header: metadata + summary + progress
 # --------------------------------------------------------------------------
@@ -432,14 +572,16 @@ with st.sidebar.expander("Human validation sample (10%, seed 42)"):
         st.rerun()
 sample_ids_for_dataset = set(human_val_data.get(dataset_name, []))
 only_sample = False
-if sample_ids_for_dataset:
+if sample_ids_for_dataset and not assigned_mode:
     only_sample = st.sidebar.checkbox(
         f"Only show human-validation sample ({len(sample_ids_for_dataset)} items)",
         value=False,
     )
 st.divider()
 # --------------------------------------------------------------------------
-# Sidebar: filters
+# Option lists — still computed for the Library tab's own filters, just no
+# longer surfaced as a duplicate "Filters" panel in the left sidebar (that
+# panel was redundant with the Library tab and has been removed).
 # --------------------------------------------------------------------------
 def unique_flat_values(field):
     vals = set()
@@ -450,80 +592,17 @@ def unique_flat_values(field):
         elif v is not None:
             vals.add(v)
     return sorted(str(v) for v in vals)
-st.sidebar.title("Filters")
-search_text = st.sidebar.text_input("Search premise / hypothesis / reasoning")
 gold_opts = unique_flat_values("gold")
-gold_sel = st.sidebar.multiselect("Gold label", gold_opts, default=[])
 pred_opts = unique_flat_values("predicted")
-pred_sel = st.sidebar.multiselect("Predicted label", pred_opts, default=[])
 lang_opts = unique_flat_values("language")
-lang_sel = st.sidebar.multiselect("Language", lang_opts, default=[])
 source_opts = unique_flat_values("source")
-source_sel = st.sidebar.multiselect("Source", source_opts, default=[])
 section_opts = unique_flat_values("fracas_sections")
-section_sel = st.sidebar.multiselect("FraCaS section", section_opts, default=[])
 tag_opts = unique_flat_values("tags")
-tag_sel = st.sidebar.multiselect("Tags", tag_opts, default=[])
-success_choice = st.sidebar.radio(
-    "Model result", ["All", "Success only", "Failure only"], index=0
-)
-st.sidebar.markdown("**Your scores**")
-crit_filters = {}
-for ck, cinfo in CRITERIA.items():
-    labels = ["Not scored"] + [str(v) for v, _ in cinfo["options"]]
-    crit_filters[ck] = st.sidebar.multiselect(f"Your {cinfo['label']} score", labels, default=[])
-only_unreviewed = st.sidebar.checkbox("Only show samples not fully scored by you", value=False)
-only_unreviewed_by_anyone = st.sidebar.checkbox("Only show samples not scored by anyone", value=False)
 def matches_filters(r):
     rid = str(r["id"])
-    if search_text:
-        hay = " ".join([
-            str(r.get("premise", "")),
-            str(r.get("hypothesis", "")),
-            str(r.get("reasoning", "")),
-        ]).lower()
-        if search_text.lower() not in hay:
-            return False
-    if gold_sel:
-        g = r.get("gold") or []
-        g = g if isinstance(g, list) else [g]
-        if not set(str(x) for x in g) & set(gold_sel):
-            return False
-    if pred_sel and str(r.get("predicted")) not in pred_sel:
-        return False
-    if lang_sel and str(r.get("language")) not in lang_sel:
-        return False
-    if source_sel and str(r.get("source")) not in source_sel:
-        return False
-    if section_sel:
-        secs = r.get("fracas_sections") or []
-        secs = secs if isinstance(secs, list) else [secs]
-        if not set(str(x) for x in secs) & set(section_sel):
-            return False
-    if tag_sel:
-        tags = r.get("tags") or []
-        tags = tags if isinstance(tags, list) else [tags]
-        if not set(str(x) for x in tags) & set(tag_sel):
-            return False
-    if success_choice == "Success only" and r.get("success") != 1:
-        return False
-    if success_choice == "Failure only" and r.get("success") == 1:
-        return False
-    my_entry = reviews.get(rid)
-    for ck, sel in crit_filters.items():
-        if not sel:
-            continue
-        val = my_entry.get(ck) if my_entry else None
-        val_label = "Not scored" if val is None else str(val)
-        if val_label not in sel:
-            return False
-    if only_unreviewed and is_fully_scored(my_entry):
-        return False
-    if only_unreviewed_by_anyone and any(
-        is_fully_scored(e) for e in all_reviews.get(rid, {}).values()
-    ):
-        return False
     if only_sample and rid not in sample_ids_for_dataset:
+        return False
+    if only_assigned and (cur_dataset, cur_model, cur_technique, cur_language, rid) not in my_slice_keys:
         return False
     return True
 filtered = [r for r in results if matches_filters(r)]
@@ -532,7 +611,84 @@ if not filtered:
     st.stop()
 if st.session_state.get("nav_idx", 0) >= len(filtered):
     st.session_state["nav_idx"] = 0
+# If Previous/Next just crossed into this file looking for unrated samples,
+# pinpoint the actual first/last unrated position now that this file's real
+# data (and reviews) are loaded — the file-crossing step itself only knew
+# the item *count*, not which specific ones are still unrated.
+if "_land_on_unrated" in st.session_state:
+    _land_direction = st.session_state.pop("_land_on_unrated")
+    _i = -1 if _land_direction > 0 else len(filtered)
+    while 0 <= _i < len(filtered):
+        if not is_fully_scored(reviews.get(str(filtered[_i]["id"]))):
+            st.session_state["nav_idx"] = _i
+            break
+        _i += _land_direction
 st.sidebar.markdown(f"**{len(filtered)} / {len(results)} samples match filters**")
+# --------------------------------------------------------------------------
+# Previous/Next stepping. These now jump to the next/previous sample that
+# YOU haven't fully scored yet, skipping over ones you've already rated —
+# that's the point of assigned-entry review: work through what's left, not
+# re-click past things that are done. In assigned mode this also seamlessly
+# crosses into neighboring files that still have unfinished assigned items
+# (wrapping around your whole slice), instead of stopping dead at a file's
+# edge or making you hunt through the "Your files" dropdown.
+#
+# IMPORTANT: these functions are only ever wired up as `on_click` callbacks
+# on the Previous/Next buttons below (never called inline after the button
+# check). Streamlit forbids writing to a widget-bound session_state key
+# (like "assigned_file_pick") after that widget has rendered in the current
+# script pass; on_click callbacks run *before* the rerun's widgets are
+# instantiated, which is the only safe place to do that write.
+# --------------------------------------------------------------------------
+def _find_next_unrated_index(start_idx, direction):
+    """Scan `filtered` from start_idx + direction onward (in `direction`)
+    for the next sample not fully scored by the current reviewer. None if
+    there isn't one before running off the end of the list."""
+    i = start_idx + direction
+    while 0 <= i < len(filtered):
+        rid = str(filtered[i]["id"])
+        if not is_fully_scored(reviews.get(rid)):
+            return i
+        i += direction
+    return None
+def _step_sample(direction):
+    idx = st.session_state["nav_idx"]
+    nxt = _find_next_unrated_index(idx, direction)
+    if nxt is not None:
+        st.session_state["nav_idx"] = nxt
+        return
+    if not assigned_mode or len(ordered_stems) <= 1:
+        # Manual mode (or only one assigned file): nothing left to skip to
+        # in this direction — just clamp at the edge as before.
+        st.session_state["nav_idx"] = max(0, min(len(filtered) - 1, idx + direction))
+        return
+    # No more unrated samples ahead in this file — hop to the next (or
+    # previous) file that still has unfinished assigned items, wrapping
+    # around the whole slice.
+    cur_stem_idx = labels.index(picked_label)
+    n = len(ordered_stems)
+    unfinished_set = set(unfinished_stems)
+    for step in range(1, n + 1):
+        candidate_idx = (cur_stem_idx + direction * step) % n
+        candidate_stem = ordered_stems[candidate_idx]
+        if candidate_stem not in unfinished_set:
+            continue
+        if candidate_idx == cur_stem_idx:
+            # This file is the only one left with unrated items — wrap
+            # around within it directly, no file switch required.
+            start = -1 if direction > 0 else len(filtered)
+            wrapped = _find_next_unrated_index(start, direction)
+            if wrapped is not None:
+                st.session_state["nav_idx"] = wrapped
+            return
+        st.session_state["assigned_file_pick"] = labels[candidate_idx]
+        st.session_state["_pending_nav_idx"] = (
+            0 if direction > 0 else max(0, len(keys_by_stem.get(candidate_stem, [])) - 1)
+        )
+        st.session_state["_land_on_unrated"] = direction
+        return
+    # Nothing unrated anywhere in your slice — just clamp at the edge.
+    st.session_state["nav_idx"] = max(0, min(len(filtered) - 1, idx + direction))
 # --------------------------------------------------------------------------
 # Top-level tabs: blind single-sample review vs. the analysis/library view
 # --------------------------------------------------------------------------
@@ -543,11 +699,15 @@ with tab_review:
     # ----------------------------------------------------------------------
     nav_col1, nav_col2, nav_col3, nav_col4 = st.columns([1, 1, 3, 2])
     with nav_col1:
-        if st.button("Previous", use_container_width=True, key="top_prev_button"):
-            st.session_state["nav_idx"] = max(0, st.session_state["nav_idx"] - 1)
+        st.button(
+            "Previous", use_container_width=True, key="top_prev_button",
+            on_click=_step_sample, args=(-1,),
+        )
     with nav_col2:
-        if st.button("Next", use_container_width=True, key="top_next_button"):
-            st.session_state["nav_idx"] = min(len(filtered) - 1, st.session_state["nav_idx"] + 1)
+        st.button(
+            "Next", use_container_width=True, key="top_next_button",
+            on_click=_step_sample, args=(1,),
+        )
     with nav_col3:
         def _status_marker(r):
             rid = str(r["id"])
@@ -646,6 +806,8 @@ with tab_review:
                         st.caption(f"_{cinfo['label']}:_ {note}")
                 if entry.get("general_notes"):
                     st.caption(f"_General:_ {entry['general_notes']}")
+                if entry.get("justification"):
+                    st.caption(f"_Justification:_ {entry['justification']}")
     existing = reviews.get(sample_id, {})
     score_values = {}
     note_values = {}
@@ -697,6 +859,7 @@ with tab_review:
             for ck in CRITERION_KEYS:
                 entry[ck] = score_values[ck]
                 entry[f"{ck}_notes"] = note_values[ck]
+            entry["total"] = total_score(entry)
             reviews[sample_id] = entry
             st.session_state[reviews_key] = reviews
             save_json_dict(review_file_path, reviews)
@@ -718,11 +881,15 @@ with tab_review:
     # ----------------------------------------------------------------------
     bottom_col1, bottom_col2, bottom_col3 = st.columns([1, 1, 3])
     with bottom_col1:
-        if st.button("◀ Previous", use_container_width=True, key="bottom_prev_button"):
-            st.session_state["nav_idx"] = max(0, st.session_state["nav_idx"] - 1)
+        st.button(
+            "◀ Previous", use_container_width=True, key="bottom_prev_button",
+            on_click=_step_sample, args=(-1,),
+        )
     with bottom_col2:
-        if st.button("Next ▶", use_container_width=True, key="bottom_next_button"):
-            st.session_state["nav_idx"] = min(len(filtered) - 1, st.session_state["nav_idx"] + 1)
+        st.button(
+            "Next ▶", use_container_width=True, key="bottom_next_button",
+            on_click=_step_sample, args=(1,),
+        )
     with bottom_col3:
         st.caption("Same as the buttons at the top — handy for saving and moving on in one place.")
 with tab_library:
@@ -736,22 +903,22 @@ with tab_library:
         "Every reviewer's (and the LLM judge's) scores are shown openly, side by side. "
         "Use this tab for analysis; use the Review tab for actual blind grading."
     )
-    with st.expander("🔍 Filters (mirrors the sidebar, plus a few extras)", expanded=True):
+    with st.expander("🔍 Filters", expanded=True):
         lib_col1, lib_col2, lib_col3 = st.columns(3)
         with lib_col1:
             lib_search = st.text_input(
-                "Search premise / hypothesis / reasoning", value=search_text, key="lib_search"
+                "Search premise / hypothesis / reasoning", value="", key="lib_search"
             )
-            lib_gold_sel = st.multiselect("Gold label", gold_opts, default=gold_sel, key="lib_gold")
-            lib_pred_sel = st.multiselect("Predicted label", pred_opts, default=pred_sel, key="lib_pred")
+            lib_gold_sel = st.multiselect("Gold label", gold_opts, default=[], key="lib_gold")
+            lib_pred_sel = st.multiselect("Predicted label", pred_opts, default=[], key="lib_pred")
         with lib_col2:
-            lib_tag_sel = st.multiselect("Tags", tag_opts, default=tag_sel, key="lib_tags")
+            lib_tag_sel = st.multiselect("Tags", tag_opts, default=[], key="lib_tags")
             lib_section_sel = st.multiselect(
-                "FraCaS section", section_opts, default=section_sel, key="lib_sections"
+                "FraCaS section", section_opts, default=[], key="lib_sections"
             )
             lib_success = st.radio(
                 "Model result", ["All", "Success only", "Failure only"],
-                index=["All", "Success only", "Failure only"].index(success_choice),
+                index=0,
                 key="lib_success", horizontal=True,
             )
         with lib_col3:
@@ -965,6 +1132,8 @@ with tab_library:
                             st.caption(f"_{cinfo['label']}:_ {note}")
                     if entry.get("general_notes"):
                         st.caption(f"_General:_ {entry['general_notes']}")
+                    if entry.get("justification"):
+                        st.caption(f"_Justification:_ {entry['justification']}")
                     if entry.get("reviewed_at"):
                         st.caption(f"Reviewed at: {entry['reviewed_at']}")
 # --------------------------------------------------------------------------
